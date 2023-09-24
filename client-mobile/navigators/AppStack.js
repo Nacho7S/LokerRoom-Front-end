@@ -5,9 +5,9 @@ import CustomDrawer from "../components/CustomDrawer";
 
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 
-import ProfileScreen from "../screens/ProfileScreen";
 import MessagesScreen from "../screens/MessagesScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import UserDetailsScreen from "../screens/UserDetailsScreen";
 
 import MainTab from "./MainTab";
 
@@ -44,7 +44,7 @@ const AppStack = () => {
       />
       <Drawer.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={UserDetailsScreen}
         options={{
           drawerIcon: ({ color }) => (
             <Ionicons name="person-outline" size={22} color={color} />
@@ -60,7 +60,7 @@ const AppStack = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Reviews"
         component={SettingsScreen}
         options={{
@@ -68,7 +68,7 @@ const AppStack = () => {
             <AntDesign name="staro" size={22} color={color} />
           ),
         }}
-      />
+      /> */}
       <Drawer.Screen
         name="Settings"
         component={SettingsScreen}

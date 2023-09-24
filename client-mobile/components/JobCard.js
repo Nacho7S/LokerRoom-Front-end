@@ -4,7 +4,7 @@ import { EyeIcon } from "react-native-heroicons/solid";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
 
-export default function FoodCard({ item, index }) {
+export default function FoodCard({ item, index, axis }) {
   const navigation = useNavigation();
   const getBackgroundColor = () => {
     switch (item.type) {
@@ -20,11 +20,31 @@ export default function FoodCard({ item, index }) {
         return "rgba(212, 246, 237, 0.6)"; // Default color
     }
   };
+  const getAxis = () => {
+    switch (axis) {
+      case "vertical":
+        return "w-72 h-72 p-3 mb-4 rounded-3xl";
+      case "horizontal":
+        return "w-72 h-72 p-3 ml-4 rounded-3xl";
+      default:
+        return "w-72 h-72 p-3 mb-4 rounded-3xl"; // Default axis
+    }
+  };
+  const getStatusColor = () => {
+    switch (item.status) {
+      case "Accepted":
+        return "bg-lime-300 text-gray-700 px-3 py-1.5 rounded-full";
+      case "Processed":
+        return "bg-teal-300 text-gray-700 px-3 py-1.5 rounded-full";
+      default:
+        return "bg-lime-300 text-gray-700 px-3 py-1.5 rounded-full"; // Default axis
+    }
+  };
   return (
     <Animatable.View
       delay={index * 180}
       animation="slideInRight"
-      className="w-72 h-72 p-3 mb-4 rounded-3xl"
+      className={getAxis()}
       style={{
         backgroundColor: "rgba(255,255,255,0.3)",
         borderColor: "#D5DDE5",
@@ -74,6 +94,13 @@ export default function FoodCard({ item, index }) {
           <Text className="text-white">See Details</Text>
         </TouchableOpacity>
       </View>
+      {axis === "horizontal" ? (
+        <View className="mt-6 mx-10 flex justify-center items-center">
+          <Text className={getStatusColor()}>{item.status}</Text>
+        </View>
+      ) : (
+        <View></View>
+      )}
     </Animatable.View>
   );
 }

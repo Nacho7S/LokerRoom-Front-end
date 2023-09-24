@@ -14,7 +14,7 @@ import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from "react-native-heroicons/solid";
-import { categories, foodItems } from "../constants";
+import { categories, jobItems } from "../constants";
 import * as Animatable from "react-native-animatable";
 import { useState } from "react";
 import JobCard from "../components/JobCard";
@@ -38,7 +38,12 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <ImageBackground
               source={require("../assets/images/avatar.png")}
-              style={{ width: 35, height: 35, marginRight: 20 }}
+              style={{
+                width: 45,
+                height: 45,
+                marginRight: 23,
+                marginBottom: 2,
+              }}
               imageStyle={{ borderRadius: 25 }}
             />
           </TouchableOpacity>
@@ -108,7 +113,7 @@ const HomeScreen = ({ navigation }) => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          {foodItems.map((item, index) => (
+          {jobItems.map((item, index) => (
             <JobCard item={item} index={index} key={index} />
           ))}
         </ScrollView>

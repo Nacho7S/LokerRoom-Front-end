@@ -11,7 +11,7 @@ export const categories = [
   "Construction",
 ];
 
-export const foodItems = [
+export const jobItems = [
   {
     name: "Repair Machine",
     price: "13.40",
@@ -19,6 +19,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/tool-front-color.png"),
     type: "construction",
+    status: "Processed",
   },
   {
     name: "Paint My Room",
@@ -27,6 +28,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/roll-brush-front-color.png"),
     type: "renovation",
+    status: "Accepted",
   },
   {
     name: "Power Switch",
@@ -35,6 +37,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/bulb-front-color.png"),
     type: "electrical",
+    status: "Processed",
   },
   {
     name: "Sofa Carpentry",
@@ -43,6 +46,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/chess-front-color.png"),
     type: "carpentry",
+    status: "Accepted",
   },
   {
     name: "Repair Machine",
@@ -51,6 +55,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/tool-front-color.png"),
     type: "construction",
+    status: "Processed",
   },
   {
     name: "Paint My Room",
@@ -59,6 +64,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/roll-brush-front-color.png"),
     type: "renovation",
+    status: "Accepted",
   },
   {
     name: "Power Switch",
@@ -67,6 +73,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/bulb-front-color.png"),
     type: "electrical",
+    status: "Processed",
   },
   {
     name: "Sofa Carpentry",
@@ -75,6 +82,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/chess-front-color.png"),
     type: "carpentry",
+    status: "Accepted",
   },
   {
     name: "Repair Machine",
@@ -83,6 +91,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/tool-front-color.png"),
     type: "construction",
+    status: "Processed",
   },
   {
     name: "Paint My Room",
@@ -91,6 +100,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/roll-brush-front-color.png"),
     type: "renovation",
+    status: "Accepted",
   },
   {
     name: "Power Switch",
@@ -99,6 +109,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/bulb-front-color.png"),
     type: "electrical",
+    status: "Processed",
   },
   {
     name: "Sofa Carpentry",
@@ -107,6 +118,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/chess-front-color.png"),
     type: "carpentry",
+    status: "Accepted",
   },
   {
     name: "Repair Machine",
@@ -115,6 +127,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/tool-front-color.png"),
     type: "construction",
+    status: "Processed",
   },
   {
     name: "Paint My Room",
@@ -123,6 +136,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/roll-brush-front-color.png"),
     type: "renovation",
+    status: "Accepted",
   },
   {
     name: "Power Switch",
@@ -131,6 +145,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/bulb-front-color.png"),
     type: "electrical",
+    status: "Processed",
   },
   {
     name: "Sofa Carpentry",
@@ -139,6 +154,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/chess-front-color.png"),
     type: "carpentry",
+    status: "Accepted",
   },
   {
     name: "Repair Machine",
@@ -147,6 +163,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/tool-front-color.png"),
     type: "construction",
+    status: "Processed",
   },
   {
     name: "Paint My Room",
@@ -155,6 +172,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/roll-brush-front-color.png"),
     type: "renovation",
+    status: "Accepted",
   },
   {
     name: "Power Switch",
@@ -163,6 +181,7 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/bulb-front-color.png"),
     type: "electrical",
+    status: "Processed",
   },
   {
     name: "Sofa Carpentry",
@@ -171,5 +190,6 @@ export const foodItems = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     image: require("../assets/images/chess-front-color.png"),
     type: "carpentry",
+    status: "Accepted",
   },
 ];

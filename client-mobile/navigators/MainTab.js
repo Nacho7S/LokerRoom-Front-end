@@ -1,4 +1,3 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import { StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -9,8 +8,8 @@ import {
   Entypo,
 } from "@expo/vector-icons";
 import MainStack from "./MainStack";
-
-const Drawer = createDrawerNavigator();
+import JobAppliedScreen from "../screens/JobAppliedScreen";
+import JobPostingsScreen from "../screens/JobPostingsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -54,8 +53,8 @@ const MainTab = () => {
         }}
       ></Tab.Screen>
       <Tab.Screen
-        name="MyJob"
-        component={MainStack}
+        name="JobDetails"
+        component={JobAppliedScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {
@@ -70,8 +69,8 @@ const MainTab = () => {
         }}
       ></Tab.Screen>
       <Tab.Screen
-        name="CreatedJob"
-        component={MainStack}
+        name="JobPostings"
+        component={JobPostingsScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {

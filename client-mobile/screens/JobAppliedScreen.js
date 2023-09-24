@@ -1,5 +1,6 @@
 import {
   Image,
+  ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -13,12 +14,11 @@ import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from "react-native-heroicons/solid";
-import { categories, foodItems } from "../constants";
-import * as Animatable from "react-native-animatable";
+import { categories, jobItems } from "../constants";
 import { useState } from "react";
-import FoodCard from "../components/JobCard";
+import JobCard from "../components/JobCard";
 
-const HomeScreen = () => {
+const JobAppliedScreen = ({ navigation }) => {
   const [activeCategory, setActiveCategory] = useState("");
 
   return (
@@ -30,14 +30,26 @@ const HomeScreen = () => {
       />
       <SafeAreaView className="flex-1">
         {/* punch line */}
-        <View className="mt-9 space-y-2">
+        <View className="mt-9 space-y-2 flex-row justify-between items-center">
           <Text className="mx-6 text-3xl font-bold text-gray-800">
-            Jobs List
+            Applied Jobs List
           </Text>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <ImageBackground
+              source={require("../assets/images/avatar.png")}
+              style={{
+                width: 45,
+                height: 45,
+                marginRight: 23,
+                marginBottom: 2,
+              }}
+              imageStyle={{ borderRadius: 25 }}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* search  */}
-        <View className="mt-4 mx-5 flex-row justify-between items-center space-x-3">
+        <View className="mt-4 mb-12 mx-5 flex-row justify-between items-center space-x-3">
           <View className="flex-row flex-1 px-4 py-2 bg-white rounded-2xl">
             <MagnifyingGlassIcon stroke={40} color="gray" />
             <TextInput
@@ -52,7 +64,7 @@ const HomeScreen = () => {
         </View>
 
         {/* categories scrollbar */}
-        <ScrollView
+        {/* <ScrollView
           className="pt-5 max-h-20"
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -90,15 +102,20 @@ const HomeScreen = () => {
               </Animatable.View>
             );
           })}
-        </ScrollView>
+        </ScrollView> */}
         {/* food cards */}
         <ScrollView
           contentContainerStyle={{ paddingHorizontal: 20 }}
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {foodItems.map((item, index) => (
-            <FoodCard item={item} index={index} key={index} />
+          {jobItems.map((item, index) => (
+            <JobCard
+              item={item}
+              index={index}
+              key={index}
+              axis={"horizontal"}
+            />
           ))}
         </ScrollView>
       </SafeAreaView>
@@ -106,6 +123,6 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default JobAppliedScreen;
 
 const styles = StyleSheet.create({});
