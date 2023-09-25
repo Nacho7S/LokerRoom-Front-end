@@ -14,7 +14,7 @@ const UserDetailsScreen = ({ navigation }) => {
         <View className="flex-row justify-between items-center">
           <View className="flex-row justify-start items-center gap-4">
             <Text className="text-3xl font-bold">Profile</Text>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <TouchableOpacity onPress={() => navigation.navigate("UserEdit")}>
               <PencilSquareIcon size="27" stroke={50} color="black" />
             </TouchableOpacity>
           </View>

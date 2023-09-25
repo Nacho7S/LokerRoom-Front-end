@@ -65,7 +65,7 @@ const JobPostingScreen = ({ navigation }) => {
         </View>
 
         {/* add job button */}
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => navigation.navigate("JobAdd")}>
           <View
             className="bg-white rounded-2xl px-24 py-2 mx-5 mb-5 flex-row justify-evenly items-center"
             style={{
