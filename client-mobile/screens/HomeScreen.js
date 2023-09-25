@@ -18,9 +18,19 @@ import { categories, jobItems } from "../constants";
 import * as Animatable from "react-native-animatable";
 import { useState } from "react";
 import JobCard from "../components/JobCard";
+import {
+  GET_CATEGORIES,
+  GET_JOBS,
+  GET_JOBS_CATEGORIES,
+} from "../config/queries";
+import { useQuery } from "@apollo/client";
 
 const HomeScreen = ({ navigation }) => {
+  // const { loading, error, data } = useQuery(GET_JOBS);
   const [activeCategory, setActiveCategory] = useState("");
+  // const { data, error, loading } = useQuery(GET_CATEGORIES);
+  const { data, error, loading } = useQuery(GET_JOBS_CATEGORIES);
+  console.log(data.categories, "<<<<<data home");
 
   return (
     <View className="flex-1 relative">
@@ -71,7 +81,7 @@ const HomeScreen = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20 }}
         >
-          {categories.map((category, index) => {
+          {data.categories.map((category, index) => {
             let isActive = category == activeCategory;
             let textClass = isActive ? " font-bold" : "";
             return (
@@ -89,7 +99,7 @@ const HomeScreen = ({ navigation }) => {
                       "text-white text-base tracking-widest " + textClass
                     }
                   >
-                    {category}
+                    {category.name}
                   </Text>
                   {isActive ? (
                     <View className="flex-row justify-center">
@@ -104,7 +114,7 @@ const HomeScreen = ({ navigation }) => {
             );
           })}
         </ScrollView>
-        {/* food cards */}
+        {/* job cards */}
         <ScrollView
           className="h-32"
           contentContainerStyle={{
@@ -113,7 +123,7 @@ const HomeScreen = ({ navigation }) => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          {jobItems.map((item, index) => (
+          {data.jobPostings.data.map((item, index) => (
             <JobCard item={item} index={index} key={index} />
           ))}
         </ScrollView>

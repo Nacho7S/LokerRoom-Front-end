@@ -7,21 +7,72 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Button,
 } from "react-native";
 
 import DatePicker from "react-native-date-picker";
 
 import InputField from "../components/InputField";
+import SelectDropdown from "react-native-select-dropdown";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import CustomButton from "../components/CustomButton";
+import { ADD_USER } from "../config/queries";
+import { useMutation } from "@apollo/client";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const RegisterScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [dobLabel, setDobLabel] = useState("Date of Birth");
+  const [show, setShow] = useState(false);
+
+  const onDateChange = (event, selectedDate) => {
+    setShow(false);
+    setDate(selectedDate);
+  };
+
+  const [user, setUser] = useState({
+    name: "",
+    telephone: "",
+    password: "",
+    email: "",
+    address: "",
+    gender: "",
+    dateOfBirth: "",
+    educationId: 1,
+  });
+  const [funcCreateUser, { loading, error, data }] = useMutation(ADD_USER);
+
+  const onChange = (key, value) => {
+    console.log(key, value);
+    setUser((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
+  const registerUser = () => {
+    const payload = user;
+    // console.log(payload, "<<< payload");
+    console.log({ ...payload, dateOfBirth: date }, "ini coyyy");
+    funcCreateUser({
+      variables: {
+        registerDetails: { ...payload, dateOfBirth: date },
+      },
+    });
+    // navigation.navigate("Login");
+  };
+
+  const gender = ["Male", "Female"];
+
+  // if (loading) {
+  //   return <Preloader />;
+  // }
+
+  // if (error) {
+  //   return <ErrorData />;
+  // }
 
   return (
     <View className="flex-1 relative">
@@ -37,7 +88,6 @@ const RegisterScreen = ({ navigation }) => {
         >
           <Text
             style={{
-              // fontFamily: "Roboto-Medium",
               fontSize: 28,
               fontWeight: "bold",
               color: "#333",
@@ -49,6 +99,8 @@ const RegisterScreen = ({ navigation }) => {
           </Text>
 
           <InputField
+            onChangeText={(text) => onChange("name", text)}
+            value={user.name}
             label={"Full Name"}
             icon={
               <Ionicons
@@ -61,6 +113,7 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <InputField
+            onChangeText={(text) => onChange("telephone", text)}
             label={"Phone Number"}
             icon={
               <Feather
@@ -74,7 +127,8 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <InputField
-            label={"Email ID"}
+            onChangeText={(text) => onChange("email", text)}
+            label={"Email"}
             icon={
               <MaterialIcons
                 name="alternate-email"
@@ -87,6 +141,7 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <InputField
+            onChangeText={(text) => onChange("password", text)}
             label={"Password"}
             icon={
               <Ionicons
@@ -99,20 +154,97 @@ const RegisterScreen = ({ navigation }) => {
             inputType="password"
           />
 
+          {/* <InputField
+            onChangeText={(text) => onChange("dateOfBirth", text)}
+            label={"Date of birth"}
+            icon={
+              
+            }
+          /> */}
+
+          <View
+            style={{
+              flexDirection: "row",
+              borderBottomColor: "#ccc",
+              borderBottomWidth: 1,
+              paddingBottom: 8,
+              marginBottom: 25,
+            }}
+          >
+            <Ionicons
+              name="calendar-outline"
+              size={20}
+              color="#666"
+              style={{ marginRight: 5 }}
+            />
+            <TextInput
+              placeholder={"Date of birth"}
+              style={{ flex: 1, paddingVertical: 0 }}
+              value={date.toLocaleDateString()} // Bind value to the input field
+              onPressIn={() => {
+                setShow(true);
+              }}
+            />
+          </View>
+
           <InputField
-            label={"Confirm Password"}
+            onChangeText={(text) => onChange("address", text)}
+            label={"Address"}
             icon={
               <Ionicons
-                name="ios-lock-closed-outline"
+                name="calendar-outline"
                 size={20}
                 color="#666"
                 style={{ marginRight: 5 }}
               />
             }
-            inputType="password"
           />
 
-          <View
+          <SelectDropdown
+            data={gender}
+            defaultButtonText="Choose a Gender"
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem, index);
+              setUser({
+                ...user,
+                gender: selectedItem,
+              });
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              // text represented after item is selected
+              // if data array is an array of objects then return selectedItem.property to render after item is selected
+              return selectedItem;
+            }}
+            rowTextForSelection={(item, index) => {
+              // text represented for each item in dropdown
+              // if data array is an array of objects then return item.property to represent item in dropdown
+              return item;
+            }}
+            buttonStyle={{
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              borderColor: "#D5DDE5",
+              borderWidth: 0.8,
+              borderRadius: 20,
+              marginBottom: 20,
+              width: 200,
+            }}
+          />
+
+          {/* <Button title="Select Date of Birth" onPress={() => setOpen(true)} />
+          <DatePicker
+            modal
+            open={open}
+            date={date}
+            onConfirm={(date) => {
+              setOpen(false);
+              setDate(date);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          /> */}
+
+          {/* <View
             style={{
               flexDirection: "row",
               borderBottomColor: "#ccc",
@@ -132,7 +264,7 @@ const RegisterScreen = ({ navigation }) => {
                 {dobLabel}
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           {/* <DatePicker
           modal
@@ -151,7 +283,7 @@ const RegisterScreen = ({ navigation }) => {
           }}
         /> */}
 
-          <CustomButton label={"Register"} onPress={() => {}} />
+          <CustomButton label={"Register"} onPress={registerUser} />
 
           <View
             style={{
@@ -166,6 +298,14 @@ const RegisterScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode="date"
+            onChange={onDateChange}
+          />
+        )}
       </SafeAreaView>
     </View>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -7,14 +7,50 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
+import { LOGIN_USER } from "../config/queries";
+import { useMutation } from "@apollo/client";
 
 const LoginScreen = ({ navigation }) => {
+  const [user, setUser] = useState({
+    telephone: "",
+    password: "",
+  });
+  const [funcLoginUser, { loading, error, data }] = useMutation(LOGIN_USER);
+
+  const onChange = (key, value) => {
+    console.log(key, value);
+    setUser((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
+  const loginUser = async () => {
+    try {
+      // const payload = user;
+      // console.log(payload, "<<< payload");
+      await funcLoginUser({
+        variables: {
+          loginCredentials: user,
+        },
+      });
+      console.log(data?.login?.access_token, "<<<<<<<data");
+      await AsyncStorage.setItem(
+        "access_token",
+        JSON.stringify(data?.login?.access_token)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View className="flex-1 relative">
       <Image
@@ -45,7 +81,8 @@ const LoginScreen = ({ navigation }) => {
           </Text>
 
           <InputField
-            label={"Email ID"}
+            onChangeText={(text) => onChange("telephone", text)}
+            label={"Phone Numbers"}
             icon={
               <MaterialIcons
                 name="alternate-email"
@@ -54,10 +91,10 @@ const LoginScreen = ({ navigation }) => {
                 style={{ marginRight: 5 }}
               />
             }
-            keyboardType="email-address"
           />
 
           <InputField
+            onChangeText={(text) => onChange("password", text)}
             label={"Password"}
             icon={
               <Ionicons
@@ -72,7 +109,7 @@ const LoginScreen = ({ navigation }) => {
             fieldButtonFunction={() => {}}
           />
 
-          <CustomButton label={"Login"} onPress={() => {}} />
+          <CustomButton label={"Login"} onPress={loginUser} />
 
           <Text
             style={{ textAlign: "center", color: "white", marginBottom: 30 }}

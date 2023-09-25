@@ -8,6 +8,8 @@ export default function InputField({
   keyboardType,
   fieldButtonLabel,
   fieldButtonFunction,
+  value, // Add value prop
+  onChangeText, // Add onChangeText prop
 }) {
   return (
     <View
@@ -26,19 +28,25 @@ export default function InputField({
           keyboardType={keyboardType}
           style={{ flex: 1, paddingVertical: 0 }}
           secureTextEntry={true}
+          value={value} // Bind value to the input field
+          onChangeText={(text) => onChangeText(text)} // Bind onChangeText to the input field's text change event
         />
       ) : (
         <TextInput
           placeholder={label}
           keyboardType={keyboardType}
           style={{ flex: 1, paddingVertical: 0 }}
+          value={value} // Bind value to the input field
+          onChangeText={(text) => onChangeText(text)} // Bind onChangeText to the input field's text change event
         />
       )}
-      <TouchableOpacity onPress={fieldButtonFunction}>
-        <Text style={{ color: "white", fontWeight: "700" }}>
-          {fieldButtonLabel}
-        </Text>
-      </TouchableOpacity>
+      {fieldButtonLabel && fieldButtonFunction && (
+        <TouchableOpacity onPress={fieldButtonFunction}>
+          <Text style={{ color: "white", fontWeight: "700" }}>
+            {fieldButtonLabel}
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

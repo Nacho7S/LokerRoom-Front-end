@@ -13,8 +13,16 @@ import {
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const CustomDrawer = (props) => {
+  const navigation = useNavigation();
+  const handelLogout = async () => {
+    await AsyncStorage.removeItem("access_token");
+    // navigation.navigate("Login");
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -83,7 +91,10 @@ const CustomDrawer = (props) => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
+        <TouchableOpacity
+          onPress={handelLogout}
+          style={{ paddingVertical: 15 }}
+        >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="exit-outline" size={22} />
             <Text

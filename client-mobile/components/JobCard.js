@@ -4,22 +4,23 @@ import { EyeIcon } from "react-native-heroicons/solid";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
 
-export default function FoodCard({ item, index, axis }) {
+export default function JobCard({ item, index, axis }) {
+  console.log(item, "<<<<<<<<<<item");
   const navigation = useNavigation();
-  const getBackgroundColor = () => {
-    switch (item.type) {
-      case "construction":
-        return "rgba(212,246,237,0.6)";
-      case "renovation":
-        return "rgba(251,226,244,0.6)";
-      case "electrical":
-        return "rgba(227,219,250,0.6)";
-      case "carpentry":
-        return "rgba(255,225,204,0.6)";
-      default:
-        return "rgba(212, 246, 237, 0.6)"; // Default color
-    }
-  };
+  // const getBackgroundColor = () => {
+  //   switch (item?.category?.name) {
+  //     case "construction":
+  //       return "rgba(212,246,237,0.6)";
+  //     case "renovation":
+  //       return "rgba(251,226,244,0.6)";
+  //     case "electrical":
+  //       return "rgba(227,219,250,0.6)";
+  //     case "carpentry":
+  //       return "rgba(255,225,204,0.6)";
+  //     default:
+  //       return "rgba(212, 246, 237, 0.6)"; // Default color
+  //   }
+  // };
   const getAxis = () => {
     switch (axis) {
       case "vertical":
@@ -53,7 +54,7 @@ export default function FoodCard({ item, index, axis }) {
     >
       <View
         className="w-64 h-52 mx-4 mt-4 rounded-3xl absolute"
-        style={{ backgroundColor: getBackgroundColor() }}
+        // style={{ backgroundColor: getBackgroundColor() }}
       ></View>
       <View className="flex-row mt-5 justify-between items-center px-4">
         <TouchableOpacity
@@ -71,7 +72,7 @@ export default function FoodCard({ item, index, axis }) {
       </View>
       <View className="flex-column mt-3 justify-center">
         <Text className="text-black px-4 text-xl font-medium tracking-wider">
-          {item.name}
+          {item.title}
         </Text>
         <View className="flex-row mx-1.5 space-y-2 justify-between">
           <Text className="text-gray-500 pl-3">{item.text}</Text>
