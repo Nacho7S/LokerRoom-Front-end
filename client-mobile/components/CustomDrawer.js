@@ -21,34 +21,9 @@ import { useAuth } from "../context/useAuth";
 
 
 const CustomDrawer = (props) => {
-  const {logout} = useAuth()
+  const { logout, user } = useAuth()
+  console.log(user, "di drawer");
   const navigation = useNavigation();
-
-  const [user, setUser] = useState({});
-  const [userId, setUserId] = useState("");
-
-  const { data, loading, error } = useQuery(GET_USER, {
-    variables: {
-      userId: +userId,
-    },
-  });
-
-  useEffect(() => {
-    getUserId();
-    setUser(data?.user || {});
-  }, []);
-
-  console.log(data, "<<<<<data di custom drawer");
-
-  const getUserId = async () => {
-    try {
-      const IdUser = await AsyncStorage.getItem("userId");
-      setUserId(IdUser);
-      // console.log(IdUser, "<<<<<< IdUser");
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const handelLogout = () => {
     logout()

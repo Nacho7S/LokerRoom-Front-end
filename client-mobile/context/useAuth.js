@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "../config/queries";
 
 // Create an AuthContext
 const AuthContext = createContext();
@@ -11,24 +13,37 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [isLogged, setIsLogged] = useState(false);
+  const [user, setUser] = useState({})
+  const [currentUserId, setCurrentUserId] = useState("")
+  const { data, loading, error } = useQuery(GET_USER, {
+    variables: {
+      userId: +currentUserId,
+    },
+  });
 
+  console.log(data, "ini users di auth");
+  console.log(currentUserId, "ini dari auth userid");
   useEffect(() => {
     checkLoginStatus();
-  }, []);
+    setUser(data?.user)
+  }, [data]);
 
   // Check if the user is logged in based on the presence of an access token
   const checkLoginStatus = async () => {
     try {
       const accessToken = await AsyncStorage.getItem("access_token");
+      const userId = await AsyncStorage.getItem("userId")
+      setCurrentUserId(userId)
       setIsLogged(accessToken !== null);
     } catch (error) {
       console.error("Error checking login status:", error);
     }
   };
 
-  const login = async (accessToken) => { // Add the login function
+  const login = async (accessToken, userId) => { // Add the login function
     try {
       await AsyncStorage.setItem("access_token", accessToken);
+      await AsyncStorage.setItem("userId", JSON.stringify(userId))
       setIsLogged(true);
     } catch (error) {
       console.error("Error logging in:", error);
@@ -38,7 +53,7 @@ export function AuthProvider({ children }) {
   // Logout function to clear the access token
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem("access_token");
+      await AsyncStorage.clear();
       setIsLogged(false);
     } catch (error) {
       console.error("Error logging out:", error);
@@ -50,6 +65,8 @@ export function AuthProvider({ children }) {
     isLogged,
     login,
     logout,
+    currentUserId,
+    user
   };
 
   return (
