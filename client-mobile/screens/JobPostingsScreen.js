@@ -15,12 +15,17 @@ import {
   MagnifyingGlassIcon,
   PlusIcon,
 } from "react-native-heroicons/solid";
-import { categories, jobItems } from "../constants";
-import { useState } from "react";
+// import { categories, jobItems } from "../constants";
+// import { useState } from "react";
 import JobCard from "../components/JobCard";
+import { GET_MY_POSTED_JOBS } from "../config/queries";
+import { useQuery } from "@apollo/client";
 
 const JobPostingScreen = ({ navigation }) => {
-  const [activeCategory, setActiveCategory] = useState("");
+  // const [activeCategory, setActiveCategory] = useState("");
+
+  const { data, error, loading } = useQuery(GET_MY_POSTED_JOBS);
+  const { me: { postedJobs = [] } = {} } = data || {};
 
   return (
     <View className="flex-1 relative">
@@ -125,7 +130,7 @@ const JobPostingScreen = ({ navigation }) => {
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {jobItems.map((item, index) => (
+          {postedJobs.map((item, index) => (
             <JobCard
               item={item}
               index={index}
