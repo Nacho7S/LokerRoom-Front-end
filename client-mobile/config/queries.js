@@ -9,66 +9,104 @@ export const ADD_USER = gql`
 `;
 
 export const LOGIN_USER = gql`
-  mutation Login($loginCredentials: loginCredentials) {
+  mutation Mutation($loginCredentials: loginCredentials) {
     login(loginCredentials: $loginCredentials) {
       access_token
+      userId
     }
   }
 `;
 
 export const GET_JOBS = gql`
-  query JobPostings {
-    jobPostings {
-      id
-      title
-      description
-      address
-      category {
-        name
-      }
-      minSalary
-      maxSalary
-      requiredGender
-      maxAge
-      status
-      isUrgent
-    }
-  }
-`;
-
-export const GET_CATEGORIES = gql`
-  query Categories {
-    categories {
-      name
-      id
-    }
-  }
-`;
-
-export const GET_JOBS_CATEGORIES = gql`
-  query Query {
-    jobPostings {
+  query JobPostings(
+    $gender: Gender, 
+    $maxAge: Int, 
+    $categoryId: Int, 
+    $educationId: Int, 
+    $location: String, 
+    $isUrgent: Boolean, 
+    $pageNumber: Int
+  ) {
+    jobPostings(
+      gender: $gender, 
+      maxAge: $maxAge, 
+      categoryId: $categoryId, 
+      educationId: $educationId, 
+      location: $location, 
+      isUrgent: $isUrgent, 
+      pageNumber: $pageNumber
+    ) {
+      numPages
       data {
+        id
+        title
+        description
         address
         category {
           name
         }
-        isUrgent
-        maxAge
         minSalary
         maxSalary
         requiredGender
+        maxAge
         status
-        title
-        id
+        isUrgent
       }
-    }
-    categories {
-      name
-      id
     }
   }
 `;
+
+export const GET_CATEGORIES_AND_EDUCATION_LEVELS = gql`
+  query Query {
+    categories {
+      id
+      name
+    }
+    educationLevels {
+      id
+      education
+    }
+  }
+`;
+
+// export const GET_JOBS_CATEGORIES = gql`
+//   query Query(
+//     $gender: Gender, 
+//     $maxAge: Int, 
+//     $categoryId: Int, 
+//     $educationId: Int, 
+//     $location: String, 
+//     $isUrgent: Boolean, 
+//     $pageNumber: Int
+//   ) {
+//     categories {
+//       id
+//       name
+//     }
+//     jobPostings(
+//       gender: $gender, 
+//       maxAge: $maxAge, 
+//       categoryId: $categoryId, 
+//       educationId: $educationId, 
+//       location: $location, 
+//       isUrgent: $isUrgent, 
+//       pageNumber: $pageNumber
+//     ) {
+//       id
+//       title
+//       address
+//       category {
+//         name
+//       }
+//       isUrgent
+//       maxAge
+//       minSalary
+//       maxSalary
+//       requiredGender
+//       status      
+//     }
+//   }
+// `;
 
 export const GET_JOB = gql`
   query JobPosting($jobPostingId: Int!) {
@@ -102,10 +140,9 @@ export const GET_JOB = gql`
 `;
 
 export const ADD_JOB = gql`
-  mutation Mutation($jobPosting: newJobPosting) {
+  mutation AddNewJobPosting($jobPosting: newJobPosting) {
     addNewJobPosting(jobPosting: $jobPosting) {
       message
-      access_token
     }
   }
 `;
@@ -123,59 +160,31 @@ export const GET_USER = gql`
       dateOfBirth
       profileDescription
       educationLevel {
-        id
         education
-        priority
+        id
       }
       receivedReviews {
         rating
-        jobPosting {
-          title
-        }
+        id
         employer {
           name
         }
-        id
+        content
+        jobPosting {
+          title
+        }
         user {
           name
         }
-        content
       }
     }
   }
 `;
 
-// export const GET_MOVIES = gql`
-//   query movies {
-//     movies {
-//       id
-//       title
-//       imgUrl
-//       Genre {
-//         name
-//       }
-//     }
-//   }
-// `;
-
-// export const GET_MOVIE_BY_ID = gql`
-//   query Movie($movieId: ID) {
-//     movie(id: $movieId) {
-//       id
-//       title
-//       synopsis
-//       imgUrl
-//       rating
-//       trailerUrl
-//       Casts {
-//         id
-//         name
-//         profilePict
-//       }
-//       author {
-//         username
-//         _id
-//       }
-//     }
-//   }
-// `;
+export const EDIT_USER = gql`
+  mutation Mutation($userDetails: userDetails) {
+    editUserDetails(userDetails: $userDetails) {
+      message
+    }
+  }
+`;
