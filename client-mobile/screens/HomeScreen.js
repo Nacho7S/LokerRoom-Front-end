@@ -14,21 +14,43 @@ import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from "react-native-heroicons/solid";
-import { categories, jobItems } from "../constants";
+// import { categories, jobItems } from "../constants";
 import * as Animatable from "react-native-animatable";
 import { useState } from "react";
 import JobCard from "../components/JobCard";
 import {
   GET_CATEGORIES,
   GET_JOBS,
-  GET_JOBS_CATEGORIES,
+  // GET_JOBS_CATEGORIES,
 } from "../config/queries";
 import { useQuery } from "@apollo/client";
 
 const HomeScreen = ({ navigation }) => {
-  const [activeCategory, setActiveCategory] = useState("");
-  const { data, error, loading } = useQuery(GET_JOBS_CATEGORIES);
-  // console.log(data, "<<<<<data home");
+  const [ filter, setFilter ] = useState({
+    gender: null, 
+    maxAge: null, 
+    categoryId: null, 
+    educationId: null,
+    location: null, 
+    isUrgent: null, 
+    pageNumber: 1
+  });
+  const { data: fetchCategories } = useQuery(GET_CATEGORIES);
+  const { data, error, loading } = useQuery(GET_JOBS, {
+    variables: filter
+  });
+  const { categories } = fetchCategories || {};
+  const { jobPostings: { data: jobPostings, numPages } = {} } = data || {};
+  // console.log(categories, "<<< Fetching categories");
+  // console.log(jobPostings, "<<< FETCHING JOBS");
+
+  if (loading) {
+    return null;
+  }
+  if (error) {
+    console.log(error);
+    return null;
+  }
 
   return (
     <View className="flex-1 relative">
@@ -79,8 +101,8 @@ const HomeScreen = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20 }}
         >
-          {data?.categories.map((category, index) => {
-            let isActive = category == activeCategory;
+          {categories?.map((category, index) => {
+            let isActive = category.id === filter.categoryId;
             let textClass = isActive ? " font-bold" : "";
             return (
               <Animatable.View
@@ -90,7 +112,10 @@ const HomeScreen = ({ navigation }) => {
               >
                 <TouchableOpacity
                   className="mr-9"
-                  onPress={() => setActiveCategory(category)}
+                  onPress={() => setFilter({
+                    ...filter,
+                    categoryId: category.id
+                  })}
                 >
                   <Text
                     className={
@@ -121,7 +146,7 @@ const HomeScreen = ({ navigation }) => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          {data?.jobPostings.data.map((item, index) => (
+          {jobPostings?.map((item, index) => (
             <JobCard item={item} index={index} key={index} />
           ))}
         </ScrollView>
