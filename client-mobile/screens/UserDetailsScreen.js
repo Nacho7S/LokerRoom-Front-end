@@ -1,8 +1,23 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { PencilSquareIcon, Bars3Icon } from "react-native-heroicons/solid";
+import { GET_USER } from "../config/queries";
 
 const UserDetailsScreen = ({ navigation }) => {
+  // const { userId } = route.params; //???
+
+  const [user, setUser] = useState({});
+  const { data, loading, error } = useQuery(GET_USER, {
+    variables: {
+      userId: userId,
+    },
+  });
+
+  // console.log(data, "<<<<<<<<<<data");
+  useEffect(() => {
+    setUser(data?.user || {});
+  }, [data]);
+
   return (
     <View className="flex-1 relative">
       <Image

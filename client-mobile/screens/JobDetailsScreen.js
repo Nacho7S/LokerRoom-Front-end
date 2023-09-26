@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeftIcon } from "react-native-heroicons/solid";
 import {
@@ -10,10 +10,55 @@ import {
 } from "react-native-heroicons/outline";
 import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
+import { useQuery } from "@apollo/client";
+import { GET_JOB } from "../config/queries";
 
-export default function JobDetailsScreen(props) {
-  let item = props.route.params;
-  const navigation = useNavigation();
+export default function JobDetailsScreen({ route, navigation }) {
+  // let item = props.route.params;
+  // const navigation = useNavigation();
+  const { jobId } = route.params;
+  const [job, setJob] = useState({});
+  const { data, loading, error } = useQuery(GET_JOB, {
+    variables: {
+      jobPostingId: jobId,
+    },
+  });
+
+  console.log(job, "<<<<<<<<<<job");
+
+  useEffect(() => {
+    setJob(data?.jobPosting || {});
+  }, [data]);
+
+  // if (loading) {
+  //   return <Preloader />;
+  // }
+
+  // if (error) {
+  //   return <ErrorData />;
+  // }
+
+  const get3dIcon = () => {
+    switch (job?.category?.name) {
+      case "Cleaning":
+        return require("../assets/images/bulb-front-gradient.png");
+      case "Construction":
+        return require("../assets/images/bulb-front-color.png");
+      case "Factory & Industry":
+        return require("../assets/images/axe-front-gradient.png");
+      case "Cooking":
+        return require("../assets/images/tea-cup-front-gradient.png");
+      case "Office":
+        return require("../assets/images/travel-front-gradient.png");
+      default:
+        return require("../assets/images/travel-front-gradient.png"); // Default color
+    }
+  };
+  const formatSalary = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+  };
   return (
     <View className="flex-1 bg-gray-200">
       <Image
@@ -48,8 +93,8 @@ export default function JobDetailsScreen(props) {
       </View>
       <ScrollView style={{ marginTop: 3 }}>
         <View className="flex justify-center items-center">
-          <Image className="h-24 w-24" source={item.image} />
-          <Text className="text-2xl text-gray-800"> {item.name}</Text>
+          <Image className="h-24 w-24" source={get3dIcon()} />
+          <Text className="text-2xl font-bold text-gray-800"> {job.title}</Text>
         </View>
         <View className="flex-row justify-between items-center mt-1 mx-8 h-20 overflow-hidden">
           <Animatable.View
@@ -61,18 +106,9 @@ export default function JobDetailsScreen(props) {
               source={require("../assets/icons/calories.png")}
               className="h-6 w-6"
             />
-            <Text className="font-semibold">130 cal</Text>
-          </Animatable.View>
-          <Animatable.View
-            delay={280}
-            animation="slideInDown"
-            className="flex items-center space-y-2"
-          >
-            <Image
-              source={require("../assets/icons/clock.png")}
-              className="h-6 w-6"
-            />
-            <Text className="font-semibold">15-20 min</Text>
+            <Text className="font-semibold">
+              {job?.isUrgent === true ? "Urgent" : "Available"}
+            </Text>
           </Animatable.View>
           <Animatable.View
             delay={380}
@@ -83,7 +119,20 @@ export default function JobDetailsScreen(props) {
               source={require("../assets/icons/chat.png")}
               className="h-6 w-6"
             />
-            <Text className="font-semibold">4.6 vote</Text>
+            <Text className="font-semibold">
+              {job.requiredGender ? job.requiredGender : "All Gender"}
+            </Text>
+          </Animatable.View>
+          <Animatable.View
+            delay={280}
+            animation="slideInDown"
+            className="flex items-center space-y-2"
+          >
+            <Image
+              source={require("../assets/icons/clock.png")}
+              className="h-6 w-6"
+            />
+            <Text className="font-semibold">Max Age {job.maxAge}</Text>
           </Animatable.View>
           <Animatable.View
             delay={480}
@@ -94,13 +143,15 @@ export default function JobDetailsScreen(props) {
               source={require("../assets/icons/weight.png")}
               className="h-6 w-6"
             />
-            <Text className="font-semibold">350 g</Text>
+            <Text className="font-semibold">
+              {job?.requiredEducation ? job?.requiredEducation.education : "-"}
+            </Text>
           </Animatable.View>
         </View>
         <View className="mx-8 space-y-3 h-48">
           <Animatable.Text
             animation="slideInUp"
-            className="text-2xl font-semibold text-white"
+            className="text-2xl font-bold text-white"
           >
             Description
           </Animatable.Text>
@@ -109,21 +160,51 @@ export default function JobDetailsScreen(props) {
             animation="slideInUp"
             className="text-white tracking-wider"
           >
-            {item.desc}
+            {job.description}
           </Animatable.Text>
         </View>
-        {/* add to cart button */}
-        <View className="mx-8 mt-2 mb-20 flex-row justify-between items-center">
+        <View className="mx-8 space-y-3 h-48">
+          <Animatable.Text
+            animation="slideInUp"
+            className="text-2xl font-bold text-white"
+          >
+            Location
+          </Animatable.Text>
+          <Animatable.Text
+            delay={100}
+            animation="slideInUp"
+            className="text-white tracking-wider"
+          >
+            {job.address}
+          </Animatable.Text>
+        </View>
+        <View className="mx-8 mb-3 space-y-3">
+          <Animatable.Text
+            animation="slideInUp"
+            className="text-2xl font-bold text-white"
+          >
+            Contacts
+          </Animatable.Text>
+          <Animatable.Text
+            delay={100}
+            animation="slideInUp"
+            className="text-white tracking-wider"
+          >
+            {job.author.name} - {job.author.telephone}
+          </Animatable.Text>
+        </View>
+        {/* apply button */}
+        <View className="mx-8 mt-2 mb-10 flex-row justify-between items-center">
           <Animatable.Text
             delay={100}
             animation="slideInLeft"
-            className="text-2xl font-semibold text-white"
+            className="text-2xl font-bold text-white"
           >
-            ${item.price}/hour
+            Rp. {formatSalary(job.minSalary)} - {formatSalary(job.maxSalary)}
           </Animatable.Text>
           <Animatable.View delay={100} animation="slideInRight">
-            <TouchableOpacity className="bg-gray-500 py-3 px-6 rounded-2xl">
-              <Text className="text-white text-s font-semibold">Accept</Text>
+            <TouchableOpacity className="bg-lime-300 py-3 px-6 rounded-2xl">
+              <Text className="text-s font-semibold">Apply</Text>
             </TouchableOpacity>
           </Animatable.View>
         </View>

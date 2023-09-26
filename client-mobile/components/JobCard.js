@@ -5,22 +5,38 @@ import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
 
 export default function JobCard({ item, index, axis }) {
-  console.log(item, "<<<<<<<<<<item");
+  console.log(item, "<<<<<<<<<item");
   const navigation = useNavigation();
-  // const getBackgroundColor = () => {
-  //   switch (item?.category?.name) {
-  //     case "construction":
-  //       return "rgba(212,246,237,0.6)";
-  //     case "renovation":
-  //       return "rgba(251,226,244,0.6)";
-  //     case "electrical":
-  //       return "rgba(227,219,250,0.6)";
-  //     case "carpentry":
-  //       return "rgba(255,225,204,0.6)";
-  //     default:
-  //       return "rgba(212, 246, 237, 0.6)"; // Default color
-  //   }
-  // };
+  const getBackgroundColor = () => {
+    switch (item?.category?.name) {
+      case "Cleaning":
+        return "rgba(212,246,237,0.6)";
+      case "Construction":
+        return "rgba(251,226,244,0.6)";
+      case "Factory & Industry":
+        return "rgba(227,219,250,0.6)";
+      case "Cooking":
+        return "rgba(255,225,204,0.6)";
+      default:
+        return "rgba(212, 246, 237, 0.6)"; // Default color
+    }
+  };
+  const get3dIcon = () => {
+    switch (item?.category?.name) {
+      case "Cleaning":
+        return require("../assets/images/bulb-front-gradient.png");
+      case "Construction":
+        return require("../assets/images/bulb-front-color.png");
+      case "Factory & Industry":
+        return require("../assets/images/axe-front-gradient.png");
+      case "Cooking":
+        return require("../assets/images/tea-cup-front-gradient.png");
+      case "Office":
+        return require("../assets/images/travel-front-gradient.png");
+      default:
+        return require("../assets/images/travel-front-gradient.png"); // Default color
+    }
+  };
   const getAxis = () => {
     switch (axis) {
       case "vertical":
@@ -41,6 +57,22 @@ export default function JobCard({ item, index, axis }) {
         return "bg-lime-300 text-gray-700 px-3 py-1.5 rounded-full"; // Default axis
     }
   };
+  const getUrgentColor = () => {
+    switch (item.isUrgent) {
+      case true:
+        return "bg-purple-200 text-gray-700 px-3 py-1.5 rounded-full";
+      case false:
+        return "bg-teal-200 text-gray-700 px-3 py-1.5 rounded-full";
+      default:
+        return "bg-lime-200 text-gray-700 px-3 py-1.5 rounded-full"; // Default axis
+    }
+  };
+  const formatSalary = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+  };
+
   return (
     <Animatable.View
       delay={index * 180}
@@ -54,42 +86,68 @@ export default function JobCard({ item, index, axis }) {
     >
       <View
         className="w-64 h-52 mx-4 mt-4 rounded-3xl absolute"
-        // style={{ backgroundColor: getBackgroundColor() }}
+        style={{ backgroundColor: getBackgroundColor() }}
       ></View>
       <View className="flex-row mt-5 justify-between items-center px-4">
-        <TouchableOpacity
-          onPress={() => navigation.navigate("FoodDetails", { ...item })}
-          className="bg-white px-3 py-1.5 rounded-full"
-        >
-          <Text className="text-xs">Urgent</Text>
+        <TouchableOpacity className={getUrgentColor()}>
+          <Text className="text-xs">
+            {item.isUrgent === true ? "Urgent" : "Available"}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("FoodDetails", { ...item })}
-          className="bg-white px-3 py-1.5 rounded-full"
-        >
-          <Text className="text-xs">29 Sept, 2023</Text>
+        <TouchableOpacity className="bg-white px-3 py-1.5 rounded-full">
+          <Text className="text-xs">{item?.category?.name}</Text>
         </TouchableOpacity>
       </View>
       <View className="flex-column mt-3 justify-center">
-        <Text className="text-black px-4 text-xl font-medium tracking-wider">
+        <Text
+          numberOfLines={1}
+          className="text-black px-4 text-xl font-medium tracking-wider"
+        >
           {item.title}
         </Text>
-        <View className="flex-row mx-1.5 space-y-2 justify-between">
-          <Text className="text-gray-500 pl-3">{item.text}</Text>
-          <Image source={item.image} className="h-20 w-20" />
+        <View className="flex-row mx-4 space-y-2 justify-between">
+          <View className="mt-1">
+            {item.requiredGender ? (
+              <Text
+                className="text-gray-500 text-s px-3 py-1.5 h-8 mt-3 w-16 flex justify-center items-center"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  borderRadius: 15,
+                }}
+              >
+                {item.requiredGender}
+              </Text>
+            ) : (
+              ""
+            )}
+            {item.maxAge ? (
+              <Text
+                className="text-gray-500 text-s px-3 py-1.5 h-8 mt-3 flex justify-center items-center"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  borderRadius: 15,
+                }}
+              >
+                Max. Age {item.maxAge}
+              </Text>
+            ) : (
+              ""
+            )}
+          </View>
+          <Image source={get3dIcon()} className="h-20 w-20 mt-5" />
         </View>
       </View>
-      <View className="flex-row mt-12 justify-between items-center px-4">
+      <View className="flex-row mt-11 justify-between items-center px-4">
         <View>
           <Text className="text-xs font-semibold text-gray-200">
-            Bandung, Indonesia
+            {item.address}
           </Text>
-          <Text className="text-base font-bold text-black">
-            ${item.price}/hour
+          <Text className="text-s font-bold text-black">
+            Rp. {formatSalary(item.minSalary)} - {formatSalary(item.maxSalary)}
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("JobDetails", { ...item })}
+          onPress={() => navigation.push("JobDetails", { jobId: item?.id })}
           className="bg-black px-3 py-2.5 rounded-full"
         >
           <Text className="text-white">See Details</Text>

@@ -26,11 +26,9 @@ import {
 import { useQuery } from "@apollo/client";
 
 const HomeScreen = ({ navigation }) => {
-  // const { loading, error, data } = useQuery(GET_JOBS);
   const [activeCategory, setActiveCategory] = useState("");
-  // const { data, error, loading } = useQuery(GET_CATEGORIES);
   const { data, error, loading } = useQuery(GET_JOBS_CATEGORIES);
-  console.log(data.categories, "<<<<<data home");
+  // console.log(data, "<<<<<data home");
 
   return (
     <View className="flex-1 relative">
@@ -81,7 +79,7 @@ const HomeScreen = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20 }}
         >
-          {data.categories.map((category, index) => {
+          {data?.categories.map((category, index) => {
             let isActive = category == activeCategory;
             let textClass = isActive ? " font-bold" : "";
             return (
@@ -123,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          {data.jobPostings.data.map((item, index) => (
+          {data?.jobPostings.data.map((item, index) => (
             <JobCard item={item} index={index} key={index} />
           ))}
         </ScrollView>

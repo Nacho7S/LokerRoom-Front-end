@@ -70,6 +70,81 @@ export const GET_JOBS_CATEGORIES = gql`
   }
 `;
 
+export const GET_JOB = gql`
+  query JobPosting($jobPostingId: Int!) {
+    jobPosting(jobPostingId: $jobPostingId) {
+      id
+      title
+      description
+      address
+      category {
+        id
+        name
+      }
+      minSalary
+      maxSalary
+      author {
+        name
+        telephone
+        imgUrl
+      }
+      requiredGender
+      maxAge
+      requiredEducation {
+        education
+        priority
+        id
+      }
+      status
+      isUrgent
+    }
+  }
+`;
+
+export const ADD_JOB = gql`
+  mutation Mutation($jobPosting: newJobPosting) {
+    addNewJobPosting(jobPosting: $jobPosting) {
+      message
+      access_token
+    }
+  }
+`;
+
+export const GET_USER = gql`
+  query Query($userId: Int!) {
+    user(userId: $userId) {
+      id
+      name
+      telephone
+      email
+      address
+      imgUrl
+      gender
+      dateOfBirth
+      profileDescription
+      educationLevel {
+        id
+        education
+        priority
+      }
+      receivedReviews {
+        rating
+        jobPosting {
+          title
+        }
+        employer {
+          name
+        }
+        id
+        user {
+          name
+        }
+        content
+      }
+    }
+  }
+`;
+
 // export const GET_MOVIES = gql`
 //   query movies {
 //     movies {

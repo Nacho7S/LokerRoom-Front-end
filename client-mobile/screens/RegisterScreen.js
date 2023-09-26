@@ -61,7 +61,7 @@ const RegisterScreen = ({ navigation }) => {
         registerDetails: { ...payload, dateOfBirth: date },
       },
     });
-    // navigation.navigate("Login");
+    navigation.navigate("Login");
   };
 
   const gender = ["Male", "Female"];
