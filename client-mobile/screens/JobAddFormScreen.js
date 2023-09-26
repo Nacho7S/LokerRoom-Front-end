@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  VirtualizedList,
 } from "react-native";
 
 import InputField from "../components/InputField";
@@ -23,15 +24,25 @@ import {
   BookmarkIcon,
 } from "react-native-heroicons/outline";
 import { useMutation } from "@apollo/client";
-import { ADD_JOB } from "../config/queries";
+import { ADD_JOB, GET_JOBS } from "../config/queries";
 import SelectDropdown from "react-native-select-dropdown";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useRoute } from "@react-navigation/native"
+import GoogleMaps from "../components/googleMaps";
 
 const JobAddFormScreen = ({ navigation }) => {
+  const route = useRoute();
+  const { latitude, longitude } = route.params || {};
+  console.log(latitude, longitude, "ini coyy");
+  const [accessToken, setAccessToken] = useState("");
   const [job, setJob] = useState({
     title: "",
     description: "",
     address: "",
     categoryId: 0,
+    long: 0 ,
+    lat: 0,
     minSalary: "",
     maxSalary: "",
     requiredGender: "",
@@ -39,7 +50,39 @@ const JobAddFormScreen = ({ navigation }) => {
     requiredEducation: "",
     isUrgent: "",
   });
-  const [funcCreateJob, { loading, error, data }] = useMutation(ADD_JOB);
+  // console.log(accessToken, "<<<<<<<<<< accessToken");
+  const [funcCreateJob, { loading, error, data }] = useMutation(ADD_JOB, {
+    refetchQueries: [GET_JOBS],
+    context: {
+      headers: {
+        access_token: accessToken,
+      },
+    },
+    onCompleted: () => {
+      navigation.navigate("Home")
+    }
+  });
+
+  useEffect(() => {
+    getAccessToken();
+    if (latitude && longitude) {
+      setJob((prevState) => ({
+        ...prevState,
+        lat: latitude,
+        long: longitude,
+      }));
+    }
+  }, [latitude, longitude]);
+
+  const getAccessToken = async () => {
+    try {
+      const access_token = await AsyncStorage.getItem("access_token");
+      setAccessToken(access_token);
+      // console.log(access_token, "<<<<<< access token");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onChange = (key, value) => {
     console.log(key, value);
@@ -54,10 +97,10 @@ const JobAddFormScreen = ({ navigation }) => {
     console.log(payload, "<<< payload");
     funcCreateJob({
       variables: {
-        newJobPosting: { ...payload },
+        jobPosting: payload,
       },
     });
-    // navigation.navigate("Login");
+    navigation.navigate("Dashboard");
   };
 
   // if (loading) {
@@ -67,6 +110,10 @@ const JobAddFormScreen = ({ navigation }) => {
   // if (error) {
   //   return <ErrorData />;
   // }
+
+  const gotoMaps = () => {
+    navigation.navigate("addMaps")
+  }
 
   const gender = ["Male", "Female"];
 
@@ -81,6 +128,12 @@ const JobAddFormScreen = ({ navigation }) => {
   ];
 
   const education = ["SD", "SMK", "Diploma", "S1", "S2"];
+  const region = {
+    latitude: latitude,
+    longitude: longitude,
+    latitudeDelta: 0.00502,
+    longitudeDelta: 0.0100,
+  }
 
   return (
     <View className="flex-1 relative">
@@ -91,6 +144,7 @@ const JobAddFormScreen = ({ navigation }) => {
       />
       <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
         <ScrollView
+          horizontal={false}
           showsVerticalScrollIndicator={false}
           style={{ paddingHorizontal: 25 }}
         >
@@ -142,12 +196,12 @@ const JobAddFormScreen = ({ navigation }) => {
                 style={{ marginRight: 5 }}
               />
             }
-            // keyboardType="phone-number"
+          // keyboardType="phone-number"
           />
 
           <InputField
             onChangeText={(text) => onChange("address", text)}
-            label={"Address"}
+            label={"Address Name"}
             icon={
               <MaterialIcons
                 name="alternate-email"
@@ -156,8 +210,8 @@ const JobAddFormScreen = ({ navigation }) => {
                 style={{ marginRight: 5 }}
               />
             }
-            keyboardType="email-address"
           />
+
 
           {/* <InputField
             onChangeText={(text) => onChange("categoryId", text)}
@@ -173,7 +227,7 @@ const JobAddFormScreen = ({ navigation }) => {
           /> */}
 
           <InputField
-            onChangeText={(text) => onChange("minSalary", text)}
+            onChangeText={(text) => onChange("minSalary", +text)}
             label={"Minimum Salary"}
             icon={
               <Ionicons
@@ -186,7 +240,7 @@ const JobAddFormScreen = ({ navigation }) => {
           />
 
           <InputField
-            onChangeText={(text) => onChange("maxSalary", text)}
+            onChangeText={(text) => onChange("maxSalary", +text)}
             label={"Maximum Salary"}
             icon={
               <Ionicons
@@ -212,7 +266,7 @@ const JobAddFormScreen = ({ navigation }) => {
           /> */}
 
           <InputField
-            onChangeText={(text) => onChange("maxAge", text)}
+            onChangeText={(text) => onChange("maxAge", +text)}
             label={"Maximum Age (Optional)"}
             icon={
               <Ionicons
@@ -338,7 +392,6 @@ const JobAddFormScreen = ({ navigation }) => {
               width: 200,
             }}
           />
-
           <SelectDropdown
             data={["Urgent", "Not Urgent"]}
             defaultButtonText="Choose Urgency Status"
@@ -369,6 +422,24 @@ const JobAddFormScreen = ({ navigation }) => {
             }}
           />
 
+          {/* <Text>Input address</Text>
+          <View style={{ height: 260, padding: 2 , marginBottom: 25}}>
+          <MapContainer/>
+          </View> */}
+
+          <CustomButton label={"Add your Address hitpoint Here"} onPress={gotoMaps} />
+          {latitude && longitude && (
+            <View style={{ height: 220 , marginBottom: 45}}>
+              {/* Display the map with the marker */}
+              <Text>Preview Hitpoint</Text>
+              <GoogleMaps
+                region={region}
+                markers={{
+                  coordinate: { latitude, longitude}
+                }}
+              />
+            </View>
+          )}
           <CustomButton label={"Submit"} onPress={createJob} />
         </ScrollView>
         <View className="flex-row justify-between mx-8 mt-16 items-center"></View>

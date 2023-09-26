@@ -9,9 +9,10 @@ export const ADD_USER = gql`
 `;
 
 export const LOGIN_USER = gql`
-  mutation Login($loginCredentials: loginCredentials) {
+  mutation Mutation($loginCredentials: loginCredentials) {
     login(loginCredentials: $loginCredentials) {
       access_token
+      userId
     }
   }
 `;
@@ -139,10 +140,9 @@ export const GET_JOB = gql`
 `;
 
 export const ADD_JOB = gql`
-  mutation Mutation($jobPosting: newJobPosting) {
+  mutation AddNewJobPosting($jobPosting: newJobPosting) {
     addNewJobPosting(jobPosting: $jobPosting) {
       message
-      access_token
     }
   }
 `;
@@ -160,59 +160,31 @@ export const GET_USER = gql`
       dateOfBirth
       profileDescription
       educationLevel {
-        id
         education
-        priority
+        id
       }
       receivedReviews {
         rating
-        jobPosting {
-          title
-        }
+        id
         employer {
           name
         }
-        id
+        content
+        jobPosting {
+          title
+        }
         user {
           name
         }
-        content
       }
     }
   }
 `;
 
-// export const GET_MOVIES = gql`
-//   query movies {
-//     movies {
-//       id
-//       title
-//       imgUrl
-//       Genre {
-//         name
-//       }
-//     }
-//   }
-// `;
-
-// export const GET_MOVIE_BY_ID = gql`
-//   query Movie($movieId: ID) {
-//     movie(id: $movieId) {
-//       id
-//       title
-//       synopsis
-//       imgUrl
-//       rating
-//       trailerUrl
-//       Casts {
-//         id
-//         name
-//         profilePict
-//       }
-//       author {
-//         username
-//         _id
-//       }
-//     }
-//   }
-// `;
+export const EDIT_USER = gql`
+  mutation Mutation($userDetails: userDetails) {
+    editUserDetails(userDetails: $userDetails) {
+      message
+    }
+  }
+`;
