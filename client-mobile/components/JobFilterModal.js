@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Checkbox from 'expo-checkbox';
 import { Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 import InputField from "../components/InputField";
 import SelectDropdown from "react-native-select-dropdown";
@@ -71,7 +72,7 @@ export default function JobFilterModal({
 
           <InputField
             value={modalFilters.maxAge || ''}
-            onChangeText={(text) => onChange("maxAge", +text)}
+            onChangeText={(text) => onChange("maxAge", text.trim() === '' ? +text : null)}
             keyboardType="number-pad"
             label="Max. age requirement"
             icon={
@@ -142,7 +143,7 @@ export default function JobFilterModal({
 
           <InputField
             value={modalFilters.location || ''}
-            onChangeText={(text) => onChange("location", text)}
+            onChangeText={(text) => onChange("location", text.trim() || null)}
             label="Location"
             icon={
               <MaterialIcons
@@ -153,6 +154,17 @@ export default function JobFilterModal({
               />
             }
           />
+
+          <Checkbox
+            value={!!modalFilters.isUrgent}
+            onValueChange={(value) => {
+              setModalFilters({
+                ...modalFilters,
+                isUrgent: value
+              })
+            }}
+          />
+          <Text>Is urgently required?</Text>
 
           <Pressable
             style={[styles.button, styles.buttonClose]}
