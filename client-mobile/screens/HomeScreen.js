@@ -18,14 +18,17 @@ import {
 import * as Animatable from "react-native-animatable";
 import { useState } from "react";
 import JobCard from "../components/JobCard";
+import JobFilterModal from "../components/JobFilterModal";
 import {
-  GET_CATEGORIES,
+  GET_CATEGORIES_AND_EDUCATION_LEVELS,
   GET_JOBS,
   // GET_JOBS_CATEGORIES,
 } from "../config/queries";
 import { useQuery } from "@apollo/client";
 
 const HomeScreen = ({ navigation }) => {
+
+  const [ showModal, setShowModal ] = useState(false);
   const [ filter, setFilter ] = useState({
     gender: null, 
     maxAge: null, 
@@ -35,11 +38,12 @@ const HomeScreen = ({ navigation }) => {
     isUrgent: null, 
     pageNumber: 1
   });
-  const { data: fetchCategories } = useQuery(GET_CATEGORIES);
+
+  const { data: fetch } = useQuery(GET_CATEGORIES_AND_EDUCATION_LEVELS);
   const { data, error, loading } = useQuery(GET_JOBS, {
     variables: filter
   });
-  const { categories } = fetchCategories || {};
+  const { categories, educationLevels } = fetch || {};
   const { jobPostings: { data: jobPostings, numPages } = {} } = data || {};
   // console.log(categories, "<<< Fetching categories");
   // console.log(jobPostings, "<<< FETCHING JOBS");
@@ -90,7 +94,14 @@ const HomeScreen = ({ navigation }) => {
             />
           </View>
           <View className="bg-white rounded-2xl px-4 py-2">
-            <AdjustmentsHorizontalIcon size="29" stroke={40} color="black" />
+            <AdjustmentsHorizontalIcon 
+              size="29" 
+              stroke={40} 
+              color="black" 
+              onPressIn={() => {
+                setShowModal(true);
+              }}
+            />
           </View>
         </View>
 
@@ -151,7 +162,19 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </ScrollView>
         <View className="flex-row justify-between mx-8 mt-16 items-center"></View>
+
+        <JobFilterModal 
+          state={[filter, setFilter]}
+          categories={categories}
+          educationLevels={educationLevels}
+          show={showModal}
+          handleClose={() => {
+            setShowModal(false);
+          }}
+        />
+
       </SafeAreaView>
+      
     </View>
   );
 };
