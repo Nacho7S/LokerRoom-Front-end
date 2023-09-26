@@ -5,6 +5,7 @@ import JobDetailsScreen from "../screens/JobDetailsScreen";
 import JobAddFormScreen from "../screens/JobAddFormScreen";
 import UserEditDetailsScreen from "../screens/UserEditDetailsScreen";
 import JobEditFormScreen from "../screens/JobEditFormScreen";
+import MapContainer from "../containers/mapContainer";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ const MainStack = () => {
         options={{ headerShown: false }}
         component={UserEditDetailsScreen}
       />
+      <Stack.Screen name="addMaps" options={{ headerShown: false }} component={MapContainer} />
     </Stack.Navigator>
   );
 };

@@ -94,7 +94,7 @@ export default function JobDetailsScreen({ route, navigation }) {
       <ScrollView style={{ marginTop: 3 }}>
         <View className="flex justify-center items-center">
           <Image className="h-24 w-24" source={get3dIcon()} />
-          <Text className="text-2xl font-bold text-gray-800"> {job.title}</Text>
+          <Text className="text-2xl font-bold text-gray-800"> {job?.title}</Text>
         </View>
         <View className="flex-row justify-between items-center mt-1 mx-8 h-20 overflow-hidden">
           <Animatable.View
@@ -120,7 +120,7 @@ export default function JobDetailsScreen({ route, navigation }) {
               className="h-6 w-6"
             />
             <Text className="font-semibold">
-              {job.requiredGender ? job.requiredGender : "All Gender"}
+              {job?.requiredGender ? job?.requiredGender : "All Gender"}
             </Text>
           </Animatable.View>
           <Animatable.View
@@ -132,7 +132,7 @@ export default function JobDetailsScreen({ route, navigation }) {
               source={require("../assets/icons/clock.png")}
               className="h-6 w-6"
             />
-            <Text className="font-semibold">Max Age {job.maxAge}</Text>
+            <Text className="font-semibold">Max Age {job?.maxAge}</Text>
           </Animatable.View>
           <Animatable.View
             delay={480}
@@ -200,7 +200,7 @@ export default function JobDetailsScreen({ route, navigation }) {
             animation="slideInLeft"
             className="text-2xl font-bold text-white"
           >
-            Rp. {formatSalary(job.minSalary)} - {formatSalary(job.maxSalary)}
+            Rp. {formatSalary(job?.minSalary)} - {formatSalary(job?.maxSalary)}
           </Animatable.Text>
           <Animatable.View delay={100} animation="slideInRight">
             <TouchableOpacity className="bg-lime-300 py-3 px-6 rounded-2xl">

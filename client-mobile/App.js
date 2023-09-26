@@ -9,12 +9,14 @@ import AuthStack from "./navigators/AuthStack";
 import RootNavigator from "./navigators/RootNavigator";
 import { ApolloProvider } from "@apollo/client";
 import client from "./config/apollo";
+import MapContainer from "./containers/mapContainer";
 
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
         <RootNavigator />
+        {/* <MapContainer/> */}
       </NavigationContainer>
     </ApolloProvider>
   );
