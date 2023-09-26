@@ -14,21 +14,47 @@ import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from "react-native-heroicons/solid";
-import { categories, jobItems } from "../constants";
+// import { categories, jobItems } from "../constants";
 import * as Animatable from "react-native-animatable";
 import { useState } from "react";
 import JobCard from "../components/JobCard";
+import JobFilterModal from "../components/JobFilterModal";
 import {
-  GET_CATEGORIES,
+  GET_CATEGORIES_AND_EDUCATION_LEVELS,
   GET_JOBS,
-  GET_JOBS_CATEGORIES,
+  // GET_JOBS_CATEGORIES,
 } from "../config/queries";
 import { useQuery } from "@apollo/client";
 
 const HomeScreen = ({ navigation }) => {
-  const [activeCategory, setActiveCategory] = useState("");
-  const { data, error, loading } = useQuery(GET_JOBS_CATEGORIES);
-  // console.log(data, "<<<<<data home");
+
+  const [ showModal, setShowModal ] = useState(false);
+  const [ filter, setFilter ] = useState({
+    gender: null, 
+    maxAge: null, 
+    categoryId: null, 
+    educationId: null,
+    location: null, 
+    isUrgent: null, 
+    pageNumber: 1
+  });
+
+  const { data: fetch } = useQuery(GET_CATEGORIES_AND_EDUCATION_LEVELS);
+  const { data, error, loading } = useQuery(GET_JOBS, {
+    variables: filter
+  });
+  const { categories, educationLevels } = fetch || {};
+  const { jobPostings: { data: jobPostings, numPages } = {} } = data || {};
+  // console.log(categories, "<<< Fetching categories");
+  // console.log(jobPostings, "<<< FETCHING JOBS");
+
+  if (loading) {
+    return null;
+  }
+  if (error) {
+    console.log(error);
+    return null;
+  }
 
   return (
     <View className="flex-1 relative">
@@ -68,7 +94,14 @@ const HomeScreen = ({ navigation }) => {
             />
           </View>
           <View className="bg-white rounded-2xl px-4 py-2">
-            <AdjustmentsHorizontalIcon size="29" stroke={40} color="black" />
+            <AdjustmentsHorizontalIcon 
+              size="29" 
+              stroke={40} 
+              color="black" 
+              onPressIn={() => {
+                setShowModal(true);
+              }}
+            />
           </View>
         </View>
 
@@ -79,8 +112,8 @@ const HomeScreen = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20 }}
         >
-          {data?.categories.map((category, index) => {
-            let isActive = category == activeCategory;
+          {categories?.map((category, index) => {
+            let isActive = category.id === filter.categoryId;
             let textClass = isActive ? " font-bold" : "";
             return (
               <Animatable.View
@@ -90,7 +123,10 @@ const HomeScreen = ({ navigation }) => {
               >
                 <TouchableOpacity
                   className="mr-9"
-                  onPress={() => setActiveCategory(category)}
+                  onPress={() => setFilter({
+                    ...filter,
+                    categoryId: category.id
+                  })}
                 >
                   <Text
                     className={
@@ -121,12 +157,24 @@ const HomeScreen = ({ navigation }) => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          {data?.jobPostings.data.map((item, index) => (
+          {jobPostings?.map((item, index) => (
             <JobCard item={item} index={index} key={index} />
           ))}
         </ScrollView>
         <View className="flex-row justify-between mx-8 mt-16 items-center"></View>
+
+        <JobFilterModal 
+          state={[filter, setFilter]}
+          categories={categories}
+          educationLevels={educationLevels}
+          show={showModal}
+          handleClose={() => {
+            setShowModal(false);
+          }}
+        />
+
       </SafeAreaView>
+      
     </View>
   );
 };

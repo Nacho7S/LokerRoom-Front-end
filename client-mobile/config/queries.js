@@ -18,58 +18,95 @@ export const LOGIN_USER = gql`
 `;
 
 export const GET_JOBS = gql`
-  query JobPostings {
-    jobPostings {
-      id
-      title
-      description
-      address
-      category {
-        name
-      }
-      minSalary
-      maxSalary
-      requiredGender
-      maxAge
-      status
-      isUrgent
-    }
-  }
-`;
-
-export const GET_CATEGORIES = gql`
-  query Categories {
-    categories {
-      name
-      id
-    }
-  }
-`;
-
-export const GET_JOBS_CATEGORIES = gql`
-  query Query {
-    jobPostings {
+  query JobPostings(
+    $gender: Gender, 
+    $maxAge: Int, 
+    $categoryId: Int, 
+    $educationId: Int, 
+    $location: String, 
+    $isUrgent: Boolean, 
+    $pageNumber: Int
+  ) {
+    jobPostings(
+      gender: $gender, 
+      maxAge: $maxAge, 
+      categoryId: $categoryId, 
+      educationId: $educationId, 
+      location: $location, 
+      isUrgent: $isUrgent, 
+      pageNumber: $pageNumber
+    ) {
+      numPages
       data {
+        id
+        title
+        description
         address
         category {
           name
         }
-        isUrgent
-        maxAge
         minSalary
         maxSalary
         requiredGender
+        maxAge
         status
-        title
-        id
+        isUrgent
       }
-    }
-    categories {
-      name
-      id
     }
   }
 `;
+
+export const GET_CATEGORIES_AND_EDUCATION_LEVELS = gql`
+  query Query {
+    categories {
+      id
+      name
+    }
+    educationLevels {
+      id
+      education
+    }
+  }
+`;
+
+// export const GET_JOBS_CATEGORIES = gql`
+//   query Query(
+//     $gender: Gender, 
+//     $maxAge: Int, 
+//     $categoryId: Int, 
+//     $educationId: Int, 
+//     $location: String, 
+//     $isUrgent: Boolean, 
+//     $pageNumber: Int
+//   ) {
+//     categories {
+//       id
+//       name
+//     }
+//     jobPostings(
+//       gender: $gender, 
+//       maxAge: $maxAge, 
+//       categoryId: $categoryId, 
+//       educationId: $educationId, 
+//       location: $location, 
+//       isUrgent: $isUrgent, 
+//       pageNumber: $pageNumber
+//     ) {
+//       id
+//       title
+//       address
+//       category {
+//         name
+//       }
+//       isUrgent
+//       maxAge
+//       minSalary
+//       maxSalary
+//       requiredGender
+//       status      
+//     }
+//   }
+// `;
 
 export const GET_JOB = gql`
   query JobPosting($jobPostingId: Int!) {
