@@ -160,7 +160,7 @@ export default function JobDetailsScreen({ route, navigation }) {
             animation="slideInUp"
             className="text-white tracking-wider"
           >
-            {job.description}
+            {job?.description}
           </Animatable.Text>
         </View>
         <View className="mx-8 space-y-3 h-48">
@@ -175,7 +175,7 @@ export default function JobDetailsScreen({ route, navigation }) {
             animation="slideInUp"
             className="text-white tracking-wider"
           >
-            {job.address}
+            {job?.address}
           </Animatable.Text>
         </View>
         <View className="mx-8 mb-3 space-y-3">
@@ -190,7 +190,7 @@ export default function JobDetailsScreen({ route, navigation }) {
             animation="slideInUp"
             className="text-white tracking-wider"
           >
-            {job.author.name} - {job.author.telephone}
+            {job?.author?.name} - {job?.author?.telephone}
           </Animatable.Text>
         </View>
         {/* apply button */}

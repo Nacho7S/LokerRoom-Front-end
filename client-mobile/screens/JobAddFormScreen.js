@@ -80,7 +80,7 @@ const JobAddFormScreen = ({ navigation }) => {
         jobPosting: payload,
       },
     });
-    // navigation.navigate("Login");
+    navigation.navigate("Dashboard");
   };
 
   // if (loading) {

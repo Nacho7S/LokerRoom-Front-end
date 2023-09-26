@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -19,30 +19,45 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import CustomButton from "../components/CustomButton";
-import { ADD_USER } from "../config/queries";
+import { ADD_USER, EDIT_USER } from "../config/queries";
 import { useMutation } from "@apollo/client";
+import { useNavigation } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const RegisterScreen = ({ navigation }) => {
-  const [date, setDate] = useState(new Date());
-  const [show, setShow] = useState(false);
+const UserEditDetailScreen = (props) => {
+  const [accessToken, setAccessToken] = useState("");
+  const navigation = useNavigation();
 
-  const onDateChange = (event, selectedDate) => {
-    setShow(false);
-    setDate(selectedDate);
-  };
+  let item = props.route.params;
 
   const [user, setUser] = useState({
-    name: "",
-    telephone: "",
-    password: "",
-    email: "",
-    address: "",
-    gender: "",
-    dateOfBirth: "",
-    educationId: 1,
+    address: item?.address || "",
+    educationId: item?.educationId || 1,
+    profileDescription: item?.profileDescription || "",
+    imgUrl: item?.imgUrl || "",
   });
-  const [funcCreateUser, { loading, error, data }] = useMutation(ADD_USER);
+  const [funcEditUser, { loading, error, data }] = useMutation(EDIT_USER, {
+    context: {
+      headers: {
+        access_token: accessToken,
+      },
+    },
+  });
+
+  useEffect(() => {
+    getAccessToken();
+  }, []);
+
+  const getAccessToken = async () => {
+    try {
+      const access_token = await AsyncStorage.getItem("access_token");
+      setAccessToken(access_token);
+      console.log(access_token, "<<<<<< access token");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onChange = (key, value) => {
     console.log(key, value);
@@ -52,19 +67,18 @@ const RegisterScreen = ({ navigation }) => {
     }));
   };
 
-  const registerUser = () => {
+  const editUser = () => {
     const payload = user;
-    // console.log(payload, "<<< payload");
-    console.log({ ...payload, dateOfBirth: date }, "ini coyyy");
-    funcCreateUser({
+    console.log(payload, "<<< payload");
+    funcEditUser({
       variables: {
-        registerDetails: { ...payload, dateOfBirth: date },
+        userDetails: payload,
       },
     });
-    navigation.navigate("Login");
+    // navigation.navigate("Login");
   };
 
-  const gender = ["Male", "Female"];
+  const education = ["SD", "SMK", "Diploma", "S1", "S2"];
 
   // if (loading) {
   //   return <Preloader />;
@@ -99,96 +113,8 @@ const RegisterScreen = ({ navigation }) => {
           </Text>
 
           <InputField
-            onChangeText={(text) => onChange("name", text)}
-            value={user.name}
-            label={"Full Name"}
-            icon={
-              <Ionicons
-                name="person-outline"
-                size={20}
-                color="#666"
-                style={{ marginRight: 5 }}
-              />
-            }
-          />
-
-          <InputField
-            onChangeText={(text) => onChange("telephone", text)}
-            label={"Phone Number"}
-            icon={
-              <Feather
-                name="phone"
-                size={20}
-                color="#666"
-                style={{ marginRight: 5 }}
-              />
-            }
-            // keyboardType="phone-number"
-          />
-
-          <InputField
-            onChangeText={(text) => onChange("email", text)}
-            label={"Email"}
-            icon={
-              <MaterialIcons
-                name="alternate-email"
-                size={20}
-                color="#666"
-                style={{ marginRight: 5 }}
-              />
-            }
-            keyboardType="email-address"
-          />
-
-          <InputField
-            onChangeText={(text) => onChange("password", text)}
-            label={"Password"}
-            icon={
-              <Ionicons
-                name="ios-lock-closed-outline"
-                size={20}
-                color="#666"
-                style={{ marginRight: 5 }}
-              />
-            }
-            inputType="password"
-          />
-
-          {/* <InputField
-            onChangeText={(text) => onChange("dateOfBirth", text)}
-            label={"Date of birth"}
-            icon={
-              
-            }
-          /> */}
-
-          <View
-            style={{
-              flexDirection: "row",
-              borderBottomColor: "#ccc",
-              borderBottomWidth: 1,
-              paddingBottom: 8,
-              marginBottom: 25,
-            }}
-          >
-            <Ionicons
-              name="calendar-outline"
-              size={20}
-              color="#666"
-              style={{ marginRight: 5 }}
-            />
-            <TextInput
-              placeholder={"Date of birth"}
-              style={{ flex: 1, paddingVertical: 0 }}
-              value={date.toLocaleDateString()} // Bind value to the input field
-              onPressIn={() => {
-                setShow(true);
-              }}
-            />
-          </View>
-
-          <InputField
             onChangeText={(text) => onChange("address", text)}
+            value={user.address}
             label={"Address"}
             icon={
               <Ionicons
@@ -200,14 +126,44 @@ const RegisterScreen = ({ navigation }) => {
             }
           />
 
+          <InputField
+            onChangeText={(text) => onChange("profileDescription", text)}
+            value={user.profileDescription}
+            label={"Profile Description"}
+            icon={
+              <Ionicons
+                name="person-outline"
+                size={20}
+                color="#666"
+                style={{ marginRight: 5 }}
+              />
+            }
+          />
+
+          <InputField
+            onChangeText={(text) => onChange("imgUrl", text)}
+            value={user.imgUrl}
+            label={"Image Url"}
+            icon={
+              <Ionicons
+                name="person-outline"
+                size={20}
+                color="#666"
+                style={{ marginRight: 5 }}
+              />
+            }
+          />
+
           <SelectDropdown
-            data={gender}
-            defaultButtonText="Choose a Gender"
+            data={education}
+            defaultButtonText={
+              education[user.educationId] || "Choose Education"
+            }
             onSelect={(selectedItem, index) => {
               console.log(selectedItem, index);
-              setUser({
-                ...user,
-                gender: selectedItem,
+              setJob({
+                ...job,
+                requiredEducation: index + 1,
               });
             }}
             buttonTextAfterSelection={(selectedItem, index) => {
@@ -283,20 +239,12 @@ const RegisterScreen = ({ navigation }) => {
           }}
         /> */}
 
-          <CustomButton label={"Register"} onPress={registerUser} />
+          <CustomButton label={"Edit Profile"} onPress={editUser} />
         </ScrollView>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode="date"
-            onChange={onDateChange}
-          />
-        )}
         <View className="flex-row justify-between mx-8 mt-16 items-center"></View>
       </SafeAreaView>
     </View>
   );
 };
 
-export default RegisterScreen;
+export default UserEditDetailScreen;
