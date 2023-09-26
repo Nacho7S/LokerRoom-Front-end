@@ -5,7 +5,7 @@ import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
 
 export default function JobCard({ item, index, axis }) {
-  console.log(item, "<<<<<<<<<item");
+  // console.log(item, "<<<<<<<<<item");
   const navigation = useNavigation();
   const getBackgroundColor = () => {
     switch (item?.category?.name) {
@@ -48,7 +48,7 @@ export default function JobCard({ item, index, axis }) {
     }
   };
   const getStatusColor = () => {
-    switch (item.status) {
+    switch (item?.status) {
       case "Accepted":
         return "bg-lime-300 text-gray-700 px-3 py-1.5 rounded-full";
       case "Processed":
@@ -58,7 +58,7 @@ export default function JobCard({ item, index, axis }) {
     }
   };
   const getUrgentColor = () => {
-    switch (item.isUrgent) {
+    switch (item?.isUrgent) {
       case true:
         return "bg-purple-200 text-gray-700 px-3 py-1.5 rounded-full";
       case false:
@@ -91,7 +91,7 @@ export default function JobCard({ item, index, axis }) {
       <View className="flex-row mt-5 justify-between items-center px-4">
         <TouchableOpacity className={getUrgentColor()}>
           <Text className="text-xs">
-            {item.isUrgent === true ? "Urgent" : "Available"}
+            {item?.isUrgent === true ? "Urgent" : "Available"}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity className="bg-white px-3 py-1.5 rounded-full">
@@ -103,11 +103,11 @@ export default function JobCard({ item, index, axis }) {
           numberOfLines={1}
           className="text-black px-4 text-xl font-medium tracking-wider"
         >
-          {item.title}
+          {item?.title}
         </Text>
         <View className="flex-row mx-4 space-y-2 justify-between">
           <View className="mt-1">
-            {item.requiredGender ? (
+            {item?.requiredGender ? (
               <Text
                 className="text-gray-500 text-s px-3 py-1.5 h-8 mt-3 w-16 flex justify-center items-center"
                 style={{
@@ -115,7 +115,7 @@ export default function JobCard({ item, index, axis }) {
                   borderRadius: 15,
                 }}
               >
-                {item.requiredGender}
+                {item?.requiredGender}
               </Text>
             ) : (
               ""
@@ -128,7 +128,7 @@ export default function JobCard({ item, index, axis }) {
                   borderRadius: 15,
                 }}
               >
-                Max. Age {item.maxAge}
+                Max. Age {item?.maxAge}
               </Text>
             ) : (
               ""
@@ -140,10 +140,11 @@ export default function JobCard({ item, index, axis }) {
       <View className="flex-row mt-11 justify-between items-center px-4">
         <View>
           <Text className="text-xs font-semibold text-gray-200">
-            {item.address}
+            {item?.address}
           </Text>
           <Text className="text-s font-bold text-black">
-            Rp. {formatSalary(item.minSalary)} - {formatSalary(item.maxSalary)}
+            Rp. {formatSalary(item?.minSalary)} -{" "}
+            {formatSalary(item?.maxSalary)}
           </Text>
         </View>
         <TouchableOpacity
@@ -155,7 +156,7 @@ export default function JobCard({ item, index, axis }) {
       </View>
       {axis === "horizontal" ? (
         <View className="mt-6 mx-10 flex justify-center items-center">
-          <Text className={getStatusColor()}>{item.status}</Text>
+          <Text className={getStatusColor()}>{item?.status}</Text>
         </View>
       ) : (
         <View></View>

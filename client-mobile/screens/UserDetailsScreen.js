@@ -2,21 +2,48 @@ import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { PencilSquareIcon, Bars3Icon } from "react-native-heroicons/solid";
 import { GET_USER } from "../config/queries";
+import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserDetailsScreen = ({ navigation }) => {
   // const { userId } = route.params; //???
+  // const { userId } = req.params;
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    name: "",
+    telephone: "",
+    password: "",
+    email: "",
+    address: "",
+    gender: "",
+    dateOfBirth: "",
+    educationId: 1,
+  });
+  const [userId, setUserId] = useState("");
+
   const { data, loading, error } = useQuery(GET_USER, {
     variables: {
-      userId: userId,
+      userId: +userId,
     },
   });
 
-  // console.log(data, "<<<<<<<<<<data");
   useEffect(() => {
+    getUserId();
     setUser(data?.user || {});
-  }, [data]);
+  }, []);
+
+  console.log(data, "<<<<<<<<<<data di user detail   ");
+
+  const getUserId = async () => {
+    try {
+      const IdUser = await AsyncStorage.getItem("userId");
+      setUserId(IdUser);
+      console.log(IdUser, "<<<<<<<<<< IdUser");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <View className="flex-1 relative">
@@ -29,7 +56,9 @@ const UserDetailsScreen = ({ navigation }) => {
         <View className="flex-row justify-between items-center">
           <View className="flex-row justify-start items-center gap-4">
             <Text className="text-3xl font-bold">Profile</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("UserEdit")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("UserEdit", { ...user })}
+            >
               <PencilSquareIcon size="27" stroke={50} color="black" />
             </TouchableOpacity>
           </View>
@@ -58,10 +87,10 @@ const UserDetailsScreen = ({ navigation }) => {
             />
           </View>
           <View className="flex justify-between gap-1">
-            <Text className="text-xl font-bold">John Doe</Text>
-            <Text className="text-md">087720008639</Text>
-            <Text className="text-md">johndoe@gmail.com</Text>
-            <Text className="text-md">JL. Dahlia No.12/D</Text>
+            <Text className="text-xl font-bold">{user?.name}</Text>
+            <Text className="text-md">{user?.telephone}</Text>
+            <Text className="text-md">{user?.email}</Text>
+            <Text className="text-md">{user?.address}</Text>
           </View>
         </View>
         <View
@@ -73,26 +102,15 @@ const UserDetailsScreen = ({ navigation }) => {
             borderWidth: 0.8,
           }}
         >
-          <Text className="text-md font-bold">Gender: Male</Text>
+          <Text className="text-md font-bold">Gender: {user?.gender}</Text>
           <Text className="text-md font-bold">
-            Birth Date: 08 November 1999
+            Birth Date: {user?.dateOfBirth}
+          </Text>
+          <Text className="text-md font-bold">
+            Education: {user?.educationLevel?.education}
           </Text>
           <Text className="text-md font-bold">Profile Description:</Text>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </Text>
-        </View>
-        <View
-          className="flex gap-1 mt-5 rounded-2xl ml-0.5"
-          style={{
-            backgroundColor: "rgba(255,255,255,0.5)",
-            padding: 20,
-            borderColor: "white",
-            borderWidth: 0.8,
-          }}
-        >
-          <Text className="text-xl font-bold">Education</Text>
+          <Text>{user?.profileDescription}</Text>
         </View>
         <View
           className="flex gap-1 mt-5 rounded-2xl ml-0.5"
@@ -104,6 +122,7 @@ const UserDetailsScreen = ({ navigation }) => {
           }}
         >
           <Text className="text-xl font-bold">Reviews</Text>
+          <Text>{user?.receivedReviews}</Text>
         </View>
       </ScrollView>
     </View>

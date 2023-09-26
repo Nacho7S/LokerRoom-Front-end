@@ -27,6 +27,7 @@ import { useMutation } from "@apollo/client";
 import { ADD_JOB, GET_JOBS } from "../config/queries";
 import SelectDropdown from "react-native-select-dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { useRoute } from "@react-navigation/native"
 import GoogleMaps from "../components/googleMaps";
 
@@ -99,7 +100,7 @@ const JobAddFormScreen = ({ navigation }) => {
         jobPosting: payload,
       },
     });
-    // navigation.navigate("Login");
+    navigation.navigate("Dashboard");
   };
 
   // if (loading) {
