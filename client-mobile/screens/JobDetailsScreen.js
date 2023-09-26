@@ -24,7 +24,7 @@ export default function JobDetailsScreen({ route, navigation }) {
     },
   });
 
-  console.log(job, "<<<<<<<<<<job");
+  // console.log(job, "<<<<<<<<<<job");
 
   useEffect(() => {
     setJob(data?.jobPosting || {});

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -25,8 +25,10 @@ import {
 import { useMutation } from "@apollo/client";
 import { ADD_JOB } from "../config/queries";
 import SelectDropdown from "react-native-select-dropdown";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const JobAddFormScreen = ({ navigation }) => {
+  const [accessToken, setAccessToken] = useState("");
   const [job, setJob] = useState({
     title: "",
     description: "",
@@ -39,7 +41,28 @@ const JobAddFormScreen = ({ navigation }) => {
     requiredEducation: "",
     isUrgent: "",
   });
-  const [funcCreateJob, { loading, error, data }] = useMutation(ADD_JOB);
+  console.log(accessToken, "<<<<<<<<<< accessToken");
+  const [funcCreateJob, { loading, error, data }] = useMutation(ADD_JOB, {
+    context: {
+      headers: {
+        access_token: accessToken,
+      },
+    },
+  });
+
+  useEffect(() => {
+    getAccessToken();
+  }, []);
+
+  const getAccessToken = async () => {
+    try {
+      const access_token = await AsyncStorage.getItem("access_token");
+      setAccessToken(access_token);
+      console.log(access_token, "<<<<<< access token");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onChange = (key, value) => {
     console.log(key, value);
@@ -54,7 +77,7 @@ const JobAddFormScreen = ({ navigation }) => {
     console.log(payload, "<<< payload");
     funcCreateJob({
       variables: {
-        newJobPosting: { ...payload },
+        jobPosting: payload,
       },
     });
     // navigation.navigate("Login");
@@ -156,7 +179,6 @@ const JobAddFormScreen = ({ navigation }) => {
                 style={{ marginRight: 5 }}
               />
             }
-            keyboardType="email-address"
           />
 
           {/* <InputField
@@ -173,7 +195,7 @@ const JobAddFormScreen = ({ navigation }) => {
           /> */}
 
           <InputField
-            onChangeText={(text) => onChange("minSalary", text)}
+            onChangeText={(text) => onChange("minSalary", +text)}
             label={"Minimum Salary"}
             icon={
               <Ionicons
@@ -186,7 +208,7 @@ const JobAddFormScreen = ({ navigation }) => {
           />
 
           <InputField
-            onChangeText={(text) => onChange("maxSalary", text)}
+            onChangeText={(text) => onChange("maxSalary", +text)}
             label={"Maximum Salary"}
             icon={
               <Ionicons
@@ -212,7 +234,7 @@ const JobAddFormScreen = ({ navigation }) => {
           /> */}
 
           <InputField
-            onChangeText={(text) => onChange("maxAge", text)}
+            onChangeText={(text) => onChange("maxAge", +text)}
             label={"Maximum Age (Optional)"}
             icon={
               <Ionicons
