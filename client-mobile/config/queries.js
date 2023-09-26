@@ -113,6 +113,8 @@ export const GET_JOB = gql`
     jobPosting(jobPostingId: $jobPostingId) {
       id
       title
+      long
+      lat
       description
       address
       category {

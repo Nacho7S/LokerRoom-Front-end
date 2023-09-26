@@ -17,8 +17,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "../config/queries";
+import { useAuth } from "../context/useAuth";
+
 
 const CustomDrawer = (props) => {
+  const {logout} = useAuth()
   const navigation = useNavigation();
 
   const [user, setUser] = useState({});
@@ -47,9 +50,8 @@ const CustomDrawer = (props) => {
     }
   };
 
-  const handelLogout = async () => {
-    await AsyncStorage.removeItem("access_token");
-    // navigation.navigate("Login");
+  const handelLogout = () => {
+    logout()
   };
 
   return (

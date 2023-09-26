@@ -10,13 +10,16 @@ import RootNavigator from "./navigators/RootNavigator";
 import { ApolloProvider } from "@apollo/client";
 import client from "./config/apollo";
 import MapContainer from "./containers/mapContainer";
+import { AuthProvider } from "./context/useAuth";
 
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
+        <AuthProvider>
         <RootNavigator />
         {/* <MapContainer/> */}
+        </AuthProvider>
       </NavigationContainer>
     </ApolloProvider>
   );
