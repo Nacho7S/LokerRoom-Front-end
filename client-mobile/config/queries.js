@@ -102,10 +102,9 @@ export const GET_JOB = gql`
 `;
 
 export const ADD_JOB = gql`
-  mutation Mutation($jobPosting: newJobPosting) {
+  mutation AddNewJobPosting($jobPosting: newJobPosting) {
     addNewJobPosting(jobPosting: $jobPosting) {
       message
-      access_token
     }
   }
 `;

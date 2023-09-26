@@ -42,10 +42,7 @@ const LoginScreen = ({ navigation }) => {
         },
       });
       console.log(data?.login?.access_token, "<<<<<<<data");
-      await AsyncStorage.setItem(
-        "access_token",
-        JSON.stringify(data?.login?.access_token)
-      );
+      await AsyncStorage.setItem("access_token", data?.login?.access_token);
     } catch (error) {
       console.log(error);
     }
