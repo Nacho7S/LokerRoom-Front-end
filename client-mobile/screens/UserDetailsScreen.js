@@ -5,46 +5,11 @@ import { GET_USER } from "../config/queries";
 import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../context/useAuth";
+
 
 const UserDetailsScreen = ({ navigation }) => {
-  // const { userId } = route.params; //???
-  // const { userId } = req.params;
-
-  const [user, setUser] = useState({
-    name: "",
-    telephone: "",
-    password: "",
-    email: "",
-    address: "",
-    gender: "",
-    dateOfBirth: "",
-    educationId: 1,
-  });
-  const [userId, setUserId] = useState("");
-
-  const { data, loading, error } = useQuery(GET_USER, {
-    variables: {
-      userId: +userId,
-    },
-  });
-
-  useEffect(() => {
-    getUserId();
-    setUser(data?.user || {});
-  }, []);
-
-  console.log(data, "<<<<<<<<<<data di user detail   ");
-
-  const getUserId = async () => {
-    try {
-      const IdUser = await AsyncStorage.getItem("userId");
-      setUserId(IdUser);
-      console.log(IdUser, "<<<<<<<<<< IdUser");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  const {user} = useAuth()
   return (
     <View className="flex-1 relative">
       <Image

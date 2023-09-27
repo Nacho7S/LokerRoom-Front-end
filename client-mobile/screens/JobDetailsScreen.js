@@ -12,12 +12,17 @@ import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import { useQuery } from "@apollo/client";
 import { GET_JOB } from "../config/queries";
+import GoogleMaps from "../components/googleMaps";
 
 export default function JobDetailsScreen({ route, navigation }) {
   // let item = props.route.params;
   // const navigation = useNavigation();
   const { jobId } = route.params;
   const [job, setJob] = useState({});
+  const [coordinate, setCoordinate] = useState({
+    lat: '',
+    long: ''
+  })
   const { data, loading, error } = useQuery(GET_JOB, {
     variables: {
       jobPostingId: jobId,
@@ -28,8 +33,14 @@ export default function JobDetailsScreen({ route, navigation }) {
 
   useEffect(() => {
     setJob(data?.jobPosting || {});
+    setCoordinate((prevState) => ({
+      ...prevState,
+      lat: data?.jobPosting?.lat,
+      long: data?.jobPosting?.long
+    }))
   }, [data]);
-
+  console.log(coordinate);
+  
   // if (loading) {
   //   return <Preloader />;
   // }
@@ -59,6 +70,18 @@ export default function JobDetailsScreen({ route, navigation }) {
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
       : Math.sign(num) * Math.abs(num);
   };
+  
+  const RegionMaps = {
+    latitude: coordinate?.lat,
+    longitude: coordinate?.long,
+    latitudeDelta: 0.00502,
+    longitudeDelta: 0.0100,
+  }
+  // console.log(job?.lat, job?.long);
+  const markerCoordinate = {
+    coordinate: { latitude: coordinate?.lat, longitude: coordinate?.long },
+    title: `jobs location`,
+  }
   return (
     <View className="flex-1 bg-gray-200">
       <Image
@@ -94,7 +117,10 @@ export default function JobDetailsScreen({ route, navigation }) {
       <ScrollView style={{ marginTop: 3 }}>
         <View className="flex justify-center items-center">
           <Image className="h-24 w-24" source={get3dIcon()} />
-          <Text className="text-2xl font-bold text-gray-800"> {job?.title}</Text>
+          <Text className="text-2xl font-bold text-gray-800">
+            {" "}
+            {job?.title}
+          </Text>
         </View>
         <View className="flex-row justify-between items-center mt-1 mx-8 h-20 overflow-hidden">
           <Animatable.View
@@ -163,7 +189,7 @@ export default function JobDetailsScreen({ route, navigation }) {
             {job?.description}
           </Animatable.Text>
         </View>
-        <View className="mx-8 space-y-3 h-48">
+        <View className="mx-8 space-y-3 h-10">
           <Animatable.Text
             animation="slideInUp"
             className="text-2xl font-bold text-white"
@@ -178,6 +204,15 @@ export default function JobDetailsScreen({ route, navigation }) {
             {job?.address}
           </Animatable.Text>
         </View>
+          {data ? (
+        <View style={{ height: 279, marginBottom: 10, padding: 25, paddingTop: 10, borderRadius: 25 }}>  
+            <GoogleMaps
+            region={RegionMaps}
+            markers={markerCoordinate}
+            />
+                </View>
+        ):
+        (<></>)}
         <View className="mx-8 mb-3 space-y-3">
           <Animatable.Text
             animation="slideInUp"
@@ -194,7 +229,7 @@ export default function JobDetailsScreen({ route, navigation }) {
           </Animatable.Text>
         </View>
         {/* apply button */}
-        <View className="mx-8 mt-2 mb-10 flex-row justify-between items-center">
+        <View className="mx-8 mt-2 mb-5 flex-row justify-between items-center">
           <Animatable.Text
             delay={100}
             animation="slideInLeft"
