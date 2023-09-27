@@ -124,6 +124,7 @@ export const GET_JOB = gql`
       minSalary
       maxSalary
       author {
+        id
         name
         telephone
         imgUrl

@@ -18,8 +18,10 @@ import { useNavigate } from "../context/useNavigate";
 
 export default function JobDetailsScreen({ route, navigation }) {
   // let item = props.route.params;
+
+  // const navigation = useNavigation();
+  const { accessToken, user } = useAuth();
   const { navigateToAppliedJob } = useNavigate();
-  const { accessToken } = useAuth();
   const { jobId } = route.params;
   const [job, setJob] = useState({});
   const [coordinate, setCoordinate] = useState({
@@ -54,7 +56,10 @@ export default function JobDetailsScreen({ route, navigation }) {
       long: data?.jobPosting?.long,
     }));
   }, [data]);
-  // console.log(coordinate);
+
+  console.log(user);
+
+// console.log(coordinate);
 
   // if (loading) {
   //   return <Preloader />;
@@ -97,6 +102,15 @@ export default function JobDetailsScreen({ route, navigation }) {
     coordinate: { latitude: coordinate?.lat, longitude: coordinate?.long },
     title: `jobs location`,
   };
+
+  const toChat = () => {
+    console.log("pressed");
+    // console.log(job.author.name);
+    // console.log(job.author.id);
+    const userName = job?.author?.name
+    const userId = job?.author?.id
+    navigation.navigate("Chat", {chatId: job?.id,userId: userId, username: userName})
+  }
 
   const applyJob = () => {
     const payload = job;
@@ -276,6 +290,13 @@ export default function JobDetailsScreen({ route, navigation }) {
               <Text className="text-s font-semibold">Apply</Text>
             </TouchableOpacity>
           </Animatable.View>
+          {job?.author?.id !== user?.id ? (
+          <Animatable.View delay={100} animation="slideInRight">
+            <TouchableOpacity className="bg-lime-300 py-3 px-6 rounded-2xl" onPress={toChat}>
+              <Text className="text-s font-semibold">Chat</Text>
+            </TouchableOpacity>
+          </Animatable.View>
+            ): (<></>)}
         </View>
       </ScrollView>
       <View className="flex-row justify-between mx-8 mt-16 items-center"></View>

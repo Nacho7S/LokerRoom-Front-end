@@ -22,8 +22,8 @@ export function AuthProvider({ children }) {
     },
   });
 
-  console.log(data, "ini users di auth");
-  console.log(currentUserId, "ini dari auth userid");
+  // console.log(data, "ini users di auth");
+  // console.log(currentUserId, "ini dari auth userid");
 
   useEffect(() => {
     checkLoginStatus();

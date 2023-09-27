@@ -23,7 +23,7 @@ import { useAuth } from "../context/useAuth";
 
 export default function ChatScreens() {
   const { user, logout } = useAuth();
-  const loginUser = user;
+  const loginUser = user
   const [summaryChats, setSummaryChats] = useState([]);
   const [localSummaryChats, setLocalSummaryChats] = useState([]); // for search
   const [searchUser, setSearchUser] = useState("");
@@ -88,6 +88,7 @@ export default function ChatScreens() {
   }, [searchUser]);
 
   const _onPressChat = (chat) => {
+    console.log(chat);
     navigation.navigate("RoomChat", { id: chat.chatId });
   };
 
