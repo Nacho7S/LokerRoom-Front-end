@@ -27,21 +27,20 @@ import {
 import { useQuery } from "@apollo/client";
 
 const HomeScreen = ({ navigation }) => {
-
-  const [ showModal, setShowModal ] = useState(false);
-  const [ filter, setFilter ] = useState({
-    gender: null, 
-    maxAge: null, 
-    categoryId: null, 
+  const [showModal, setShowModal] = useState(false);
+  const [filter, setFilter] = useState({
+    gender: null,
+    maxAge: null,
+    categoryId: null,
     educationId: null,
-    location: null, 
-    isUrgent: null, 
-    pageNumber: 1
+    location: null,
+    isUrgent: null,
+    pageNumber: 1,
   });
 
   const { data: fetch } = useQuery(GET_CATEGORIES_AND_EDUCATION_LEVELS);
   const { data, error, loading } = useQuery(GET_JOBS, {
-    variables: filter
+    variables: filter,
   });
   const { categories, educationLevels } = fetch || {};
   const { jobPostings: { data: jobPostings, numPages } = {} } = data || {};
@@ -86,23 +85,32 @@ const HomeScreen = ({ navigation }) => {
         {/* search  */}
         <View className="mt-2 mx-5 flex-row justify-between items-center space-x-3">
           <View className="flex-row flex-1 px-4 py-2 bg-white rounded-2xl">
-            <MagnifyingGlassIcon stroke={40} color="gray" />
-            <TextInput
+            <MagnifyingGlassIcon
+              stroke={40}
+              color="gray"
+              style={{ marginRight: 10 }}
+            />
+            {/* <TextInput
               placeholder="Food"
               value="Search"
               className="ml-2 text-gray-800"
+            /> */}
+            <TextInput
+              placeholder={"Search"}
+              // style={{ flex: 1, paddingVertical: 0 }}
+              // value={"search"} // Bind value to the input field
+              // onChangeText={(text) => onChangeText(text)} // Bind onChangeText to the input field's text change event
             />
           </View>
-          <View className="bg-white rounded-2xl px-4 py-2">
-            <AdjustmentsHorizontalIcon 
-              size="29" 
-              stroke={40} 
-              color="black" 
-              onPressIn={() => {
-                setShowModal(true);
-              }}
-            />
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setShowModal(true);
+            }}
+          >
+            <View className="bg-white rounded-2xl px-4 py-2">
+              <AdjustmentsHorizontalIcon size="29" stroke={40} color="black" />
+            </View>
+          </TouchableOpacity>
         </View>
 
         {/* categories scrollbar */}
@@ -114,23 +122,30 @@ const HomeScreen = ({ navigation }) => {
         >
           {categories?.map((category, index) => {
             let isActive = category.id === filter.categoryId;
-            let textClass = isActive ? " font-bold" : "";
+            let textClass = isActive
+              ? " bg-white px-3 py-1.5 rounded-full border-lime-500"
+              : " bg-white px-3 py-1.5 rounded-full";
             return (
               <Animatable.View
                 delay={index * 180} // delay for each item
                 animation="slideInDown" // animation type
                 key={index}
+                style={{
+                  paddingTop: 5,
+                }}
               >
                 <TouchableOpacity
                   className="mr-9"
-                  onPress={() => setFilter({
-                    ...filter,
-                    categoryId: category.id
-                  })}
+                  onPress={() =>
+                    setFilter({
+                      ...filter,
+                      categoryId: category.id,
+                    })
+                  }
                 >
                   <Text
                     className={
-                      "text-white text-base tracking-widest " + textClass
+                      "text-gray-500 text-s tracking-widest" + textClass
                     }
                   >
                     {category.name}
@@ -156,6 +171,7 @@ const HomeScreen = ({ navigation }) => {
             alignItems: "center",
           }}
           showsVerticalScrollIndicator={false}
+          style={{ marginTop: 10 }}
         >
           {jobPostings?.map((item, index) => (
             <JobCard item={item} index={index} key={index} />
@@ -163,7 +179,7 @@ const HomeScreen = ({ navigation }) => {
         </ScrollView>
         <View className="flex-row justify-between mx-8 mt-16 items-center"></View>
 
-        <JobFilterModal 
+        <JobFilterModal
           state={[filter, setFilter]}
           categories={categories}
           educationLevels={educationLevels}
@@ -172,9 +188,7 @@ const HomeScreen = ({ navigation }) => {
             setShowModal(false);
           }}
         />
-
       </SafeAreaView>
-      
     </View>
   );
 };

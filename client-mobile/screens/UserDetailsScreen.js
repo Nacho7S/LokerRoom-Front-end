@@ -10,8 +10,6 @@ import { useAuth } from "../context/useAuth";
 
 const UserDetailsScreen = ({ navigation }) => {
   const {user} = useAuth()
-
-
   return (
     <View className="flex-1 relative">
       <Image

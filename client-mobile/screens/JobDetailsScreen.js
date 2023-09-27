@@ -117,7 +117,10 @@ export default function JobDetailsScreen({ route, navigation }) {
       <ScrollView style={{ marginTop: 3 }}>
         <View className="flex justify-center items-center">
           <Image className="h-24 w-24" source={get3dIcon()} />
-          <Text className="text-2xl font-bold text-gray-800"> {job?.title}</Text>
+          <Text className="text-2xl font-bold text-gray-800">
+            {" "}
+            {job?.title}
+          </Text>
         </View>
         <View className="flex-row justify-between items-center mt-1 mx-8 h-20 overflow-hidden">
           <Animatable.View
@@ -226,7 +229,7 @@ export default function JobDetailsScreen({ route, navigation }) {
           </Animatable.Text>
         </View>
         {/* apply button */}
-        <View className="mx-8 mt-2 mb-10 flex-row justify-between items-center">
+        <View className="mx-8 mt-2 mb-5 flex-row justify-between items-center">
           <Animatable.Text
             delay={100}
             animation="slideInLeft"
