@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -27,6 +27,7 @@ const LoginScreen = ({ navigation }) => {
   const [funcLoginUser] = useMutation(LOGIN_USER);
 
   const onChange = (key, value) => {
+    // console.log(key, value);
     setUser((prevState) => ({
       ...prevState,
       [key]: value,
@@ -37,7 +38,10 @@ const LoginScreen = ({ navigation }) => {
     try {
       const response = await funcLoginUser({
         variables: {
-          loginCredentials: user,
+          loginCredentials: {
+            telephone: user.telephone,
+            password: user.password
+          },
         },
       });
 
@@ -54,6 +58,16 @@ const LoginScreen = ({ navigation }) => {
       console.log("Login error:", error);
     }
   }
+
+  useEffect(() => {
+    console.log('Data changed');
+    (async () => {
+      if (data?.login) {
+        await AsyncStorage.setItem("access_token", data.login.access_token);
+        await AsyncStorage.setItem("userId", JSON.stringify(data.login.userId));
+      }
+    })();
+  }, [data]);
 
   return (
     <View className="flex-1 relative">

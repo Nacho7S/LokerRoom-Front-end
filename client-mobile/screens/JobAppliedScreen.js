@@ -14,12 +14,25 @@ import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from "react-native-heroicons/solid";
-import { categories, jobItems } from "../constants";
-import { useState } from "react";
+// import { categories, jobItems } from "../constants";
+// import { useState } from "react";
 import JobCard from "../components/JobCard";
+import { GET_MY_APPLIED_JOBS } from "../config/queries";
+import { useQuery } from "@apollo/client";
 
 const JobAppliedScreen = ({ navigation }) => {
-  const [activeCategory, setActiveCategory] = useState("");
+  // const [activeCategory, setActiveCategory] = useState("");
+
+  const obj = useQuery(GET_MY_APPLIED_JOBS);
+  const { data, error, loading } = obj;
+  const { me: { appliedJobs = [] } = {} } = data || {};
+  console.log(data, "<<<< INI DARI APOLLO");
+  console.log(appliedJobs, "<<<< INI APPLIED JOBS (deconstruct)");
+
+  if (error) {
+    console.log(error);
+    // return null;
+  }
 
   return (
     <View className="flex-1 relative">
@@ -109,9 +122,9 @@ const JobAppliedScreen = ({ navigation }) => {
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {jobItems.map((item, index) => (
+          {appliedJobs.map((item, index) => (
             <JobCard
-              item={item}
+              item={item?.jobPosting}
               index={index}
               key={index}
               axis={"horizontal"}

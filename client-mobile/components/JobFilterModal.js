@@ -1,6 +1,6 @@
-import { useState } from "react";
-import Checkbox from "expo-checkbox";
-import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import { useState } from 'react';
+import Checkbox from 'expo-checkbox';
+import { Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 import InputField from "../components/InputField";
 import SelectDropdown from "react-native-select-dropdown";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -92,7 +92,7 @@ export default function JobFilterModal({
             rowTextForSelection={(item) => {
               return item;
             }}
-            buttonStyle={{
+             buttonStyle={{
               backgroundColor: "rgba(255, 255, 255, 0.3)",
               // borderColor: "#D5DDE5",
               borderWidth: 0.8,
@@ -116,6 +116,20 @@ export default function JobFilterModal({
               );
             }}
             dropdownIconPosition={"right"}
+
+          <InputField
+            value={modalFilters.maxAge || ''}
+            onChangeText={(text) => onChange("maxAge", text.trim() === '' ? +text : null)}
+            keyboardType="number-pad"
+            label="Max. age requirement"
+            icon={
+              <MaterialIcons
+                name="alternate-email"
+                size={20}
+                color="#666"
+                style={{ marginRight: 5 }}
+              />
+            }
           />
 
           <SelectDropdown
@@ -209,6 +223,20 @@ export default function JobFilterModal({
               );
             }}
             dropdownIconPosition={"right"}
+          />
+
+          <InputField
+            value={modalFilters.location || ''}
+            onChangeText={(text) => onChange("location", text.trim() || null)}
+            label="Location"
+            icon={
+              <MaterialIcons
+                name="alternate-email"
+                size={20}
+                color="#666"
+                style={{ marginRight: 5 }}
+              />
+            }
           />
 
           <View

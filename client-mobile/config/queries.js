@@ -191,6 +191,57 @@ export const EDIT_USER = gql`
   }
 `;
 
+export const GET_MY_POSTED_JOBS = gql`
+  query MyPostedJobs {
+    me {
+      postedJobs {
+        id
+        title
+        description
+        address
+        category {
+          name
+        }
+        minSalary
+        maxSalary
+        requiredGender
+        maxAge
+        status
+        isUrgent
+      }
+    }
+  }
+`;
+
+export const GET_MY_APPLIED_JOBS = gql`
+  query MyAppliedJobs {
+    me {
+      appliedJobs {
+        id
+        applicationStatus
+        isEmployed
+        startDateOfEmployment
+        endDateOfEmployment
+        jobPosting {
+          id
+          title
+          description
+          address
+          category {
+            name
+          }
+          minSalary
+          maxSalary
+          requiredGender
+          maxAge
+          status
+          isUrgent
+        }
+      }
+    }
+  }
+`;
+
 export const EDIT_JOB = gql`
   mutation EditJobPosting($jobPostingId: Int!, $jobPosting: newJobPosting) {
     editJobPosting(jobPostingId: $jobPostingId, jobPosting: $jobPosting) {
