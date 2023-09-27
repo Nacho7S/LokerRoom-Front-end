@@ -28,12 +28,22 @@ const OnboardingScreen = ({ navigation }) => {
           <Text
             style={{
               fontWeight: "bold",
-              fontSize: 60,
+              fontSize: 70,
               color: "#20315f",
               marginLeft: 25,
             }}
           >
-            Your Solution For Many Services
+            Your Solution
+          </Text>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 70,
+              color: "#20315f",
+              marginLeft: 25,
+            }}
+          >
+            For Many Services
           </Text>
           <Text
             style={{

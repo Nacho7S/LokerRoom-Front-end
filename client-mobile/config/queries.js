@@ -19,21 +19,21 @@ export const LOGIN_USER = gql`
 
 export const GET_JOBS = gql`
   query JobPostings(
-    $gender: Gender, 
-    $maxAge: Int, 
-    $categoryId: Int, 
-    $educationId: Int, 
-    $location: String, 
-    $isUrgent: Boolean, 
+    $gender: Gender
+    $maxAge: Int
+    $categoryId: Int
+    $educationId: Int
+    $location: String
+    $isUrgent: Boolean
     $pageNumber: Int
   ) {
     jobPostings(
-      gender: $gender, 
-      maxAge: $maxAge, 
-      categoryId: $categoryId, 
-      educationId: $educationId, 
-      location: $location, 
-      isUrgent: $isUrgent, 
+      gender: $gender
+      maxAge: $maxAge
+      categoryId: $categoryId
+      educationId: $educationId
+      location: $location
+      isUrgent: $isUrgent
       pageNumber: $pageNumber
     ) {
       numPages
@@ -71,12 +71,12 @@ export const GET_CATEGORIES_AND_EDUCATION_LEVELS = gql`
 
 // export const GET_JOBS_CATEGORIES = gql`
 //   query Query(
-//     $gender: Gender, 
-//     $maxAge: Int, 
-//     $categoryId: Int, 
-//     $educationId: Int, 
-//     $location: String, 
-//     $isUrgent: Boolean, 
+//     $gender: Gender,
+//     $maxAge: Int,
+//     $categoryId: Int,
+//     $educationId: Int,
+//     $location: String,
+//     $isUrgent: Boolean,
 //     $pageNumber: Int
 //   ) {
 //     categories {
@@ -84,12 +84,12 @@ export const GET_CATEGORIES_AND_EDUCATION_LEVELS = gql`
 //       name
 //     }
 //     jobPostings(
-//       gender: $gender, 
-//       maxAge: $maxAge, 
-//       categoryId: $categoryId, 
-//       educationId: $educationId, 
-//       location: $location, 
-//       isUrgent: $isUrgent, 
+//       gender: $gender,
+//       maxAge: $maxAge,
+//       categoryId: $categoryId,
+//       educationId: $educationId,
+//       location: $location,
+//       isUrgent: $isUrgent,
 //       pageNumber: $pageNumber
 //     ) {
 //       id
@@ -103,7 +103,7 @@ export const GET_CATEGORIES_AND_EDUCATION_LEVELS = gql`
 //       minSalary
 //       maxSalary
 //       requiredGender
-//       status      
+//       status
 //     }
 //   }
 // `;
@@ -113,6 +113,8 @@ export const GET_JOB = gql`
     jobPosting(jobPostingId: $jobPostingId) {
       id
       title
+      long
+      lat
       description
       address
       category {
@@ -122,6 +124,7 @@ export const GET_JOB = gql`
       minSalary
       maxSalary
       author {
+        id
         name
         telephone
         imgUrl
@@ -188,3 +191,80 @@ export const EDIT_USER = gql`
     }
   }
 `;
+
+export const GET_MY_POSTED_JOBS = gql`
+  query MyPostedJobs {
+    me {
+      postedJobs {
+        id
+        title
+        description
+        address
+        category {
+          name
+        }
+        minSalary
+        maxSalary
+        requiredGender
+        maxAge
+        status
+        isUrgent
+      }
+    }
+  }
+`;
+
+export const GET_MY_APPLIED_JOBS = gql`
+  query MyAppliedJobs {
+    me {
+      appliedJobs {
+        id
+        applicationStatus
+        isEmployed
+        startDateOfEmployment
+        endDateOfEmployment
+        jobPosting {
+          id
+          title
+          description
+          address
+          category {
+            name
+          }
+          minSalary
+          maxSalary
+          requiredGender
+          maxAge
+          status
+          isUrgent
+        }
+      }
+    }
+  }
+`;
+
+export const EDIT_JOB = gql`
+  mutation EditJobPosting($jobPostingId: Int!, $jobPosting: newJobPosting) {
+    editJobPosting(jobPostingId: $jobPostingId, jobPosting: $jobPosting) {
+      message
+    }
+  }
+`;
+
+
+export const UPDATE_JOB_STATUS = gql`
+  mutation UpdateJobPosting($jobPostingId: Int!, $jobPostingStatus: JobPostingStatus!) {
+    changeJobPostingStatus(jobPostingId: $jobPostingId, jobPostingStatus: $jobPostingStatus) {
+      message
+    }
+  }
+`
+
+export const APPLY_JOB = gql`
+  mutation ApplyToJob($jobPostingId: Int!) {
+    applyToJob(jobPostingId: $jobPostingId) {
+      message
+    }
+  }
+`;
+

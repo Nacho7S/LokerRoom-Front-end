@@ -22,11 +22,9 @@ export default function GoogleMaps(
         {Object.keys(markers).length === 0 ? (
           <></>
         ) : (
-
           <Marker coordinate={markers?.coordinate} title={markers?.title} onPress={onClick ? onClick : undefined}>
             <FontAwesome name="map-marker" size={40} color="#B12A5B" />
           </Marker>
-
         )}
       </MapView>
     </View>

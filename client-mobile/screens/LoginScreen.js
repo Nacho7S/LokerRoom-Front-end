@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -16,16 +16,17 @@ import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import { LOGIN_USER } from "../config/queries";
 import { useMutation } from "@apollo/client";
+import { useAuth } from "../context/useAuth";
 
 const LoginScreen = ({ navigation }) => {
+  const { login } = useAuth(); // Use the useAuth hook
   const [user, setUser] = useState({
     telephone: "",
     password: "",
   });
-  const [funcLoginUser, { loading, error, data }] = useMutation(LOGIN_USER);
+  const [funcLoginUser] = useMutation(LOGIN_USER);
 
   const onChange = (key, value) => {
-    console.log(key, value);
     setUser((prevState) => ({
       ...prevState,
       [key]: value,
@@ -34,18 +35,23 @@ const LoginScreen = ({ navigation }) => {
 
   const loginUser = async () => {
     try {
-      // const payload = user;
-      // console.log(payload, "<<< payload");
-      await funcLoginUser({
+      const response = await funcLoginUser({
         variables: {
           loginCredentials: user,
         },
       });
-      console.log(data, "<<<<<<<data di login scren");
-      await AsyncStorage.setItem("access_token", data?.login?.access_token);
-      await AsyncStorage.setItem("userId", JSON.stringify(data?.login?.userId));
+
+      if (response?.data && response?.data?.login) {
+        const { access_token, userId } = response?.data?.login;
+        await login(access_token, userId); // Use the login function from useAuth
+
+        // navigation.navigate("Home");
+      } else {
+        // Handle login failure (e.g., display an error message)
+        console.log("Login failed");
+      }
     } catch (error) {
-      console.log(error);
+      console.log("Login error:", error);
     }
   };
 

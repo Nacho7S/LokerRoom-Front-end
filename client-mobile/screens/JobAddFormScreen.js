@@ -12,6 +12,7 @@ import {
 
 import InputField from "../components/InputField";
 
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
@@ -28,20 +29,22 @@ import { ADD_JOB, GET_JOBS } from "../config/queries";
 import SelectDropdown from "react-native-select-dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { useRoute } from "@react-navigation/native"
+import { useRoute } from "@react-navigation/native";
 import GoogleMaps from "../components/googleMaps";
+import CustomButtonAddress from "../components/CustomButtonAddress";
+import InputFieldForm from "../components/InputFieldForm";
 
 const JobAddFormScreen = ({ navigation }) => {
   const route = useRoute();
   const { latitude, longitude } = route.params || {};
-  console.log(latitude, longitude, "ini coyy");
+  // console.log(latitude, longitude, "ini coyy");
   const [accessToken, setAccessToken] = useState("");
   const [job, setJob] = useState({
     title: "",
     description: "",
     address: "",
     categoryId: 0,
-    long: 0 ,
+    long: 0,
     lat: 0,
     minSalary: "",
     maxSalary: "",
@@ -59,8 +62,8 @@ const JobAddFormScreen = ({ navigation }) => {
       },
     },
     onCompleted: () => {
-      navigation.navigate("Home")
-    }
+      navigation.navigate("Home");
+    },
   });
 
   useEffect(() => {
@@ -85,7 +88,7 @@ const JobAddFormScreen = ({ navigation }) => {
   };
 
   const onChange = (key, value) => {
-    console.log(key, value);
+    // console.log(key, value);
     setJob((prevState) => ({
       ...prevState,
       [key]: value,
@@ -94,7 +97,7 @@ const JobAddFormScreen = ({ navigation }) => {
 
   const createJob = () => {
     const payload = job;
-    console.log(payload, "<<< payload");
+    // console.log(payload, "<<< payload");
     funcCreateJob({
       variables: {
         jobPosting: payload,
@@ -112,8 +115,8 @@ const JobAddFormScreen = ({ navigation }) => {
   // }
 
   const gotoMaps = () => {
-    navigation.navigate("addMaps")
-  }
+    navigation.navigate("addMaps");
+  };
 
   const gender = ["Male", "Female"];
 
@@ -132,13 +135,13 @@ const JobAddFormScreen = ({ navigation }) => {
     latitude: latitude,
     longitude: longitude,
     latitudeDelta: 0.00502,
-    longitudeDelta: 0.0100,
-  }
+    longitudeDelta: 0.01,
+  };
 
   return (
     <View className="flex-1 relative">
       <Image
-        blurRadius={50}
+        blurRadius={150}
         source={require("../assets/images/background9.png")}
         className="absolute w-full h-full"
       />
@@ -146,7 +149,7 @@ const JobAddFormScreen = ({ navigation }) => {
         <ScrollView
           horizontal={false}
           showsVerticalScrollIndicator={false}
-          style={{ paddingHorizontal: 25 }}
+          style={{ paddingHorizontal: 30 }}
         >
           <View className="flex-row justify-start items-center">
             <View className="mt-3 items-center">
@@ -172,133 +175,132 @@ const JobAddFormScreen = ({ navigation }) => {
             </Text>
           </View>
 
-          <InputField
+          <InputFieldForm
             onChangeText={(text) => onChange("title", text)}
             label={"Title"}
             icon={
               <Ionicons
                 name="person-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
           />
 
-          <InputField
+          <InputFieldForm
             onChangeText={(text) => onChange("description", text)}
             label={"Description"}
             icon={
               <Feather
                 name="phone"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
-          // keyboardType="phone-number"
+            // keyboardType="phone-number"
           />
 
-          <InputField
+          <InputFieldForm
             onChangeText={(text) => onChange("address", text)}
             label={"Address Name"}
             icon={
               <MaterialIcons
                 name="alternate-email"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
           />
 
-
-          {/* <InputField
+          {/* <InputFieldForm
             onChangeText={(text) => onChange("categoryId", text)}
             label={"Category"}
             icon={
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
           /> */}
 
-          <InputField
+          <InputFieldForm
             onChangeText={(text) => onChange("minSalary", +text)}
             label={"Minimum Salary"}
             icon={
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
           />
 
-          <InputField
+          <InputFieldForm
             onChangeText={(text) => onChange("maxSalary", +text)}
             label={"Maximum Salary"}
             icon={
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
           />
 
-          {/* <InputField
+          {/* <InputFieldForm
             onChangeText={(text) => onChange("requiredGender", text)}
             label={"Gender (Optional)"}
             icon={
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
           /> */}
 
-          <InputField
+          <InputFieldForm
             onChangeText={(text) => onChange("maxAge", +text)}
             label={"Maximum Age (Optional)"}
             icon={
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
           />
 
-          {/* <InputField
+          {/* <InputFieldForm
             onChangeText={(text) => onChange("requiredEducation", text)}
             label={"Education (Optional)"}
             icon={
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
           /> */}
 
-          {/* <InputField
+          {/* <InputFieldForm
             onChangeText={(text) => onChange("isUrgent", text)}
             label={"Urgency Status"}
             icon={
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -327,10 +329,26 @@ const JobAddFormScreen = ({ navigation }) => {
               backgroundColor: "rgba(255, 255, 255, 0.3)",
               borderColor: "#D5DDE5",
               borderWidth: 0.8,
-              borderRadius: 20,
+              borderRadius: 10,
               marginBottom: 20,
-              width: 200,
+              width: "100%",
+              height: "5%",
             }}
+            buttonTextStyle={{
+              fontSize: 15,
+              color: "white",
+              textAlign: "left",
+            }}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#FFF"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
           />
 
           <SelectDropdown
@@ -357,10 +375,26 @@ const JobAddFormScreen = ({ navigation }) => {
               backgroundColor: "rgba(255, 255, 255, 0.3)",
               borderColor: "#D5DDE5",
               borderWidth: 0.8,
-              borderRadius: 20,
+              borderRadius: 10,
               marginBottom: 20,
-              width: 200,
+              width: "100%",
+              height: "5%",
             }}
+            buttonTextStyle={{
+              fontSize: 15,
+              color: "white",
+              textAlign: "left",
+            }}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#FFF"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
           />
 
           <SelectDropdown
@@ -387,10 +421,26 @@ const JobAddFormScreen = ({ navigation }) => {
               backgroundColor: "rgba(255, 255, 255, 0.3)",
               borderColor: "#D5DDE5",
               borderWidth: 0.8,
-              borderRadius: 20,
+              borderRadius: 10,
               marginBottom: 20,
-              width: 200,
+              width: "100%",
+              height: "5%",
             }}
+            buttonTextStyle={{
+              fontSize: 15,
+              color: "white",
+              textAlign: "left",
+            }}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#FFF"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
           />
           <SelectDropdown
             data={["Urgent", "Not Urgent"]}
@@ -416,10 +466,26 @@ const JobAddFormScreen = ({ navigation }) => {
               backgroundColor: "rgba(255, 255, 255, 0.3)",
               borderColor: "#D5DDE5",
               borderWidth: 0.8,
-              borderRadius: 20,
+              borderRadius: 10,
               marginBottom: 20,
-              width: 200,
+              width: "100%",
+              height: "5%",
             }}
+            buttonTextStyle={{
+              fontSize: 15,
+              color: "white",
+              textAlign: "left",
+            }}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#FFF"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
           />
 
           {/* <Text>Input address</Text>
@@ -427,20 +493,25 @@ const JobAddFormScreen = ({ navigation }) => {
           <MapContainer/>
           </View> */}
 
-          <CustomButton label={"Add your Address hitpoint Here"} onPress={gotoMaps} />
+          <CustomButtonAddress
+            label={"Add your Address hitpoint Here"}
+            onPress={gotoMaps}
+          />
           {latitude && longitude && (
-            <View style={{ height: 220 , marginBottom: 45}}>
+            <View style={{ height: 220, marginBottom: 45 }}>
               {/* Display the map with the marker */}
               <Text>Preview Hitpoint</Text>
               <GoogleMaps
                 region={region}
                 markers={{
-                  coordinate: { latitude, longitude}
+                  coordinate: { latitude, longitude },
                 }}
               />
             </View>
           )}
-          <CustomButton label={"Submit"} onPress={createJob} />
+          <View style={{ marginBottom: 200, marginTop: 20 }}>
+            <CustomButton label={"Submit"} onPress={createJob} />
+          </View>
         </ScrollView>
         <View className="flex-row justify-between mx-8 mt-16 items-center"></View>
       </SafeAreaView>

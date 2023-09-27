@@ -3,6 +3,7 @@ import {
   ImageBackground,
   SafeAreaView,
   ScrollView,
+  FlatList,
   StyleSheet,
   Text,
   TextInput,
@@ -27,30 +28,30 @@ import {
 import { useQuery } from "@apollo/client";
 
 const HomeScreen = ({ navigation }) => {
-
-  const [ showModal, setShowModal ] = useState(false);
-  const [ filter, setFilter ] = useState({
-    gender: null, 
-    maxAge: null, 
-    categoryId: null, 
+  const [showModal, setShowModal] = useState(false);
+  const [filter, setFilter] = useState({
+    gender: null,
+    maxAge: null,
+    categoryId: null,
     educationId: null,
-    location: null, 
-    isUrgent: null, 
-    pageNumber: 1
+    location: null,
+    isUrgent: null,
+    pageNumber: 1,
   });
 
   const { data: fetch } = useQuery(GET_CATEGORIES_AND_EDUCATION_LEVELS);
-  const { data, error, loading } = useQuery(GET_JOBS, {
-    variables: filter
+  const { data, error, loading, fetchMore } = useQuery(GET_JOBS, {
+    variables: filter,
   });
   const { categories, educationLevels } = fetch || {};
   const { jobPostings: { data: jobPostings, numPages } = {} } = data || {};
-  // console.log(categories, "<<< Fetching categories");
-  // console.log(jobPostings, "<<< FETCHING JOBS");
+  const [curPage, setCurPage] = useState(1);
+  console.log(categories, "<<< Fetching categories");
+  console.log(jobPostings, "<<< FETCHING JOBS");
 
-  if (loading) {
-    return null;
-  }
+  // if (loading) {
+  //   return null;
+  // }
   if (error) {
     console.log(error);
     return null;
@@ -65,8 +66,8 @@ const HomeScreen = ({ navigation }) => {
       />
       <SafeAreaView className="flex-1">
         {/* title */}
-        <View className="mt-9 space-y-2 flex-row justify-between items-center">
-          <Text className="mx-6 text-3xl font-bold text-gray-800">
+        <View className="mt-10 space-y-2 flex-row justify-between items-center">
+          <Text className="mx-6 mt-2 text-3xl font-bold text-gray-800">
             Jobs List
           </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -84,53 +85,72 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         {/* search  */}
-        <View className="mt-2 mx-5 flex-row justify-between items-center space-x-3">
-          <View className="flex-row flex-1 px-4 py-2 bg-white rounded-2xl">
-            <MagnifyingGlassIcon stroke={40} color="gray" />
+        <View className="mt-3 mx-5 flex-row justify-between items-center space-x-3">
+          {/* <View className="flex-row flex-1 px-4 py-2 bg-white rounded-2xl">
+            <MagnifyingGlassIcon
+              stroke={40}
+              color="gray"
+              style={{ marginRight: 10 }}
+            />
             <TextInput
               placeholder="Food"
               value="Search"
               className="ml-2 text-gray-800"
             />
-          </View>
-          <View className="bg-white rounded-2xl px-4 py-2">
-            <AdjustmentsHorizontalIcon 
-              size="29" 
-              stroke={40} 
-              color="black" 
-              onPressIn={() => {
-                setShowModal(true);
-              }}
+            <TextInput
+              placeholder={"Search"}
+              // style={{ flex: 1, paddingVertical: 0 }}
+              // value={"search"} // Bind value to the input field
+              // onChangeText={(text) => onChangeText(text)} // Bind onChangeText to the input field's text change event
             />
-          </View>
+          </View> */}
+          <TouchableOpacity
+            onPress={() => {
+              setShowModal(true);
+            }}
+          >
+            <View className="bg-white rounded-2xl px-6 py-2 w-80 flex-row justify-between items-center">
+              <Text className=" text-base text-gray-500">
+                Search and Filter
+              </Text>
+              <AdjustmentsHorizontalIcon size="29" stroke={40} color="black" />
+            </View>
+          </TouchableOpacity>
         </View>
 
         {/* categories scrollbar */}
         <ScrollView
-          className="mt-3 max-h-12"
+          className="mt-4 max-h-12"
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20 }}
         >
           {categories?.map((category, index) => {
             let isActive = category.id === filter.categoryId;
-            let textClass = isActive ? " font-bold" : "";
+            let textClass = isActive
+              ? " bg-white px-3 py-1.5 rounded-full border-lime-500"
+              : " bg-white px-3 py-1.5 rounded-full";
             return (
               <Animatable.View
                 delay={index * 180} // delay for each item
                 animation="slideInDown" // animation type
                 key={index}
+                style={{
+                  paddingTop: 5,
+                }}
               >
                 <TouchableOpacity
                   className="mr-9"
-                  onPress={() => setFilter({
-                    ...filter,
-                    categoryId: category.id
-                  })}
+                  onPress={() =>
+                    setFilter({
+                      ...filter,
+                      categoryId: category.id,
+                    })
+                  }
                 >
                   <Text
                     className={
-                      "text-white text-base tracking-widest " + textClass
+                      "text-gray-500 text-s tracking-widest" + textClass
                     }
                   >
                     {category.name}
@@ -149,21 +169,35 @@ const HomeScreen = ({ navigation }) => {
           })}
         </ScrollView>
         {/* job cards */}
-        <ScrollView
+        <FlatList
           className="h-32"
+          style={{
+            marginTop: 10,
+          }}
           contentContainerStyle={{
             display: "flex",
             alignItems: "center",
           }}
           showsVerticalScrollIndicator={false}
-        >
-          {jobPostings?.map((item, index) => (
+          data={jobPostings}
+          keyExtractor={(item) => item?.id}
+          renderItem={({ item, index }) => (
             <JobCard item={item} index={index} key={index} />
-          ))}
-        </ScrollView>
+          )}
+          onEndReached={() => {
+            if (curPage >= numPages) return;
+            fetchMore({
+              variables: {
+                pageNumber: curPage + 1,
+              },
+            });
+            setCurPage(curPage + 1);
+          }}
+          onEndReachedThreshold={0.15}
+        />
         <View className="flex-row justify-between mx-8 mt-16 items-center"></View>
 
-        <JobFilterModal 
+        <JobFilterModal
           state={[filter, setFilter]}
           categories={categories}
           educationLevels={educationLevels}
@@ -172,9 +206,7 @@ const HomeScreen = ({ navigation }) => {
             setShowModal(false);
           }}
         />
-
       </SafeAreaView>
-      
     </View>
   );
 };

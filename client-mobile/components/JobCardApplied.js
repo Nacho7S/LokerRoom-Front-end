@@ -1,10 +1,10 @@
-import { View, Text, Image, TouchableOpacity, Animated, Pressable } from "react-native";
+import { View, Text, Image, TouchableOpacity, Animated } from "react-native";
 import React from "react";
+import { EyeIcon } from "react-native-heroicons/solid";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-export default function JobCard({ item, index, axis, handleUpdateStatus }) {
+export default function JobCardApplied({ item, status, index, axis }) {
   // console.log(item, "<<<<<<<<<item");
   const navigation = useNavigation();
   const getBackgroundColor = () => {
@@ -48,12 +48,12 @@ export default function JobCard({ item, index, axis, handleUpdateStatus }) {
     }
   };
   const getStatusColor = () => {
-    switch (item?.status) {
-      case "Active":
+    switch (status) {
+      case "Processing":
         return "bg-teal-300 text-gray-700 px-3 py-1.5 rounded-full";
-      case "Processed":
+      case "Accepted":
         return "bg-lime-300 text-gray-700 px-3 py-1.5 rounded-full";
-      case "Filled":
+      case "Rejected":
         return "bg-amber-300 text-gray-700 px-3 py-1.5 rounded-full";
       default:
         return "bg-lime-300 text-gray-700 px-3 py-1.5 rounded-full"; // Default axis
@@ -74,32 +74,6 @@ export default function JobCard({ item, index, axis, handleUpdateStatus }) {
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
       : Math.sign(num) * Math.abs(num);
   };
-
-  function ChipAtBottom() {
-    if (handleUpdateStatus && item?.status) {
-      return (
-        <Pressable 
-          className="mt-6 mx-10 flex justify-center items-center" 
-          onPressIn={handleUpdateStatus}
-        >
-          <Text 
-            className={getStatusColor()}
-          >
-            {item?.status} &nbsp;
-            <FontAwesome 
-              name="edit"
-            />
-          </Text>
-        </Pressable>
-      )
-    } else {
-      return (
-        <View className="mt-6 mx-10 flex justify-center items-center">
-          <Text className={getStatusColor()}>{item?.status}</Text>
-        </View>
-      )
-    }
-  }
 
   return (
     <Animatable.View
@@ -182,13 +156,13 @@ export default function JobCard({ item, index, axis, handleUpdateStatus }) {
           <Text className="text-white">See Details</Text>
         </TouchableOpacity>
       </View>
-
       {axis === "horizontal" ? (
-        <ChipAtBottom />
+        <View className="mt-6 mx-10 flex justify-center items-center">
+          <Text className={getStatusColor()}>{status}</Text>
+        </View>
       ) : (
-        <></>
+        <View></View>
       )}
-
     </Animatable.View>
   );
 }

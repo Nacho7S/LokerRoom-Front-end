@@ -15,6 +15,8 @@ import DatePicker from "react-native-date-picker";
 import InputField from "../components/InputField";
 import SelectDropdown from "react-native-select-dropdown";
 
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
@@ -22,6 +24,7 @@ import CustomButton from "../components/CustomButton";
 import { ADD_USER } from "../config/queries";
 import { useMutation } from "@apollo/client";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { ChevronLeftIcon } from "react-native-heroicons/solid";
 
 const RegisterScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
@@ -54,7 +57,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const registerUser = () => {
     const payload = user;
-    // console.log(payload, "<<< payload");
+    // console.log(payload, "<<<< payload");
     console.log({ ...payload, dateOfBirth: date }, "ini coyyy");
     funcCreateUser({
       variables: {
@@ -92,7 +95,7 @@ const RegisterScreen = ({ navigation }) => {
               fontWeight: "bold",
               color: "#333",
               marginBottom: 30,
-              marginTop: 50,
+              marginTop: 110,
             }}
           >
             Register
@@ -227,7 +230,24 @@ const RegisterScreen = ({ navigation }) => {
               borderRadius: 20,
               marginBottom: 20,
               width: 200,
+              width: "100%",
+              height: "5%",
             }}
+            buttonTextStyle={{
+              fontSize: 15,
+              color: "white",
+              textAlign: "left",
+            }}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#FFF"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
           />
 
           {/* <Button title="Select Date of Birth" onPress={() => setOpen(true)} />
