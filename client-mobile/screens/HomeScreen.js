@@ -49,9 +49,9 @@ const HomeScreen = ({ navigation }) => {
   console.log(categories, "<<< Fetching categories");
   console.log(jobPostings, "<<< FETCHING JOBS");
 
-  if (loading) {
-    return null;
-  }
+  // if (loading) {
+  //   return null;
+  // }
   if (error) {
     console.log(error);
     return null;
@@ -171,8 +171,8 @@ const HomeScreen = ({ navigation }) => {
         {/* job cards */}
         <FlatList
           className="h-32"
-          style={{ 
-            marginTop: 10
+          style={{
+            marginTop: 10,
           }}
           contentContainerStyle={{
             display: "flex",
@@ -181,18 +181,15 @@ const HomeScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           data={jobPostings}
           keyExtractor={(item) => item?.id}
-          renderItem={({item, index}) => (
-          style={{ marginTop: 12 }}
-        >
-          {jobPostings?.map((item, index) => (
+          renderItem={({ item, index }) => (
             <JobCard item={item} index={index} key={index} />
           )}
           onEndReached={() => {
             if (curPage >= numPages) return;
             fetchMore({
               variables: {
-                pageNumber: curPage + 1
-              }
+                pageNumber: curPage + 1,
+              },
             });
             setCurPage(curPage + 1);
           }}
