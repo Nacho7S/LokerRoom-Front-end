@@ -22,9 +22,31 @@ const authLink = setContext(async (_, { headers }) => {
   }
 });
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        jobPostings: {
+          keyArgs: ['gender', 'maxAge', 'categoryId', 'educationId', 'location', 'isUrgent'],
+          // keyArgs: false,
+          merge(existing = {}, incoming) {
+            const data = [];
+            if (existing.data) data.push(...existing.data);
+            if (incoming.data) data.push(...incoming.data);
+            return {
+              numPages: incoming.numPages,
+              data: data
+            };
+          },
+        }
+      }
+    }
+  }
+});
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: cache
 });
 
 export default client;

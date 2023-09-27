@@ -3,6 +3,7 @@ import {
   ImageBackground,
   SafeAreaView,
   ScrollView,
+  FlatList,
   StyleSheet,
   Text,
   TextInput,
@@ -39,13 +40,14 @@ const HomeScreen = ({ navigation }) => {
   });
 
   const { data: fetch } = useQuery(GET_CATEGORIES_AND_EDUCATION_LEVELS);
-  const { data, error, loading } = useQuery(GET_JOBS, {
+  const { data, error, loading, fetchMore } = useQuery(GET_JOBS, {
     variables: filter,
   });
   const { categories, educationLevels } = fetch || {};
   const { jobPostings: { data: jobPostings, numPages } = {} } = data || {};
-  // console.log(categories, "<<< Fetching categories");
-  // console.log(jobPostings, "<<< FETCHING JOBS");
+  const [curPage, setCurPage] = useState(1);
+  console.log(categories, "<<< Fetching categories");
+  console.log(jobPostings, "<<< FETCHING JOBS");
 
   if (loading) {
     return null;
@@ -164,19 +166,32 @@ const HomeScreen = ({ navigation }) => {
           })}
         </ScrollView>
         {/* job cards */}
-        <ScrollView
+        <FlatList
           className="h-32"
+          style={{ 
+            marginTop: 10
+          }}
           contentContainerStyle={{
             display: "flex",
             alignItems: "center",
           }}
           showsVerticalScrollIndicator={false}
-          style={{ marginTop: 10 }}
-        >
-          {jobPostings?.map((item, index) => (
+          data={jobPostings}
+          keyExtractor={(item) => item?.id}
+          renderItem={({item, index}) => (
             <JobCard item={item} index={index} key={index} />
-          ))}
-        </ScrollView>
+          )}
+          onEndReached={() => {
+            if (curPage >= numPages) return;
+            fetchMore({
+              variables: {
+                pageNumber: curPage + 1
+              }
+            });
+            setCurPage(curPage + 1);
+          }}
+          onEndReachedThreshold={0.15}
+        />
         <View className="flex-row justify-between mx-8 mt-16 items-center"></View>
 
         <JobFilterModal
