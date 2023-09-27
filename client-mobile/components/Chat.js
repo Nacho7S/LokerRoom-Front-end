@@ -7,8 +7,10 @@ export default function Chat({ item = {}, index, onPress, loginUser = {} }) {
     <View
       style={{
         borderTopWidth: index === 0 ? 1 : 0,
-        borderTopColor: "grey",
+        borderTopColor: "black",
         marginHorizontal: 10,
+        backgroundColor: 'black',
+        marginBottom: 15,
         height: 70,
         borderRadius: 10,
       }}
@@ -20,6 +22,9 @@ export default function Chat({ item = {}, index, onPress, loginUser = {} }) {
               flex: 1,
               justifyContent: "center",
               alignItems: "center",
+              backgroundColor: "white",
+              borderRadius: 25,
+              height: 67
             }}
           >
             <Image
@@ -35,9 +40,14 @@ export default function Chat({ item = {}, index, onPress, loginUser = {} }) {
           <View
             style={{
               flex: 5,
+              marginStart: 4,
+              borderTopWidth: 1,
+              borderTopColor: 'black',
               borderBottomWidth: 1,
               padding: 3,
-              borderBottomColor: "grey",
+              backgroundColor: 'white',
+              borderRadius: 10,
+              borderBottomColor: "black",
             }}
           >
             <Text

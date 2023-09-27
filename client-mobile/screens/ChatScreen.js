@@ -18,8 +18,10 @@ import {
 } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
+
 import Chat from "../components/Chat";
 import { useAuth } from "../context/useAuth";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ChatScreens() {
   const { user, logout } = useAuth();
@@ -29,6 +31,8 @@ export default function ChatScreens() {
   const [searchUser, setSearchUser] = useState("");
   const [onSearchFocus, setOnSearchFocus] = useState(false);
   const [onSearchCaretHidden, setOnSearchCaretHidden] = useState(false);
+  const [onRead, SetOnRead] = useState(true)
+  const [currentChat, setCurrentChat] = useState('')
   const navigation = useNavigation();
 
   useFocusEffect(
@@ -78,7 +82,8 @@ export default function ChatScreens() {
     if (searchUser) {
       const currSummaryChats = summaryChats.filter((item) => {
         const key =
-          loginUser?.id == item?.receiverId ? "senderName" : "receiverName";
+          loginUser?.id == item?.
+            Id ? "senderName" : "receiverName";
         return item[key]?.toLowerCase()?.includes(searchUser.toLowerCase());
       });
       setLocalSummaryChats(currSummaryChats);
@@ -88,7 +93,6 @@ export default function ChatScreens() {
   }, [searchUser]);
 
   const _onPressChat = (chat) => {
-    console.log(chat);
     navigation.navigate("RoomChat", { id: chat.chatId });
   };
 
@@ -98,19 +102,18 @@ export default function ChatScreens() {
 
   // console.log(summaryChats, "<<< summary chats");
   return (
-    <>
+    <View className="flex-1 relative">
+        <Image
+          blurRadius={50}
+          source={require("../assets/images/background9.png")}
+          className="absolute w-full h-full"
+        />
+      <SafeAreaView className="flex-1">
+        
       <View style={styles.headerContainer}>
         <Text style={[styles.header, { flex: 1 }]}>
           Hi, {loginUser.name || "User"} !
         </Text>
-        <View style={styles.headerIconContainer}>
-          <TouchableOpacity onPress={_onPressCreateMsg}>
-            <Ionicons name={"md-create-outline"} size={30} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={logout}>
-            <MaterialCommunityIcons name={"logout"} size={30} />
-          </TouchableOpacity>
-        </View>
       </View>
       <View style={{ flex: 14 }}>
         <View style={[styles.searchContainer]}>
@@ -124,28 +127,32 @@ export default function ChatScreens() {
             }}
             onBlur={() => setOnSearchFocus(false)}
             caretHidden={onSearchCaretHidden}
-          />
+            />
           <TouchableOpacity onPress={_onPressSearchIcon}>
             <AntDesign
               name={onSearchFocus ? "closecircleo" : "search1"}
               size={20}
               color={"gray"}
-            />
+              />
           </TouchableOpacity>
         </View>
         <FlatList
           data={localSummaryChats}
           renderItem={({ item, index }) => (
+            <>
             <Chat
               index={index}
               item={item}
               onPress={_onPressChat}
-              loginUser={loginUser}
-            />
+                loginUser={loginUser}
+                onRead={onRead}
+                />
+              </>
           )}
         />
       </View>
-    </>
+</SafeAreaView>
+    </View>
   );
 }
 
@@ -153,7 +160,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     borderBottomWidth: 0.5,
-    borderBottomColor: "gray",
+    borderBottomColor: "white",
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -177,8 +184,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderWidth: 0.5,
     borderRadius: 10,
-    borderColor: "gray",
+    borderColor: "white",
     flexDirection: "row",
+    backgroundColor: 'white',
     alignItems: "center",
     justifyContent: "space-between",
   },

@@ -15,6 +15,7 @@ import { GET_JOB, APPLY_JOB, GET_MY_APPLIED_JOBS } from "../config/queries";
 import GoogleMaps from "../components/googleMaps";
 import { useAuth } from "../context/useAuth";
 import { useNavigate } from "../context/useNavigate";
+import { generateChatId } from "../utils/chat";
 
 export default function JobDetailsScreen({ route, navigation }) {
   // let item = props.route.params;
@@ -109,7 +110,7 @@ export default function JobDetailsScreen({ route, navigation }) {
     // console.log(job.author.id);
     const userName = job?.author?.name
     const userId = job?.author?.id
-    navigation.navigate("Chat", {chatId: job?.id,userId: userId, username: userName})
+    navigation.navigate("Chat", {id: generateChatId(user, job?.author), username: userName, userId: +userId})
   }
 
   const applyJob = () => {
