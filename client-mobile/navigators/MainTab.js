@@ -10,6 +10,7 @@ import {
 import MainStack from "./MainStack";
 import JobAppliedScreen from "../screens/JobAppliedScreen";
 import JobPostingsScreen from "../screens/JobPostingsScreen";
+import ChatStack from "./ChatStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -86,7 +87,7 @@ const MainTab = () => {
       ></Tab.Screen>
       <Tab.Screen
         name="chat"
-        component={MainStack}
+        component={ChatStack}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {

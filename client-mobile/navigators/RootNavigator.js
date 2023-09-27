@@ -4,6 +4,7 @@ import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
 import AppStack from "./AppStack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../context/useAuth";
 
 function notLogged() {
   return <AuthStack />;
@@ -14,26 +15,6 @@ function Logged() {
 }
 
 export default function RootNavigator() {
-  const [isLogged, setIslogged] = useState("");
-
-  // useEffect(() => {
-  //   gettoken();
-  // }, []);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      gettoken();
-    }, [])
-  );
-
-  const gettoken = async () => {
-    try {
-      const accessToken = await AsyncStorage.getItem("access_token");
-      // console.log(accessToken, "<<<");
-      setIslogged(accessToken);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { isLogged } = useAuth()
   return <>{isLogged ? <Logged /> : notLogged()}</>;
 }

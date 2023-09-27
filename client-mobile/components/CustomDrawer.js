@@ -17,39 +17,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "../config/queries";
+import { useAuth } from "../context/useAuth";
+
 
 const CustomDrawer = (props) => {
+  const { logout, user } = useAuth()
+  console.log(user, "di drawer");
   const navigation = useNavigation();
 
-  const [user, setUser] = useState({});
-  const [userId, setUserId] = useState("");
-
-  const { data, loading, error } = useQuery(GET_USER, {
-    variables: {
-      userId: +userId,
-    },
-  });
-
-  useEffect(() => {
-    getUserId();
-    setUser(data?.user || {});
-  }, []);
-
-  // console.log(data, "<<<<<data di custom drawer");
-
-  const getUserId = async () => {
-    try {
-      const IdUser = await AsyncStorage.getItem("userId");
-      setUserId(IdUser);
-      // console.log(IdUser, "<<<<<< IdUser");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handelLogout = async () => {
-    await AsyncStorage.removeItem("access_token");
-    // navigation.navigate("Login");
+  const handelLogout = () => {
+    logout()
   };
 
   return (
