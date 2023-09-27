@@ -11,6 +11,8 @@ import MainStack from "./MainStack";
 import JobAppliedScreen from "../screens/JobAppliedScreen";
 import JobPostingsScreen from "../screens/JobPostingsScreen";
 import ChatStack from "./ChatStack";
+import AppliedStack from "./AppliedStack";
+import PostingStack from "./PostingStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -54,8 +56,8 @@ const MainTab = () => {
         }}
       ></Tab.Screen>
       <Tab.Screen
-        name="JobDetails"
-        component={JobAppliedScreen}
+        name="JobApplied"
+        component={AppliedStack}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {
@@ -71,7 +73,7 @@ const MainTab = () => {
       ></Tab.Screen>
       <Tab.Screen
         name="JobPostings"
-        component={JobPostingsScreen}
+        component={PostingStack}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {

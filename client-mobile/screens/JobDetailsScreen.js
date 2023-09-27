@@ -11,13 +11,14 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_JOB, APPLY_JOB } from "../config/queries";
+import { GET_JOB, APPLY_JOB, GET_MY_APPLIED_JOBS } from "../config/queries";
 import GoogleMaps from "../components/googleMaps";
 import { useAuth } from "../context/useAuth";
+import { useNavigate } from "../context/useNavigate";
 
 export default function JobDetailsScreen({ route, navigation }) {
   // let item = props.route.params;
-  // const navigation = useNavigation();
+  const { navigateToAppliedJob } = useNavigate();
   const { accessToken } = useAuth();
   const { jobId } = route.params;
   const [job, setJob] = useState({});
@@ -32,14 +33,14 @@ export default function JobDetailsScreen({ route, navigation }) {
   });
 
   const [funcApplyJob] = useMutation(APPLY_JOB, {
-    refetchQueries: [GET_JOB],
+    refetchQueries: [GET_MY_APPLIED_JOBS],
     context: {
       headers: {
         access_token: accessToken,
       },
     },
     onCompleted: () => {
-      navigation.navigate("Home");
+      navigateToAppliedJob();
     },
   });
 
@@ -53,7 +54,7 @@ export default function JobDetailsScreen({ route, navigation }) {
       long: data?.jobPosting?.long,
     }));
   }, [data]);
-  console.log(coordinate);
+  // console.log(coordinate);
 
   // if (loading) {
   //   return <Preloader />;
@@ -95,6 +96,16 @@ export default function JobDetailsScreen({ route, navigation }) {
   const markerCoordinate = {
     coordinate: { latitude: coordinate?.lat, longitude: coordinate?.long },
     title: `jobs location`,
+  };
+
+  const applyJob = () => {
+    const payload = job;
+    console.log(payload, "<<<<<<<payload");
+    funcApplyJob({
+      variables: {
+        jobPostingId: jobId,
+      },
+    });
   };
   return (
     <View className="flex-1 bg-gray-200">
@@ -258,7 +269,10 @@ export default function JobDetailsScreen({ route, navigation }) {
             Rp. {formatSalary(job?.minSalary)} - {formatSalary(job?.maxSalary)}
           </Animatable.Text>
           <Animatable.View delay={100} animation="slideInRight">
-            <TouchableOpacity className="bg-lime-300 py-3 px-6 rounded-2xl">
+            <TouchableOpacity
+              onPress={applyJob}
+              className="bg-lime-300 py-3 px-6 rounded-2xl"
+            >
               <Text className="text-s font-semibold">Apply</Text>
             </TouchableOpacity>
           </Animatable.View>

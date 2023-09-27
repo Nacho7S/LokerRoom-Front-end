@@ -64,8 +64,8 @@ const HomeScreen = ({ navigation }) => {
       />
       <SafeAreaView className="flex-1">
         {/* title */}
-        <View className="mt-9 space-y-2 flex-row justify-between items-center">
-          <Text className="mx-6 text-3xl font-bold text-gray-800">
+        <View className="mt-10 space-y-2 flex-row justify-between items-center">
+          <Text className="mx-6 mt-2 text-3xl font-bold text-gray-800">
             Jobs List
           </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -83,31 +83,34 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         {/* search  */}
-        <View className="mt-2 mx-5 flex-row justify-between items-center space-x-3">
-          <View className="flex-row flex-1 px-4 py-2 bg-white rounded-2xl">
+        <View className="mt-3 mx-5 flex-row justify-between items-center space-x-3">
+          {/* <View className="flex-row flex-1 px-4 py-2 bg-white rounded-2xl">
             <MagnifyingGlassIcon
               stroke={40}
               color="gray"
               style={{ marginRight: 10 }}
             />
-            {/* <TextInput
+            <TextInput
               placeholder="Food"
               value="Search"
               className="ml-2 text-gray-800"
-            /> */}
+            />
             <TextInput
               placeholder={"Search"}
               // style={{ flex: 1, paddingVertical: 0 }}
               // value={"search"} // Bind value to the input field
               // onChangeText={(text) => onChangeText(text)} // Bind onChangeText to the input field's text change event
             />
-          </View>
+          </View> */}
           <TouchableOpacity
             onPress={() => {
               setShowModal(true);
             }}
           >
-            <View className="bg-white rounded-2xl px-4 py-2">
+            <View className="bg-white rounded-2xl px-6 py-2 w-80 flex-row justify-between items-center">
+              <Text className=" text-base text-gray-500">
+                Search and Filter
+              </Text>
               <AdjustmentsHorizontalIcon size="29" stroke={40} color="black" />
             </View>
           </TouchableOpacity>
@@ -115,7 +118,7 @@ const HomeScreen = ({ navigation }) => {
 
         {/* categories scrollbar */}
         <ScrollView
-          className="mt-3 max-h-12"
+          className="mt-4 max-h-12"
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -171,7 +174,7 @@ const HomeScreen = ({ navigation }) => {
             alignItems: "center",
           }}
           showsVerticalScrollIndicator={false}
-          style={{ marginTop: 10 }}
+          style={{ marginTop: 12 }}
         >
           {jobPostings?.map((item, index) => (
             <JobCard item={item} index={index} key={index} />
