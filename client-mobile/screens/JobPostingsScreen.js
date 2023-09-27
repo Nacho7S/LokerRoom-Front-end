@@ -16,16 +16,27 @@ import {
   PlusIcon,
 } from "react-native-heroicons/solid";
 // import { categories, jobItems } from "../constants";
-// import { useState } from "react";
+import { useState, useEffect } from "react";
 import JobCard from "../components/JobCard";
+import JobStatusModal from "../components/JobStatusModal";
 import { GET_MY_POSTED_JOBS } from "../config/queries";
 import { useQuery } from "@apollo/client";
 
 const JobPostingScreen = ({ navigation }) => {
   // const [activeCategory, setActiveCategory] = useState("");
 
-  const { data, error, loading } = useQuery(GET_MY_POSTED_JOBS);
+  const [ showModal, setShowModal ] = useState(false);
+  const [ jobStatus, setJobStatus ] = useState({
+    id: null,
+    status: ''
+  });
+
+  const { data, error, loading, refetch } = useQuery(GET_MY_POSTED_JOBS);
   const { me: { postedJobs = [] } = {} } = data || {};
+
+  useEffect(() => {
+    refetch();
+  }, [showModal]);
 
   return (
     <View className="flex-1 relative">
@@ -136,10 +147,26 @@ const JobPostingScreen = ({ navigation }) => {
               index={index}
               key={index}
               axis={"horizontal"}
-              isEdit={true}
+              handleUpdateStatus={() => {
+                console.log('Clicked!');
+                setJobStatus({
+                  id: item.id,
+                  status: item.status
+                });
+                setShowModal(true);
+              }}
             />
           ))}
         </ScrollView>
+
+        <JobStatusModal 
+          show={showModal}
+          handleClose={() => {
+            setShowModal(false);
+          }}
+          state={jobStatus}
+        />
+
       </SafeAreaView>
     </View>
   );

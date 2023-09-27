@@ -1,10 +1,10 @@
-import { View, Text, Image, TouchableOpacity, Animated } from "react-native";
+import { View, Text, Image, TouchableOpacity, Animated, Pressable } from "react-native";
 import React from "react";
-import { EyeIcon } from "react-native-heroicons/solid";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-export default function JobCard({ item, index, axis }) {
+export default function JobCard({ item, index, axis, handleUpdateStatus }) {
   // console.log(item, "<<<<<<<<<item");
   const navigation = useNavigation();
   const getBackgroundColor = () => {
@@ -72,6 +72,32 @@ export default function JobCard({ item, index, axis }) {
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
       : Math.sign(num) * Math.abs(num);
   };
+
+  function ChipAtBottom() {
+    if (handleUpdateStatus && item?.status) {
+      return (
+        <Pressable 
+          className="mt-6 mx-10 flex justify-center items-center" 
+          onPressIn={handleUpdateStatus}
+        >
+          <Text 
+            className={getStatusColor()}
+          >
+            {item?.status} &nbsp;
+            <FontAwesome 
+              name="edit"
+            />
+          </Text>
+        </Pressable>
+      )
+    } else {
+      return (
+        <View className="mt-6 mx-10 flex justify-center items-center">
+          <Text className={getStatusColor()}>{item?.status}</Text>
+        </View>
+      )
+    }
+  }
 
   return (
     <Animatable.View
@@ -154,13 +180,13 @@ export default function JobCard({ item, index, axis }) {
           <Text className="text-white">See Details</Text>
         </TouchableOpacity>
       </View>
+
       {axis === "horizontal" ? (
-        <View className="mt-6 mx-10 flex justify-center items-center">
-          <Text className={getStatusColor()}>{item?.status}</Text>
-        </View>
+        <ChipAtBottom />
       ) : (
-        <View></View>
+        <></>
       )}
+
     </Animatable.View>
   );
 }
