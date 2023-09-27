@@ -509,7 +509,7 @@ const JobAddFormScreen = ({ navigation }) => {
               />
             </View>
           )}
-          <View style={{ marginBottom: 90, marginTop: 20 }}>
+          <View style={{ marginBottom: 200, marginTop: 20 }}>
             <CustomButton label={"Submit"} onPress={createJob} />
           </View>
         </ScrollView>
