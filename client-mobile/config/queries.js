@@ -251,6 +251,15 @@ export const EDIT_JOB = gql`
   }
 `;
 
+
+export const UPDATE_JOB_STATUS = gql`
+  mutation UpdateJobPosting($jobPostingId: Int!, $jobPostingStatus: JobPostingStatus!) {
+    changeJobPostingStatus(jobPostingId: $jobPostingId, jobPostingStatus: $jobPostingStatus) {
+      message
+    }
+  }
+`
+
 export const APPLY_JOB = gql`
   mutation ApplyToJob($jobPostingId: Int!) {
     applyToJob(jobPostingId: $jobPostingId) {
@@ -258,3 +267,4 @@ export const APPLY_JOB = gql`
     }
   }
 `;
+
