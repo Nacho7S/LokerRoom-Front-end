@@ -7,6 +7,8 @@ import UserEditDetailsScreen from "../screens/UserEditDetailsScreen";
 import JobEditFormScreen from "../screens/JobEditFormScreen";
 import MapContainer from "../containers/mapContainer";
 import RoomChatScreen from "../screens/RoomChatScreen";
+import JobAppliedScreen from "../screens/JobAppliedScreen";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +46,10 @@ const MainStack = () => {
         component={RoomChatScreen}
       />
       <Stack.Screen name="addMaps" options={{ headerShown: false }} component={MapContainer} />
+        name="addMaps"
+        options={{ headerShown: false }}
+        component={MapContainer}
+      />
     </Stack.Navigator>
   );
 };

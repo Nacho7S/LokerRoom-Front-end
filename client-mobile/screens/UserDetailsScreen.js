@@ -7,9 +7,9 @@ import { useQuery } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/useAuth";
 
-
 const UserDetailsScreen = ({ navigation }) => {
-  const {user} = useAuth()
+  const { user } = useAuth();
+  // console.log(user, "<<<<<<<<<<detail");
   return (
     <View className="flex-1 relative">
       <Image

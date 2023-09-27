@@ -26,6 +26,7 @@ const JobPostingScreen = ({ navigation }) => {
 
   const { data, error, loading } = useQuery(GET_MY_POSTED_JOBS);
   const { me: { postedJobs = [] } = {} } = data || {};
+  console.log(postedJobs, "<<<<<<data di jobposting");
 
   return (
     <View className="flex-1 relative">
@@ -36,8 +37,8 @@ const JobPostingScreen = ({ navigation }) => {
       />
       <SafeAreaView className="flex-1">
         {/* punch line */}
-        <View className="mt-9 space-y-2 flex-row justify-between items-center">
-          <Text className="mx-6 text-3xl font-bold text-gray-800">
+        <View className="mt-16 mb-5 space-y-2 flex-row justify-between items-center">
+          <Text className="mx-6 mt-1 text-3xl font-bold text-gray-800">
             Created Jobs List
           </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -55,7 +56,7 @@ const JobPostingScreen = ({ navigation }) => {
         </View>
 
         {/* search  */}
-        <View className="mt-4 mb-5 mx-5 flex-row justify-between items-center space-x-3">
+        {/* <View className="mt-4 mb-5 mx-5 flex-row justify-between items-center space-x-3">
           <View className="flex-row flex-1 px-4 py-2 bg-white rounded-2xl">
             <MagnifyingGlassIcon stroke={40} color="gray" />
             <TextInput
@@ -67,12 +68,12 @@ const JobPostingScreen = ({ navigation }) => {
           <View className="bg-white rounded-2xl px-4 py-2">
             <AdjustmentsHorizontalIcon size="29" stroke={40} color="black" />
           </View>
-        </View>
+        </View> */}
 
         {/* add job button */}
         <TouchableOpacity onPress={() => navigation.navigate("JobAdd")}>
           <View
-            className="bg-white rounded-2xl px-24 py-2 mx-5 mb-5 flex-row justify-evenly items-center"
+            className="bg-white rounded-2xl px-24 py-2 mx-5 mb-6 flex-row justify-evenly items-center"
             style={{
               backgroundColor: "rgba(255,255,255,0.3)",
               borderColor: "white",
@@ -124,7 +125,7 @@ const JobPostingScreen = ({ navigation }) => {
             );
           })}
         </ScrollView> */}
-        {/* food cards */}
+        {/* job cards */}
         <ScrollView
           contentContainerStyle={{ paddingHorizontal: 20 }}
           horizontal

@@ -4,7 +4,7 @@ import { EyeIcon } from "react-native-heroicons/solid";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
 
-export default function JobCard({ item, index, axis }) {
+export default function JobCardApplied({ item, status, index, axis }) {
   // console.log(item, "<<<<<<<<<item");
   const navigation = useNavigation();
   const getBackgroundColor = () => {
@@ -48,12 +48,12 @@ export default function JobCard({ item, index, axis }) {
     }
   };
   const getStatusColor = () => {
-    switch (item?.status) {
-      case "Active":
+    switch (status) {
+      case "Processing":
         return "bg-teal-300 text-gray-700 px-3 py-1.5 rounded-full";
-      case "Processed":
+      case "Accepted":
         return "bg-lime-300 text-gray-700 px-3 py-1.5 rounded-full";
-      case "Filled":
+      case "Rejected":
         return "bg-amber-300 text-gray-700 px-3 py-1.5 rounded-full";
       default:
         return "bg-lime-300 text-gray-700 px-3 py-1.5 rounded-full"; // Default axis
@@ -158,7 +158,7 @@ export default function JobCard({ item, index, axis }) {
       </View>
       {axis === "horizontal" ? (
         <View className="mt-6 mx-10 flex justify-center items-center">
-          <Text className={getStatusColor()}>{item?.status}</Text>
+          <Text className={getStatusColor()}>{status}</Text>
         </View>
       ) : (
         <View></View>

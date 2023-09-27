@@ -59,9 +59,9 @@ export function AuthProvider({ children }) {
     try {
       await AsyncStorage.clear();
       setIsLogged(false);
-      setCurrentUserId('')
-      setAccesToken('')
-      setUser({})
+      setCurrentUserId("");
+      setAccesToken("");
+      setUser({});
     } catch (error) {
       console.error("Error logging out:", error);
     }
