@@ -23,6 +23,7 @@ import { useAuth } from "../context/useAuth";
 
 export default function ChatScreens() {
   const { user, logout } = useAuth();
+  const loginUser = user
   const [summaryChats, setSummaryChats] = useState([]);
   const [localSummaryChats, setLocalSummaryChats] = useState([]); // for search
   const [searchUser, setSearchUser] = useState("");
@@ -87,6 +88,7 @@ export default function ChatScreens() {
   }, [searchUser]);
 
   const _onPressChat = (chat) => {
+    console.log(chat);
     navigation.navigate("RoomChat", { id: chat.chatId });
   };
 
@@ -105,7 +107,7 @@ export default function ChatScreens() {
           <TouchableOpacity onPress={_onPressCreateMsg}>
             <Ionicons name={"md-create-outline"} size={30} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleLogout}>
+          <TouchableOpacity onPress={logout}>
             <MaterialCommunityIcons name={"logout"} size={30} />
           </TouchableOpacity>
         </View>

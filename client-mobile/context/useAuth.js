@@ -22,13 +22,12 @@ export function AuthProvider({ children }) {
     },
   });
 
-  console.log(data, "ini users di auth");
-  console.log(currentUserId, "ini dari auth userid");
+  // console.log(data, "ini users di auth");
+  // console.log(currentUserId, "ini dari auth userid");
 
   useEffect(() => {
     checkLoginStatus();
-    setUser(data?.user);
-  }, [data]);
+  }, [data, isLogged]);
 
   // Check if the user is logged in based on the presence of an access token
   const checkLoginStatus = async () => {
@@ -38,7 +37,7 @@ export function AuthProvider({ children }) {
       setCurrentUserId(userId);
       setIsLogged(accessToken !== null);
       setAccesToken(accessToken);
-      // console.log(accessToken, "<<<<<<<<<INI");
+      setUser(data?.user);
     } catch (error) {
       console.error("Error checking login status:", error);
     }
@@ -60,6 +59,9 @@ export function AuthProvider({ children }) {
     try {
       await AsyncStorage.clear();
       setIsLogged(false);
+      setCurrentUserId('')
+      setAccesToken('')
+      setUser({})
     } catch (error) {
       console.error("Error logging out:", error);
     }
