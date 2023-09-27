@@ -124,6 +124,7 @@ export const GET_JOB = gql`
       minSalary
       maxSalary
       author {
+        id
         name
         telephone
         imgUrl
@@ -250,6 +251,7 @@ export const EDIT_JOB = gql`
   }
 `;
 
+
 export const UPDATE_JOB_STATUS = gql`
   mutation UpdateJobPosting($jobPostingId: Int!, $jobPostingStatus: JobPostingStatus!) {
     changeJobPostingStatus(jobPostingId: $jobPostingId, jobPostingStatus: $jobPostingStatus) {
@@ -257,3 +259,12 @@ export const UPDATE_JOB_STATUS = gql`
     }
   }
 `
+
+export const APPLY_JOB = gql`
+  mutation ApplyToJob($jobPostingId: Int!) {
+    applyToJob(jobPostingId: $jobPostingId) {
+      message
+    }
+  }
+`;
+
