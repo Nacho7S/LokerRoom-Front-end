@@ -19,21 +19,21 @@ export const LOGIN_USER = gql`
 
 export const GET_JOBS = gql`
   query JobPostings(
-    $gender: Gender, 
-    $maxAge: Int, 
-    $categoryId: Int, 
-    $educationId: Int, 
-    $location: String, 
-    $isUrgent: Boolean, 
+    $gender: Gender
+    $maxAge: Int
+    $categoryId: Int
+    $educationId: Int
+    $location: String
+    $isUrgent: Boolean
     $pageNumber: Int
   ) {
     jobPostings(
-      gender: $gender, 
-      maxAge: $maxAge, 
-      categoryId: $categoryId, 
-      educationId: $educationId, 
-      location: $location, 
-      isUrgent: $isUrgent, 
+      gender: $gender
+      maxAge: $maxAge
+      categoryId: $categoryId
+      educationId: $educationId
+      location: $location
+      isUrgent: $isUrgent
       pageNumber: $pageNumber
     ) {
       numPages
@@ -71,12 +71,12 @@ export const GET_CATEGORIES_AND_EDUCATION_LEVELS = gql`
 
 // export const GET_JOBS_CATEGORIES = gql`
 //   query Query(
-//     $gender: Gender, 
-//     $maxAge: Int, 
-//     $categoryId: Int, 
-//     $educationId: Int, 
-//     $location: String, 
-//     $isUrgent: Boolean, 
+//     $gender: Gender,
+//     $maxAge: Int,
+//     $categoryId: Int,
+//     $educationId: Int,
+//     $location: String,
+//     $isUrgent: Boolean,
 //     $pageNumber: Int
 //   ) {
 //     categories {
@@ -84,12 +84,12 @@ export const GET_CATEGORIES_AND_EDUCATION_LEVELS = gql`
 //       name
 //     }
 //     jobPostings(
-//       gender: $gender, 
-//       maxAge: $maxAge, 
-//       categoryId: $categoryId, 
-//       educationId: $educationId, 
-//       location: $location, 
-//       isUrgent: $isUrgent, 
+//       gender: $gender,
+//       maxAge: $maxAge,
+//       categoryId: $categoryId,
+//       educationId: $educationId,
+//       location: $location,
+//       isUrgent: $isUrgent,
 //       pageNumber: $pageNumber
 //     ) {
 //       id
@@ -103,7 +103,7 @@ export const GET_CATEGORIES_AND_EDUCATION_LEVELS = gql`
 //       minSalary
 //       maxSalary
 //       requiredGender
-//       status      
+//       status
 //     }
 //   }
 // `;
@@ -184,6 +184,14 @@ export const GET_USER = gql`
 export const EDIT_USER = gql`
   mutation Mutation($userDetails: userDetails) {
     editUserDetails(userDetails: $userDetails) {
+      message
+    }
+  }
+`;
+
+export const EDIT_JOB = gql`
+  mutation EditJobPosting($jobPostingId: Int!, $jobPosting: newJobPosting) {
+    editJobPosting(jobPostingId: $jobPostingId, jobPosting: $jobPosting) {
       message
     }
   }

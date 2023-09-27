@@ -29,7 +29,7 @@ export default function RootNavigator() {
   const gettoken = async () => {
     try {
       const accessToken = await AsyncStorage.getItem("access_token");
-      console.log(accessToken, "<<<");
+      // console.log(accessToken, "<<<");
       setIslogged(accessToken);
     } catch (err) {
       console.log(err);

@@ -35,7 +35,7 @@ const CustomDrawer = (props) => {
     setUser(data?.user || {});
   }, []);
 
-  console.log(data, "<<<<<data di custom drawer");
+  // console.log(data, "<<<<<data di custom drawer");
 
   const getUserId = async () => {
     try {

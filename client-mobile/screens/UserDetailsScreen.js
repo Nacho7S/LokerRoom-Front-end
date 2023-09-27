@@ -33,13 +33,13 @@ const UserDetailsScreen = ({ navigation }) => {
     setUser(data?.user || {});
   }, []);
 
-  console.log(data, "<<<<<<<<<<data di user detail   ");
+  // console.log(data, "<<<<<<<<<data di user detail   ");
 
   const getUserId = async () => {
     try {
       const IdUser = await AsyncStorage.getItem("userId");
       setUserId(IdUser);
-      console.log(IdUser, "<<<<<<<<<< IdUser");
+      // console.log(IdUser, "<<<<<<<<<< IdUser");
     } catch (err) {
       console.log(err);
     }
