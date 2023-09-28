@@ -43,15 +43,15 @@ import { Text } from "react-native";
 import { Dimensions } from "react-native";
 
 export default function RoomChatScreen() {
-  const screenWidth = Dimensions.get("window").width
+  const screenWidth = Dimensions.get("window").width;
   const { user } = useAuth();
-  const loginUser = user
+  const loginUser = user;
   const [messages, setMessages] = useState([]);
   const { params = {} } = useRoute();
   console.log(params, "dari pararrrraammms");
   // const [chatId, setChatId] = useState("");
-  const { id } = params
-  const chatId = id
+  const { id } = params;
+  const chatId = id;
   // console.log(chatId);
   const { userId, username } = params;
   const [users, setUsers] = useState([]);
@@ -88,7 +88,7 @@ export default function RoomChatScreen() {
     };
     setReceiverUser(receiver);
     // console.log(loginUser?.userName,receiver, "<<<<<< receiver");
-  
+
     navigation.setOptions({
       title: receiver?.name || "",
     });
@@ -100,25 +100,25 @@ export default function RoomChatScreen() {
 
   const uploadChat = async ({ fileURL = "", type = "", isFile = false }) => {
     // if (!inputMsg && inputMsg === '' || inputImg === null) throw new Error("message is empty");
-    
+
     const payload = {
       messages: [
-          {
-            text: inputMsg,
-            sender: loginUser?.id,
-            timestamp: Timestamp.now(),
+        {
+          text: inputMsg,
+          sender: loginUser?.id,
+          timestamp: Timestamp.now(),
           fileURL,
           type,
         },
       ],
       users: [loginUser, receiverUser],
       lastText: inputMsg
-      ? inputMsg
-      : `${loginUser?.name || "User"} has send a ${type}`,
+        ? inputMsg
+        : `${loginUser?.name || "User"} has send a ${type}`,
       lastTimestamp: Timestamp.now(),
     };
     try {
-      const currChatId = chatId
+      const currChatId = chatId;
       const docRef = doc(db, "chats", currChatId);
       const findDoc = await getDoc(docRef);
       // console.log(findDoc, "docREEEFFFF");
@@ -131,11 +131,10 @@ export default function RoomChatScreen() {
           lastText: payload.lastText,
           lastTimestamp: payload.lastTimestamp,
         });
-      
       }
       setInputMsg("");
       setInputImg(null);
-      
+
       createSummaryChat({
         id: currChatId,
         text: payload.lastText,
@@ -143,9 +142,9 @@ export default function RoomChatScreen() {
       });
     } catch (error) {
       console.log(error);
+    }
   };
-}
-  
+
   const createSummaryChat = async ({ id, text, timestamp }) => {
     try {
       const payload = {
@@ -238,17 +237,19 @@ export default function RoomChatScreen() {
           className="absolute w-full h-full"
         />
         <SafeAreaView className="flex-1">
-        <View className="flex-row justify-between mx-8 mb-3 items-center">
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          // className="bg-white rounded-2xl p-3 shadow"
-        >
+          <View className="flex-row justify-between mx-10 mb-3 items-center">
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              // className="bg-white rounded-2xl p-3 shadow"
+            >
               <ChevronLeftIcon size="23" stroke={50} color="black" />
             </TouchableOpacity>
-            <View style={{marginEnd: screenWidth / 2.7 , backgroundColor: 'white'}}>
-              <Text>{ username }</Text>
+            <View
+              style={{ marginEnd: screenWidth / 2.7, backgroundColor: "white" }}
+            >
+              <Text>{username}</Text>
             </View>
-      </View>
+          </View>
 
           <View style={{ flex: 11, paddingBottom: 10 }}>
             <FlatList
@@ -287,12 +288,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginLeft: 10,
-    marginRight: 20,
-    marginBottom: 90
+    marginLeft: 25,
+    marginRight: 32,
+    marginBottom: 90,
   },
   inputMsgBox: {
-    minHeight: "70%",
+    // minHeight: "70%",
     marginRight: 20,
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -301,6 +302,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     flex: 1,
     fontSize: 16,
-    color:'white'
+    color: "white",
+    height: 40,
   },
 });
