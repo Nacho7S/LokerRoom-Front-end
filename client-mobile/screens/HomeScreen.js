@@ -195,7 +195,7 @@ const HomeScreen = ({ navigation }) => {
           data={jobPostings}
           keyExtractor={(item) => item?.id}
           renderItem={({ item, index }) => (
-            <JobCard item={item} index={index} key={index} />
+            <JobCard item={item} key={index} />
           )}
           onEndReached={() => {
             if (curPage >= numPages) return;

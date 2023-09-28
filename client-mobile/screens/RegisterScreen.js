@@ -105,7 +105,7 @@ const RegisterScreen = ({ navigation }) => {
               // fontWeight: "bold",
               color: "#333",
               marginBottom: 20,
-              marginTop: 40,
+              marginTop: 90,
               fontFamily: "Syne-Bold",
             }}
           >

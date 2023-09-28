@@ -54,9 +54,9 @@ const JobAppliedScreen = ({ navigation }) => {
       />
       <SafeAreaView className="flex-1">
         {/* punch line */}
-        <View className="mt-16 space-y-2 flex-row justify-between items-center">
+        <View className="mt-32 space-y-2 flex-row justify-between items-center">
           <Text
-            className="mx-6 mt-1 text-2xl text-gray-800"
+            className="mx-6 mt-1 text-3xl text-gray-800"
             style={{ fontFamily: "Syne-Bold" }}
           >
             Applied Jobs List

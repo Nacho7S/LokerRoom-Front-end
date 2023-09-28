@@ -245,7 +245,7 @@ export default function RoomChatScreen() {
               <ChevronLeftIcon size="23" stroke={50} color="black" />
             </TouchableOpacity>
             <View
-              style={{ marginEnd: screenWidth / 2.7, backgroundColor: "white" }}
+              style={{ marginEnd: screenWidth / 2.7 }}
             >
               <Text>{username}</Text>
             </View>
