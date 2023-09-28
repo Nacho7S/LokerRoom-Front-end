@@ -7,6 +7,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useFonts } from "expo-font";
 
 export default function JobFilterModal({
   categories = [],
@@ -17,6 +18,15 @@ export default function JobFilterModal({
 }) {
   const [initialState, setFilter] = state;
   const [modalFilters, setModalFilters] = useState(initialState);
+
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
 
   const onChange = (key, value) => {
     setModalFilters((prevState) => ({
@@ -36,11 +46,10 @@ export default function JobFilterModal({
         <View style={styles.modalView}>
           <Text
             style={{
-              // fontFamily: "Roboto-Medium",
               fontSize: 28,
-              fontWeight: "bold",
               color: "#333",
               marginBottom: 30,
+              fontFamily: "Syne-Bold",
             }}
           >
             Filter Jobs
@@ -272,7 +281,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
-    borderRadius: 20,
+    borderRadius: 30,
     padding: 15,
     paddingHorizontal: 20,
     elevation: 2,

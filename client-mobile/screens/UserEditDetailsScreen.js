@@ -18,12 +18,17 @@ import SelectDropdown from "react-native-select-dropdown";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { ChevronLeftIcon } from "react-native-heroicons/solid";
+import Entypo from "react-native-vector-icons/Entypo";
+
 import CustomButton from "../components/CustomButton";
 import { ADD_USER, EDIT_USER } from "../config/queries";
 import { useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFonts } from "expo-font";
 
 const UserEditDetailScreen = (props) => {
   const [accessToken, setAccessToken] = useState("");
@@ -45,9 +50,18 @@ const UserEditDetailScreen = (props) => {
     },
   });
 
-  useEffect(() => {
-    getAccessToken();
-  }, []);
+  // useEffect(() => {
+  //   getAccessToken();
+  // }, []);
+
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
 
   const getAccessToken = async () => {
     try {
@@ -100,17 +114,28 @@ const UserEditDetailScreen = (props) => {
           showsVerticalScrollIndicator={false}
           style={{ paddingHorizontal: 25 }}
         >
-          <Text
-            style={{
-              fontSize: 28,
-              fontWeight: "bold",
-              color: "#333",
-              marginBottom: 30,
-              marginTop: 50,
-            }}
-          >
-            Edit Profile
-          </Text>
+          <View className="flex-row justify-start items-center">
+            <View className="mt-3 items-center">
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Profile")}
+                className="bg-white rounded-2xl p-2 shadow"
+              >
+                <ChevronLeftIcon size="23" stroke={50} color="black" />
+              </TouchableOpacity>
+            </View>
+            <Text
+              style={{
+                fontSize: 28,
+                color: "#333",
+                marginBottom: 30,
+                marginTop: 50,
+                marginLeft: 16,
+                fontFamily: "Syne-Bold",
+              }}
+            >
+              Edit Profile
+            </Text>
+          </View>
 
           <InputField
             onChangeText={(text) => onChange("address", text)}
@@ -131,10 +156,10 @@ const UserEditDetailScreen = (props) => {
             value={user.profileDescription}
             label={"Profile Description"}
             icon={
-              <Ionicons
-                name="person-outline"
-                size={20}
-                color="#666"
+              <Entypo
+                name="text"
+                size={23}
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -148,7 +173,7 @@ const UserEditDetailScreen = (props) => {
               <Ionicons
                 name="person-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -182,8 +207,24 @@ const UserEditDetailScreen = (props) => {
               borderWidth: 0.8,
               borderRadius: 20,
               marginBottom: 20,
-              width: 200,
+              width: "100%",
+              height: "10%",
             }}
+            buttonTextStyle={{
+              fontSize: 15,
+              color: "white",
+              textAlign: "left",
+            }}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#FFF"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
           />
 
           {/* <Button title="Select Date of Birth" onPress={() => setOpen(true)} />
@@ -212,11 +253,11 @@ const UserEditDetailScreen = (props) => {
             <Ionicons
               name="calendar-outline"
               size={20}
-              color="#666"
+              color="white"
               style={{ marginRight: 5 }}
             />
             <TouchableOpacity onPress={() => setOpen(true)}>
-              <Text style={{ color: "#666", marginLeft: 5, marginTop: 5 }}>
+              <Text style={{ color: "white", marginLeft: 5, marginTop: 5 }}>
                 {dobLabel}
               </Text>
             </TouchableOpacity>

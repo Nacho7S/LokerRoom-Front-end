@@ -26,6 +26,7 @@ import {
   // GET_JOBS_CATEGORIES,
 } from "../config/queries";
 import { useQuery } from "@apollo/client";
+import { useFonts } from "expo-font";
 
 const HomeScreen = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false);
@@ -46,8 +47,17 @@ const HomeScreen = ({ navigation }) => {
   const { categories, educationLevels } = fetch || {};
   const { jobPostings: { data: jobPostings, numPages } = {} } = data || {};
   const [curPage, setCurPage] = useState(1);
-  console.log(categories, "<<< Fetching categories");
-  console.log(jobPostings, "<<< FETCHING JOBS");
+  // console.log(categories, "<<< Fetching categories");
+  // console.log(jobPostings, "<<< FETCHING JOBS");
+
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
 
   // if (loading) {
   //   return null;
@@ -67,7 +77,10 @@ const HomeScreen = ({ navigation }) => {
       <SafeAreaView className="flex-1">
         {/* title */}
         <View className="mt-10 space-y-2 flex-row justify-between items-center">
-          <Text className="mx-6 mt-2 text-3xl font-bold text-gray-800">
+          <Text
+            className="mx-6 mt-2 text-3xl text-gray-800"
+            style={{ fontFamily: "Syne-Bold" }}
+          >
             Jobs List
           </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
