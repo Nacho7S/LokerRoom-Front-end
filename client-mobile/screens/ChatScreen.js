@@ -18,21 +18,20 @@ import {
 } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-
 import Chat from "../components/Chat";
 import { useAuth } from "../context/useAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ChatScreens() {
   const { user, logout } = useAuth();
-  const loginUser = user
+  const loginUser = user;
   const [summaryChats, setSummaryChats] = useState([]);
   const [localSummaryChats, setLocalSummaryChats] = useState([]); // for search
   const [searchUser, setSearchUser] = useState("");
   const [onSearchFocus, setOnSearchFocus] = useState(false);
   const [onSearchCaretHidden, setOnSearchCaretHidden] = useState(false);
-  const [onRead, SetOnRead] = useState(true)
-  const [currentChat, setCurrentChat] = useState('')
+  const [onRead, SetOnRead] = useState(true);
+  const [currentChat, setCurrentChat] = useState("");
   const navigation = useNavigation();
 
   useFocusEffect(
@@ -81,9 +80,7 @@ export default function ChatScreens() {
   useEffect(() => {
     if (searchUser) {
       const currSummaryChats = summaryChats.filter((item) => {
-        const key =
-          loginUser?.id == item?.
-            Id ? "senderName" : "receiverName";
+        const key = loginUser?.id == item?.Id ? "senderName" : "receiverName";
         return item[key]?.toLowerCase()?.includes(searchUser.toLowerCase());
       });
       setLocalSummaryChats(currSummaryChats);
@@ -103,64 +100,75 @@ export default function ChatScreens() {
   // console.log(summaryChats, "<<< summary chats");
   return (
     <View className="flex-1 relative">
-        <Image
-          blurRadius={50}
-          source={require("../assets/images/background9.png")}
-          className="absolute w-full h-full"
-        />
-      <SafeAreaView className="flex-1">
-        
-      <View style={styles.headerContainer}>
-        <Text style={[styles.header, { flex: 1 }]}>
-          Hi, {loginUser.name || "User"} !
-        </Text>
-      </View>
-      <View style={{ flex: 14 }}>
-        <View style={[styles.searchContainer]}>
-          <TextInput
-            value={searchUser}
-            onChangeText={_onChangeSearch}
-            placeholder="Search"
-            onFocus={() => {
-              setOnSearchFocus(true);
-              setOnSearchCaretHidden(false);
-            }}
-            onBlur={() => setOnSearchFocus(false)}
-            caretHidden={onSearchCaretHidden}
-            />
-          <TouchableOpacity onPress={_onPressSearchIcon}>
-            <AntDesign
-              name={onSearchFocus ? "closecircleo" : "search1"}
-              size={20}
-              color={"gray"}
-              />
-          </TouchableOpacity>
+      <Image
+        blurRadius={50}
+        source={require("../assets/images/background9.png")}
+        className="absolute w-full h-full"
+      />
+      <SafeAreaView className="flex-1 mx-4">
+        <View style={styles.headerContainerTitle}>
+          <Text
+            style={[styles.header, { flex: 1, height: 40, fontWeight: "bold" }]}
+          >
+            Chats
+          </Text>
         </View>
-        <FlatList
-          data={localSummaryChats}
-          renderItem={({ item, index }) => (
-            <>
-            <Chat
-              index={index}
-              item={item}
-              onPress={_onPressChat}
-                loginUser={loginUser}
-                onRead={onRead}
+        <View style={styles.headerContainer}>
+          <Text style={[styles.header, { flex: 1, height: 40 }]}>
+            Hi, {loginUser.name || "User"} !
+          </Text>
+        </View>
+        <View style={{ flex: 14, marginTop: 12 }}>
+          <View style={[styles.searchContainer]}>
+            <TextInput
+              value={searchUser}
+              onChangeText={_onChangeSearch}
+              placeholder="Search"
+              onFocus={() => {
+                setOnSearchFocus(true);
+                setOnSearchCaretHidden(false);
+              }}
+              onBlur={() => setOnSearchFocus(false)}
+              caretHidden={onSearchCaretHidden}
+            />
+            <TouchableOpacity onPress={_onPressSearchIcon}>
+              <AntDesign
+                name={onSearchFocus ? "closecircleo" : "search1"}
+                size={20}
+                color={"gray"}
+              />
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            data={localSummaryChats}
+            style={{ marginTop: 12 }}
+            renderItem={({ item, index }) => (
+              <>
+                <Chat
+                  index={index}
+                  item={item}
+                  onPress={_onPressChat}
+                  loginUser={loginUser}
+                  onRead={onRead}
                 />
               </>
-          )}
-        />
-      </View>
-</SafeAreaView>
+            )}
+          />
+        </View>
+      </SafeAreaView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  headerContainerTitle: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 15,
+  },
   headerContainer: {
     flex: 1,
-    borderBottomWidth: 0.5,
-    borderBottomColor: "white",
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -183,10 +191,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 5,
     borderWidth: 0.5,
-    borderRadius: 10,
+    borderRadius: 30,
     borderColor: "white",
     flexDirection: "row",
-    backgroundColor: 'white',
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "space-between",
   },
