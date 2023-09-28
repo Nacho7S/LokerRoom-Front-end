@@ -20,6 +20,7 @@ import JobCard from "../components/JobCard";
 import { GET_MY_APPLIED_JOBS } from "../config/queries";
 import { useQuery } from "@apollo/client";
 import JobCardApplied from "../components/JobCardApplied";
+import { useFonts } from "expo-font";
 
 const JobAppliedScreen = ({ navigation }) => {
   // const [activeCategory, setActiveCategory] = useState("");
@@ -29,6 +30,15 @@ const JobAppliedScreen = ({ navigation }) => {
   const { me: { appliedJobs = [] } = {} } = data || {};
   // console.log(data, "<<<< INI DARI APOLLO");
   console.log(appliedJobs, "<<<< INI APPLIED JOBS (deconstruct)");
+
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
 
   if (error) {
     console.log(error);
@@ -45,7 +55,10 @@ const JobAppliedScreen = ({ navigation }) => {
       <SafeAreaView className="flex-1">
         {/* punch line */}
         <View className="mt-16 space-y-2 flex-row justify-between items-center">
-          <Text className="mx-6 mt-1 text-3xl font-bold text-gray-800">
+          <Text
+            className="mx-6 mt-1 text-2xl text-gray-800"
+            style={{ fontFamily: "Syne-Bold" }}
+          >
             Applied Jobs List
           </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>

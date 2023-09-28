@@ -18,15 +18,24 @@ import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "../config/queries";
 import { useAuth } from "../context/useAuth";
-
+import { useFonts } from "expo-font";
 
 const CustomDrawer = (props) => {
-  const { logout, user } = useAuth()
+  const { logout, user } = useAuth();
   console.log(user, "di drawer");
   const navigation = useNavigation();
 
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
+
   const handelLogout = () => {
-    logout()
+    logout();
   };
 
   return (
@@ -53,8 +62,8 @@ const CustomDrawer = (props) => {
             style={{
               color: "#fff",
               fontSize: 18,
-              // fontFamily: 'Roboto-Medium',
               marginBottom: 5,
+              fontFamily: "Syne-Bold",
             }}
           >
             {user?.name}

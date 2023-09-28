@@ -6,10 +6,19 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/useAuth";
+import { useFonts } from "expo-font";
 
 const UserDetailsScreen = ({ navigation }) => {
   const { user } = useAuth();
   // console.log(user, "<<<<<<<<<<detail");
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
   return (
     <View className="flex-1 relative">
       <Image
@@ -17,10 +26,17 @@ const UserDetailsScreen = ({ navigation }) => {
         source={require("../assets/images/background9.png")}
         className="absolute w-full h-full"
       />
-      <ScrollView style={{ marginTop: 40, marginHorizontal: 20 }}>
+      <ScrollView style={{ marginTop: 55, marginHorizontal: 20 }}>
         <View className="flex-row justify-between items-center">
           <View className="flex-row justify-start items-center gap-4">
-            <Text className="text-3xl font-bold">Profile</Text>
+            <Text
+              className="text-3xl"
+              style={{
+                fontFamily: "Syne-Bold",
+              }}
+            >
+              Profile
+            </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("UserEdit", { ...user })}
             >

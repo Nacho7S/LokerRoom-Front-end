@@ -1,4 +1,11 @@
-import { View, Text, Image, TouchableOpacity, Animated, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Animated,
+  Pressable,
+} from "react-native";
 import React from "react";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
@@ -24,15 +31,17 @@ export default function JobCard({ item, index, axis, handleUpdateStatus }) {
   const get3dIcon = () => {
     switch (item?.category?.name) {
       case "Cleaning":
-        return require("../assets/images/bulb-front-gradient.png");
+        return require("../assets/images/roll-brush-front-gradient.png");
       case "Construction":
-        return require("../assets/images/bulb-front-color.png");
+        return require("../assets/images/tool-front-gradient.png");
       case "Factory & Industry":
         return require("../assets/images/axe-front-gradient.png");
       case "Cooking":
-        return require("../assets/images/tea-cup-front-gradient.png");
+        return require("../assets/images/glass-front-gradient.png");
       case "Office":
         return require("../assets/images/travel-front-gradient.png");
+      case "House Work":
+        return require("../assets/images/tea-cup-front-gradient.png");
       default:
         return require("../assets/images/travel-front-gradient.png"); // Default color
     }
@@ -78,26 +87,22 @@ export default function JobCard({ item, index, axis, handleUpdateStatus }) {
   function ChipAtBottom() {
     if (handleUpdateStatus && item?.status) {
       return (
-        <Pressable 
-          className="mt-6 mx-10 flex justify-center items-center" 
+        <Pressable
+          className="mt-6 mx-10 flex justify-center items-center"
           onPressIn={handleUpdateStatus}
         >
-          <Text 
-            className={getStatusColor()}
-          >
+          <Text className={getStatusColor()}>
             {item?.status} &nbsp;
-            <FontAwesome 
-              name="edit"
-            />
+            <FontAwesome name="edit" />
           </Text>
         </Pressable>
-      )
+      );
     } else {
       return (
         <View className="mt-6 mx-10 flex justify-center items-center">
           <Text className={getStatusColor()}>{item?.status}</Text>
         </View>
-      )
+      );
     }
   }
 
@@ -137,7 +142,7 @@ export default function JobCard({ item, index, axis, handleUpdateStatus }) {
           <View className="mt-1">
             {item?.requiredGender ? (
               <Text
-                className="text-gray-500 text-s px-3 py-1.5 h-8 mt-3 w-16 flex justify-center items-center"
+                className="text-gray-500 text-s px-3 py-1.5 h-8 mt-3 pl-4 w-20 "
                 style={{
                   backgroundColor: "rgba(255,255,255,0.3)",
                   borderRadius: 15,
@@ -183,12 +188,7 @@ export default function JobCard({ item, index, axis, handleUpdateStatus }) {
         </TouchableOpacity>
       </View>
 
-      {axis === "horizontal" ? (
-        <ChipAtBottom />
-      ) : (
-        <></>
-      )}
-
+      {axis === "horizontal" ? <ChipAtBottom /> : <></>}
     </Animatable.View>
   );
 }

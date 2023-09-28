@@ -21,23 +21,33 @@ import JobCard from "../components/JobCard";
 import JobStatusModal from "../components/JobStatusModal";
 import { GET_MY_POSTED_JOBS } from "../config/queries";
 import { useQuery } from "@apollo/client";
+import { useFonts } from "expo-font";
 
 const JobPostingScreen = ({ navigation }) => {
   // const [activeCategory, setActiveCategory] = useState("");
 
-  const [ showModal, setShowModal ] = useState(false);
-  const [ jobStatus, setJobStatus ] = useState({
+  const [showModal, setShowModal] = useState(false);
+  const [jobStatus, setJobStatus] = useState({
     id: null,
-    status: ''
+    status: "",
   });
 
   const { data, error, loading, refetch } = useQuery(GET_MY_POSTED_JOBS);
   const { me: { postedJobs = [] } = {} } = data || {};
-  console.log(postedJobs, "<<<<<<data di jobposting");
+  // console.log(postedJobs, "<<<<<<data di jobposting");
 
   useEffect(() => {
     refetch();
   }, [showModal]);
+
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
 
   return (
     <View className="flex-1 relative">
@@ -49,7 +59,10 @@ const JobPostingScreen = ({ navigation }) => {
       <SafeAreaView className="flex-1">
         {/* punch line */}
         <View className="mt-16 mb-5 space-y-2 flex-row justify-between items-center">
-          <Text className="mx-6 mt-1 text-3xl font-bold text-gray-800">
+          <Text
+            className="mx-6 mt-1 text-2xl text-gray-800"
+            style={{ fontFamily: "Syne-Bold" }}
+          >
             Created Jobs List
           </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -149,10 +162,10 @@ const JobPostingScreen = ({ navigation }) => {
               key={index}
               axis={"horizontal"}
               handleUpdateStatus={() => {
-                console.log('Clicked!');
+                console.log("Clicked!");
                 setJobStatus({
                   id: item.id,
-                  status: item.status
+                  status: item.status,
                 });
                 setShowModal(true);
               }}
@@ -160,14 +173,13 @@ const JobPostingScreen = ({ navigation }) => {
           ))}
         </ScrollView>
 
-        <JobStatusModal 
+        <JobStatusModal
           show={showModal}
           handleClose={() => {
             setShowModal(false);
           }}
           state={jobStatus}
         />
-
       </SafeAreaView>
     </View>
   );

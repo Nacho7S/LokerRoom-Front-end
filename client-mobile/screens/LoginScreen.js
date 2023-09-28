@@ -11,12 +11,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Feather from "react-native-vector-icons/Feather";
 
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import { LOGIN_USER } from "../config/queries";
 import { useMutation } from "@apollo/client";
 import { useAuth } from "../context/useAuth";
+import { useFonts } from "expo-font";
 
 const LoginScreen = ({ navigation }) => {
   const { login } = useAuth(); // Use the useAuth hook
@@ -25,6 +27,15 @@ const LoginScreen = ({ navigation }) => {
     password: "",
   });
   const [funcLoginUser] = useMutation(LOGIN_USER);
+
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
 
   const onChange = (key, value) => {
     setUser((prevState) => ({
@@ -63,7 +74,7 @@ const LoginScreen = ({ navigation }) => {
         className="absolute w-full h-full"
       />
       <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
-        <View style={{ paddingHorizontal: 25 }}>
+        <View style={{ paddingHorizontal: 40 }}>
           <View style={{ alignItems: "center" }}>
             {/* <LoginSVG
             height={300}
@@ -75,10 +86,11 @@ const LoginScreen = ({ navigation }) => {
           <Text
             style={{
               // fontFamily: "Roboto-Medium",
-              fontSize: 28,
-              fontWeight: "bold",
+              fontSize: 36,
+              // fontWeight: "b old",
               color: "#333",
               marginBottom: 30,
+              fontFamily: "Syne-Bold",
             }}
           >
             Login
@@ -88,10 +100,10 @@ const LoginScreen = ({ navigation }) => {
             onChangeText={(text) => onChange("telephone", text)}
             label={"Phone Numbers"}
             icon={
-              <MaterialIcons
-                name="alternate-email"
+              <Feather
+                name="phone"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -104,7 +116,7 @@ const LoginScreen = ({ navigation }) => {
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -114,12 +126,6 @@ const LoginScreen = ({ navigation }) => {
           />
 
           <CustomButton label={"Login"} onPress={loginUser} />
-
-          <Text
-            style={{ textAlign: "center", color: "white", marginBottom: 30 }}
-          >
-            Or, login with ...
-          </Text>
 
           <View
             style={{
