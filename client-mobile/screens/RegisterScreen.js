@@ -25,6 +25,7 @@ import { ADD_USER } from "../config/queries";
 import { useMutation } from "@apollo/client";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { ChevronLeftIcon } from "react-native-heroicons/solid";
+import { useFonts } from "expo-font";
 
 const RegisterScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
@@ -46,6 +47,15 @@ const RegisterScreen = ({ navigation }) => {
     educationId: 1,
   });
   const [funcCreateUser, { loading, error, data }] = useMutation(ADD_USER);
+
+  let [fontsLoaded] = useFonts({
+    // "Syne-SemiBold": require("../assets/fonts/Syne-SemiBold.ttf"),
+    "Syne-Bold": require("../assets/fonts/Syne-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
 
   const onChange = (key, value) => {
     console.log(key, value);
@@ -87,15 +97,16 @@ const RegisterScreen = ({ navigation }) => {
       <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{ paddingHorizontal: 25 }}
+          style={{ paddingHorizontal: 40 }}
         >
           <Text
             style={{
               fontSize: 28,
-              fontWeight: "bold",
+              // fontWeight: "bold",
               color: "#333",
-              marginBottom: 30,
-              marginTop: 110,
+              marginBottom: 20,
+              marginTop: 40,
+              fontFamily: "Syne-Bold",
             }}
           >
             Register
@@ -109,7 +120,7 @@ const RegisterScreen = ({ navigation }) => {
               <Ionicons
                 name="person-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -122,7 +133,7 @@ const RegisterScreen = ({ navigation }) => {
               <Feather
                 name="phone"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -136,7 +147,7 @@ const RegisterScreen = ({ navigation }) => {
               <MaterialIcons
                 name="alternate-email"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -150,7 +161,7 @@ const RegisterScreen = ({ navigation }) => {
               <Ionicons
                 name="ios-lock-closed-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -177,7 +188,7 @@ const RegisterScreen = ({ navigation }) => {
             <Ionicons
               name="calendar-outline"
               size={20}
-              color="#666"
+              color="white"
               style={{ marginRight: 5 }}
             />
             <TextInput
@@ -197,7 +208,7 @@ const RegisterScreen = ({ navigation }) => {
               <Ionicons
                 name="calendar-outline"
                 size={20}
-                color="#666"
+                color="white"
                 style={{ marginRight: 5 }}
               />
             }
@@ -276,11 +287,11 @@ const RegisterScreen = ({ navigation }) => {
             <Ionicons
               name="calendar-outline"
               size={20}
-              color="#666"
+              color="white"
               style={{ marginRight: 5 }}
             />
             <TouchableOpacity onPress={() => setOpen(true)}>
-              <Text style={{ color: "#666", marginLeft: 5, marginTop: 5 }}>
+              <Text style={{ color: "white", marginLeft: 5, marginTop: 5 }}>
                 {dobLabel}
               </Text>
             </TouchableOpacity>

@@ -14,6 +14,7 @@ import InputField from "../components/InputField";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Entypo from "react-native-vector-icons/Entypo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import CustomButton from "../components/CustomButton";
@@ -53,7 +54,7 @@ const JobAddFormScreen = ({ navigation }) => {
     requiredEducation: "",
     isUrgent: "",
   });
-  // console.log(accessToken, "<<<<<<<<<< accessToken");
+  // console.log(accessToken, "<<<<<<<<< accessToken");
   const [funcCreateJob, { loading, error, data }] = useMutation(ADD_JOB, {
     refetchQueries: [GET_JOBS],
     context: {
@@ -179,9 +180,9 @@ const JobAddFormScreen = ({ navigation }) => {
             onChangeText={(text) => onChange("title", text)}
             label={"Title"}
             icon={
-              <Ionicons
-                name="person-outline"
-                size={20}
+              <MaterialIcons
+                name="title"
+                size={25}
                 color="white"
                 style={{ marginRight: 5 }}
               />
@@ -192,9 +193,9 @@ const JobAddFormScreen = ({ navigation }) => {
             onChangeText={(text) => onChange("description", text)}
             label={"Description"}
             icon={
-              <Feather
-                name="phone"
-                size={20}
+              <Entypo
+                name="text"
+                size={23}
                 color="white"
                 style={{ marginRight: 5 }}
               />
@@ -210,7 +211,7 @@ const JobAddFormScreen = ({ navigation }) => {
                 name="alternate-email"
                 size={20}
                 color="white"
-                style={{ marginRight: 5 }}
+                style={{ marginRight: 9 }}
               />
             }
           />
@@ -232,9 +233,9 @@ const JobAddFormScreen = ({ navigation }) => {
             onChangeText={(text) => onChange("minSalary", +text)}
             label={"Minimum Salary"}
             icon={
-              <Ionicons
-                name="ios-lock-closed-outline"
-                size={20}
+              <MaterialIcons
+                name="attach-money"
+                size={23}
                 color="white"
                 style={{ marginRight: 5 }}
               />
@@ -245,9 +246,9 @@ const JobAddFormScreen = ({ navigation }) => {
             onChangeText={(text) => onChange("maxSalary", +text)}
             label={"Maximum Salary"}
             icon={
-              <Ionicons
-                name="ios-lock-closed-outline"
-                size={20}
+              <MaterialIcons
+                name="attach-money"
+                size={23}
                 color="white"
                 style={{ marginRight: 5 }}
               />
@@ -272,10 +273,10 @@ const JobAddFormScreen = ({ navigation }) => {
             label={"Maximum Age (Optional)"}
             icon={
               <Ionicons
-                name="ios-lock-closed-outline"
+                name="person"
                 size={20}
                 color="white"
-                style={{ marginRight: 5 }}
+                style={{ marginRight: 10 }}
               />
             }
           />

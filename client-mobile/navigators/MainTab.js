@@ -48,7 +48,7 @@ const MainTab = () => {
             return (
               <Octicons
                 name="home"
-                color={focused ? "black" : "white"}
+                color={focused ? "white" : "black"}
                 size={23}
               />
             );
@@ -64,7 +64,7 @@ const MainTab = () => {
             return (
               <MaterialIcons
                 name="work-outline"
-                color={focused ? "black" : "white"}
+                color={focused ? "white" : "black"}
                 size={27}
               />
             );
@@ -80,7 +80,7 @@ const MainTab = () => {
             return (
               <Ionicons
                 name="create-outline"
-                color={focused ? "black" : "white"}
+                color={focused ? "white" : "black"}
                 size={25}
               />
             );
@@ -96,7 +96,7 @@ const MainTab = () => {
             return (
               <Ionicons
                 name="ios-chatbox-ellipses-outline"
-                color={focused ? "black" : "white"}
+                color={focused ? "white" : "black"}
                 size={28}
               />
             );

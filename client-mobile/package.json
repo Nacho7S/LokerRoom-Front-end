@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.4",
+    "@expo-google-fonts/inter": "^0.2.3",
+    "@expo-google-fonts/poppins": "^0.2.3",
+    "@expo-google-fonts/syne": "^0.2.3",
     "@expo/webpack-config": "^19.0.0",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/datetimepicker": "7.2.0",
@@ -21,6 +24,7 @@
     "expo": "~49.0.11",
     "expo-av": "~13.4.1",
     "expo-checkbox": "~2.4.0",
+    "expo-font": "~11.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "~12.3.0",
     "expo-location": "~16.1.0",

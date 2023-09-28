@@ -6,6 +6,7 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -47,11 +48,12 @@ export default function RoomChatScreen() {
   const loginUser = user
   const [messages, setMessages] = useState([]);
   const { params = {} } = useRoute();
-  console.log(params);
-  const [chatId, setChatId] = useState(params?.id || "");
+  console.log(params, "dari pararrrraammms");
+  // const [chatId, setChatId] = useState("");
+  const { id } = params
+  const chatId = id
+  // console.log(chatId);
   const { userId, username } = params;
-  // console.log(userId, username);
-  // const chatId = params?.id || "";
   const [users, setUsers] = useState([]);
   const [receiverUser, setReceiverUser] = useState({});
   const navigation = useNavigation();
@@ -79,11 +81,14 @@ export default function RoomChatScreen() {
   );
 
   useEffect(() => {
+    // console.log(users, "<<<< users data from firestore");
     const receiver = users.find((user) => user?.id != loginUser?.id) || {
       id: userId,
       name: username,
     };
     setReceiverUser(receiver);
+    // console.log(loginUser?.userName,receiver, "<<<<<< receiver");
+  
     navigation.setOptions({
       title: receiver?.name || "",
     });
@@ -94,41 +99,43 @@ export default function RoomChatScreen() {
   };
 
   const uploadChat = async ({ fileURL = "", type = "", isFile = false }) => {
+    // if (!inputMsg && inputMsg === '' || inputImg === null) throw new Error("message is empty");
+    
     const payload = {
       messages: [
-        {
-          text: inputMsg,
-          sender: loginUser?.id,
-          timestamp: Timestamp.now(),
+          {
+            text: inputMsg,
+            sender: loginUser?.id,
+            timestamp: Timestamp.now(),
           fileURL,
           type,
         },
       ],
       users: [loginUser, receiverUser],
       lastText: inputMsg
-        ? inputMsg
-        : `${loginUser?.name || "User"} has send a ${type}`,
+      ? inputMsg
+      : `${loginUser?.name || "User"} has send a ${type}`,
       lastTimestamp: Timestamp.now(),
     };
     try {
       const currChatId = chatId
-        ? chatId
-        : generateChatId(loginUser, receiverUser);
       const docRef = doc(db, "chats", currChatId);
       const findDoc = await getDoc(docRef);
+      // console.log(findDoc, "docREEEFFFF");
       if (!findDoc.exists()) {
         await setDoc(docRef, payload);
-        setChatId(currChatId);
+        // setChatId(currChatId);
       } else {
         await updateDoc(docRef, {
           messages: arrayUnion(payload.messages[0]),
           lastText: payload.lastText,
           lastTimestamp: payload.lastTimestamp,
         });
+      
       }
       setInputMsg("");
       setInputImg(null);
-
+      
       createSummaryChat({
         id: currChatId,
         text: payload.lastText,
@@ -136,9 +143,9 @@ export default function RoomChatScreen() {
       });
     } catch (error) {
       console.log(error);
-    }
   };
-
+}
+  
   const createSummaryChat = async ({ id, text, timestamp }) => {
     try {
       const payload = {
@@ -231,14 +238,14 @@ export default function RoomChatScreen() {
           className="absolute w-full h-full"
         />
         <SafeAreaView className="flex-1">
-        <View className="flex-row justify-between mx-8 mt-5 items-center">
+        <View className="flex-row justify-between mx-8 mb-3 items-center">
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           // className="bg-white rounded-2xl p-3 shadow"
         >
               <ChevronLeftIcon size="23" stroke={50} color="black" />
             </TouchableOpacity>
-            <View style={{marginEnd: screenWidth / 2.7}}>
+            <View style={{marginEnd: screenWidth / 2.7 , backgroundColor: 'white'}}>
               <Text>{ username }</Text>
             </View>
       </View>
@@ -294,5 +301,6 @@ const styles = StyleSheet.create({
     borderColor: "white",
     flex: 1,
     fontSize: 16,
+    color:'white'
   },
 });

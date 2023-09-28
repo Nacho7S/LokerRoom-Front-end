@@ -15,6 +15,7 @@ export default function Message({ item = {}, loginUser = {} }) {
         style={{
           marginVertical: 5,
           borderWidth: 1,
+          backgroundColor: 'white',
           borderRadius: 10,
           borderBottomLeftRadius: isSender ? 10 : 0,
           borderBottomRightRadius: isSender ? 0 : 10,

@@ -7,6 +7,12 @@ import {
   MinusIcon,
   PlusIcon,
   BookmarkIcon,
+  BookOpenIcon,
+  UserCircleIcon,
+  UserPlusIcon,
+  AcademicCapIcon,
+  SparklesIcon,
+  FireIcon,
 } from "react-native-heroicons/outline";
 import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
@@ -15,6 +21,7 @@ import { GET_JOB, APPLY_JOB, GET_MY_APPLIED_JOBS } from "../config/queries";
 import GoogleMaps from "../components/googleMaps";
 import { useAuth } from "../context/useAuth";
 import { useNavigate } from "../context/useNavigate";
+import { generateChatId } from "../utils/chat";
 
 export default function JobDetailsScreen({ route, navigation }) {
   // let item = props.route.params;
@@ -59,7 +66,7 @@ export default function JobDetailsScreen({ route, navigation }) {
 
   console.log(user);
 
-// console.log(coordinate);
+  // console.log(coordinate);
 
   // if (loading) {
   //   return <Preloader />;
@@ -72,15 +79,17 @@ export default function JobDetailsScreen({ route, navigation }) {
   const get3dIcon = () => {
     switch (job?.category?.name) {
       case "Cleaning":
-        return require("../assets/images/bulb-front-gradient.png");
+        return require("../assets/images/roll-brush-front-gradient.png");
       case "Construction":
-        return require("../assets/images/bulb-front-color.png");
+        return require("../assets/images/tool-front-gradient.png");
       case "Factory & Industry":
         return require("../assets/images/axe-front-gradient.png");
       case "Cooking":
-        return require("../assets/images/tea-cup-front-gradient.png");
+        return require("../assets/images/glass-front-gradient.png");
       case "Office":
         return require("../assets/images/travel-front-gradient.png");
+      case "House Work":
+        return require("../assets/images/tea-cup-front-gradient.png");
       default:
         return require("../assets/images/travel-front-gradient.png"); // Default color
     }
@@ -109,7 +118,7 @@ export default function JobDetailsScreen({ route, navigation }) {
     // console.log(job.author.id);
     const userName = job?.author?.name
     const userId = job?.author?.id
-    navigation.navigate("Chat", {chatId: job?.id,userId: userId, username: userName})
+    navigation.navigate("Chat", {id: generateChatId(user, job?.author), username: userName, userId: +userId})
   }
 
   const applyJob = () => {
@@ -136,7 +145,7 @@ export default function JobDetailsScreen({ route, navigation }) {
           borderColor: "white",
           borderWidth: 1,
         }}
-        source={require("../assets/images/sub-background3.png")}
+        source={require("../assets/images/sub-background9.png")}
         blurRadius={100}
         className="absolute w-full h-full"
       />
@@ -153,9 +162,9 @@ export default function JobDetailsScreen({ route, navigation }) {
           <BookmarkIcon size="23" color="black" />
         </TouchableOpacity>
       </View>
-      <ScrollView style={{ marginTop: 3 }}>
+      <ScrollView style={{ marginTop: 3, marginHorizontal: 4 }}>
         <View className="flex justify-center items-center">
-          <Image className="h-24 w-24" source={get3dIcon()} />
+          <Image className="h-20 w-20" source={get3dIcon()} />
           <Text className="text-2xl font-bold text-gray-800">
             {" "}
             {job?.title}
@@ -167,10 +176,12 @@ export default function JobDetailsScreen({ route, navigation }) {
             animation="slideInDown"
             className="flex items-center space-y-2"
           >
-            <Image
+            {/* <Image
               source={require("../assets/icons/calories.png")}
               className="h-6 w-6"
-            />
+            /> */}
+            <FireIcon size="23" stroke={500} color="#fff" />
+
             <Text className="font-semibold">
               {job?.isUrgent === true ? "Urgent" : "Available"}
             </Text>
@@ -180,10 +191,12 @@ export default function JobDetailsScreen({ route, navigation }) {
             animation="slideInDown"
             className="flex items-center space-y-2"
           >
-            <Image
+            {/* <Image
               source={require("../assets/icons/chat.png")}
               className="h-6 w-6"
-            />
+            /> */}
+            <SparklesIcon size="23" stroke={500} color="#fff" />
+
             <Text className="font-semibold">
               {job?.requiredGender ? job?.requiredGender : "All Gender"}
             </Text>
@@ -193,10 +206,12 @@ export default function JobDetailsScreen({ route, navigation }) {
             animation="slideInDown"
             className="flex items-center space-y-2"
           >
-            <Image
+            {/* <Image
               source={require("../assets/icons/clock.png")}
               className="h-6 w-6"
-            />
+            /> */}
+            <UserPlusIcon size="23" stroke={500} color="#fff" />
+
             <Text className="font-semibold">Max Age {job?.maxAge}</Text>
           </Animatable.View>
           <Animatable.View
@@ -204,16 +219,18 @@ export default function JobDetailsScreen({ route, navigation }) {
             animation="slideInDown"
             className="flex items-center space-y-2"
           >
-            <Image
+            {/* <Image
               source={require("../assets/icons/weight.png")}
               className="h-6 w-6"
-            />
+            /> */}
+            <AcademicCapIcon size="23" stroke={500} color="#fff" />
+
             <Text className="font-semibold">
               {job?.requiredEducation ? job?.requiredEducation.education : "-"}
             </Text>
           </Animatable.View>
         </View>
-        <View className="mx-8 space-y-3 h-48">
+        <View className="mx-8 space-y-3 h-32">
           <Animatable.Text
             animation="slideInUp"
             className="text-2xl font-bold text-white"
@@ -291,12 +308,17 @@ export default function JobDetailsScreen({ route, navigation }) {
             </TouchableOpacity>
           </Animatable.View>
           {job?.author?.id !== user?.id ? (
-          <Animatable.View delay={100} animation="slideInRight">
-            <TouchableOpacity className="bg-lime-300 py-3 px-6 rounded-2xl" onPress={toChat}>
-              <Text className="text-s font-semibold">Chat</Text>
-            </TouchableOpacity>
-          </Animatable.View>
-            ): (<></>)}
+            <Animatable.View delay={100} animation="slideInRight">
+              <TouchableOpacity
+                className="bg-lime-300 py-3 px-6 rounded-2xl"
+                onPress={toChat}
+              >
+                <Text className="text-s font-semibold">Chat</Text>
+              </TouchableOpacity>
+            </Animatable.View>
+          ) : (
+            <></>
+          )}
         </View>
       </ScrollView>
       <View className="flex-row justify-between mx-8 mt-16 items-center"></View>
